@@ -1,0 +1,35 @@
+
+- content_for :head do
+
+  = javascript_include_tag 'application'
+  = javascript_include_tag 'lib/jquery-1.6.2.min.js'
+  = javascript_include_tag 'lib/jquery-ui-1.8.14.custom.min.js'
+  = javascript_include_tag 'lib/jquery.tmpl.min.js'
+  = javascript_include_tag 'lib/jquery.tmplPlus.min.js'
+  = javascript_include_tag 'lib/jquery.sorttable.js'
+  = javascript_include_tag 'lib/jquery.contextmenu.js'
+  = javascript_include_tag 'rails'
+  = javascript_include_tag 'require'
+  = stylesheet_link_tag "reset"
+  = stylesheet_link_tag "sheet"
+  = stylesheet_link_tag "eggplant/jquery-ui-1.8.14.custom"
+  = stylesheet_link_tag "jquery.contextmenu.css"
+
+%body
+
+  #wrapper
+    #tabs
+      %ul
+        %li
+          %a{:href => "#tabs-1"}
+            Проект
+
+      #tabs-1
+        %table.xx-sheet
+
+  =# javascript_include_tag 'sheet/sheet.js'
+
+  :javascript
+    require(["/javascripts/sheet/start.js"])
+
+    $("#tabs").tabs();
