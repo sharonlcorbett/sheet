@@ -9,7 +9,8 @@ define(function(){
             RESIZE_SLIDER_CLASS       = "resize-slider",
             COLUMN_RESIZER_CLASS      = "column-resizer",
             RESIZE_REJECT_CLASS       = "resize-reject",
-            MIN_COLUMN_WIDTH          = 40
+            MIN_COLUMN_WIDTH          = 40,
+            NOT_RESIZABLE_COLUMN_CLASS="not-resizable"
 
         return {
 
@@ -112,6 +113,7 @@ define(function(){
                 if(mode == "screen"){
                     sheet.table.find("." + COLUMN_RESIZER_CLASS + ":last").addClass(RESIZE_REJECT_CLASS)
                 }
+                sheet.table.find("." + NOT_RESIZABLE_COLUMN_CLASS).find("." + COLUMN_RESIZER_CLASS).addClass(RESIZE_REJECT_CLASS)
             },
 
             /**

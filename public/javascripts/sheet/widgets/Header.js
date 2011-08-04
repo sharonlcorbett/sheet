@@ -26,8 +26,6 @@ define(function(){
                         "</tr>" +
                     "</table>")
             }
-
-
         }
     }
 })

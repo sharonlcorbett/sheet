@@ -5,7 +5,9 @@
  *
  * @param settings
  */
-define(["/javascripts/sheet/Formatters.js"], function(Formatters){
+define([
+    "/javascripts/sheet/Control.js",
+    "/javascripts/sheet/Formatters.js"], function(Control, Formatters){
 
     return function(settings){
 
@@ -18,62 +20,31 @@ define(["/javascripts/sheet/Formatters.js"], function(Formatters){
          */
 
         var default_settings = {
-            //тип виджета для отображения внутри ячейки
-            widget_type   : "Text",
             //флаг, указывающий на возможность редактирования
             editable : true,
             //значение, содержащееся в ячейке
             value      : "",
-            //формат ячейки
-            format     : {},
             //преобразователь значения ячейки в нужный вид
             formatter_type  : "to_string",
-            //ячейка таблицы, к которой привязан Cell
-            table_cell : null,
-            //phantom указывает, создана ли ячейка в DOM
-            phantom    : true,
             formatter  : null,
-            widget     : null,
             value_field: "value",
             width      : 0
         }
 
-        var return_obj = $.extend({}, default_settings, settings);
-
-        //конструктору может быть передана уже готовая ячейка
-        if (return_obj.table_cell){
-            return_obj.phantom = false;
-        } else {
-            return_obj.table_cell = $("<td></td>");
-        }
+        var return_obj = new Control($.extend(default_settings, settings))
 
         //return_obj.formatter
         if (!return_obj.formatter){
             return_obj.formatter = Formatters[return_obj.formatter_type];
         }
 
-        //функция привязки событий виджета, выполняется после его инициализации
-        var bind_widget_events = function(){
-            $(return_obj.widget).bind("edit_finished",  function(){$(return_obj).trigger("edit_finished",  [return_obj])})
-            $(return_obj.widget).bind("edit_cancelled", function(){$(return_obj).trigger("edit_cancelled", [return_obj])})
-        }
-
-        //ловим инициализацию виджета
-        $(return_obj).bind("widget_ready", bind_widget_events);
-
-        if (!return_obj.widget){
-            //создание виджета на основе типа объекта
-            require(["/javascripts/sheet/widgets/" + return_obj.widget_type + ".js"], function(Widget){
-                var wxobj = new Widget(return_obj);
-                return_obj.widget = wxobj
-                $(return_obj).trigger("widget_ready")
-            })
-        } else {
-            //виджет готов
-            $(return_obj).trigger("widget_ready")
-        }
-
         $.extend(return_obj, {
+
+            init       : function(){
+
+                this.super()
+
+            },
 
             /**
              * отрисовка виджета с применением форматирования и обновление
