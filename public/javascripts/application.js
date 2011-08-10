@@ -2,7 +2,7 @@
 Array.prototype.sum = function(){
 	for(var i=0,sum=0;i<this.length;sum+=this[i++]);
 	return sum;
-}
+};
 
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
@@ -13,7 +13,7 @@ Array.prototype.sum = function(){
  * MIT Licensed.
  */
 // Inspired by base2 and Prototype
-function inheritance(){
+(function(){
   var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
   // The base Class implementation (does nothing)
   this.Class = function(){};
@@ -70,9 +70,32 @@ function inheritance(){
 
     return Class;
   };
+})();
+
+SheetMixins = {
+
+    setup_mixin : {
+
+        settings : {},
+
+        setup : function(settings){
+
+            if (!settings) return;
+            var me = this;
+            $.each(settings, function(key, value){
+                if (typeof me[key] == "function"){
+                    me[key](value);
+                } else {
+                    me[key] = value;
+                }
+            })
+
+            $.extend(me.settings, settings);
+        }
+    }
 }
 
-inheritance()
+$.extend(Class.prototype, SheetMixins.setup_mixin)
 
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
