@@ -1,6 +1,7 @@
 
 - content_for :head do
 
+  = javascript_include_tag 'lib/underscore-min.js'
   = javascript_include_tag 'lib/jquery-1.6.2.min.js'
   = javascript_include_tag 'application'
 
@@ -26,7 +27,6 @@
             Проект
 
       #tabs-1
-        %table.xx-sheet
 
   =# javascript_include_tag 'sheet/sheet.js'
 

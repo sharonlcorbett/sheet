@@ -1,9 +1,4 @@
 
-Array.prototype.sum = function(){
-	for(var i=0,sum=0;i<this.length;sum+=this[i++]);
-	return sum;
-};
-
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
@@ -76,7 +71,7 @@ SheetMixins = {
 
     setup_mixin : {
 
-        settings : {},
+        //settings : {},
 
         setup : function(settings){
 
@@ -90,7 +85,35 @@ SheetMixins = {
                 }
             })
 
-            $.extend(me.settings, settings);
+            //$.extend(me.settings, settings);
+        },
+
+        add_getter : function(name, private_container){
+
+            var me = this;
+            me[name] = function(){
+
+                return private_container[name];
+            }
+        },
+
+        add_setters : function(array_of_names, private_container){
+
+            var me = this;
+            var before;
+            $.each(array_of_names, function(index, name){
+
+                me[name] = function(arg){
+
+                    if(typeof arg != "undefined" & arg != private_container[name]){
+
+                        before = private_container[name];
+                        private_container[name] = arg;
+                        $(me).trigger("setter_field_changed", [name, arg, before])
+                    }
+                    return private_container[name];
+                }
+            })
         }
     }
 }

@@ -6,8 +6,8 @@
  * @param settings
  */
 define([
-    "/javascripts/sheet/Control.js",
-    "/javascripts/sheet/Formatters.js"], function(Control, Formatters){
+    "./Control.js",
+    "./Formatters.js"], function(Control, Formatters){
 
     /**
      * events
@@ -17,6 +17,8 @@ define([
      *  click
      */
 
+    var pv = {};
+
     var default_settings = {
 
         template : "<td></td>",
@@ -25,26 +27,28 @@ define([
         //значение, содержащееся в ячейке
         value      : "",
         //преобразователь значения ячейки в нужный вид
-        formatter_type  : "to_string",
-        formatter  : null,
-        value_field: "value",
-        width      : 0
+        formatter_type  : "to_string"
     }
 
-    var return_obj = Control.extend({
+    var Cell = Control.extend({
 
         init       : function(settings){
 
-            this._super($.extend({}, default_settings, settings))
+            this.add_setters([
+                "formatter",
+                "editable"
+            ], pv);
+
+            this._super($.extend({}, default_settings, settings));
+
             //return_obj.formatter
-            if (!return_obj.formatter){
-                return_obj.formatter = Formatters[return_obj.formatter_type];
+            if (typeof this.formatter() != "function"){
+                this.formatter(Formatters[this.formatter_type]);
             }
 
         }
-
     })
 
-    return return_obj;
+    return Cell;
 
 })
