@@ -3,8 +3,6 @@
  */
 define(["./Control.js", "./Header.js"], function(Control, Header){
 
-    var pv = {};
-
     var default_settings = {
 
         template :
@@ -21,8 +19,18 @@ define(["./Control.js", "./Header.js"], function(Control, Header){
 
         init       : function(settings){
 
-            pv["headers"] = [];
+            this.__set_private("headers", []);
             this._super($.extend({}, default_settings, settings));
+
+            $(this).bind("materialized", function(){
+
+                //при материализиции панели заголовков материализуем Headerы
+                var me = this;
+                _(this.headers()).each(function(header){
+
+                    header.materialize(me.view().find("tr"))
+                })
+            })
         },
 
         add_header : function(header){
@@ -30,22 +38,31 @@ define(["./Control.js", "./Header.js"], function(Control, Header){
             if (typeof header.materialize == "undefined"){
                 header = new Header(header);
             }
-            pv["headers"].push(header);
+
+            this.headers().push(header);
             $(this).trigger("header_added", [header]);
         },
 
         remove_header : function(header){
 
-            pv["headers"] = _(pv["headers"]).without(header);
+            this.headers(
+                this.headers().without(header));
             $(this).trigger("header_removed", [header]);
         },
 
         headers : function(headers){
 
+            var me = this;
             if(_(headers).isArray()){
-                _(headers).each(this.add_header);
+                _(headers).each($.proxy(me.add_header, me));
             }
-            return _(pv["headers"]).clone();
+            return this.__get_private("headers");
+        },
+
+        render : function(){
+
+            //отрисовка заголовков
+            _(this.headers()).each(function(h){h.render()});
         }
     })
 

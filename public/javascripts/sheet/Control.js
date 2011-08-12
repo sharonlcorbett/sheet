@@ -15,12 +15,8 @@ define(function(){
     var default_settings = {
 
         template : "<div></div>",
-        phantom  : true,
-        //тип виджета для отображения внутри ячейки
-        widget_type   : "Text"
+        phantom  : true
     }
-
-    var pv = {};
 
     var Control = Class.extend({
 
@@ -28,56 +24,15 @@ define(function(){
 
             this.add_setters([
                 "view",
-                "value",
-                "format",
                 "width",
                 "height",
-                "template",
-                "widget"
-            ], pv);
+                "template"
+            ]);
 
             this.setup(default_settings)
             this.setup(settings);
 
             var me = this;
-            //функция привязки событий виджета, выполняется после его инициализации
-            var bind_widget_events = function(){
-                $(me.widget()).bind("edit_finished",  function(){$(me).trigger("edit_finished",  [me])})
-                $(me.widget()).bind("edit_cancelled", function(){$(me).trigger("edit_cancelled", [me])})
-            }
-
-            //ловим инициализацию виджета
-            $(this).bind("widget_ready", bind_widget_events);
-
-            if (!this.widget()){
-                //создание виджета на основе типа объекта
-                require(["/javascripts/sheet/widgets/" + this.widget_type + ".js"], function(Widget){
-
-                    me.widget(new Widget(me));
-                    $(me).trigger("widget_ready")
-                })
-            } else {
-                //виджет готов
-                $(me).trigger("widget_ready")
-            }
-
-        },
-
-        /**
-         * отрисовка виджета с применением форматирования и обновление
-         * html- кода ячейки
-         */
-        render     : function(){
-
-            var me = this;
-            if (!this.widget()) {
-                //отложенный рендер
-                $(this).bind("widget_ready", function(){me.widget().render(); $(me).trigger("rendered");})
-            } else {
-                //немедленный рендер
-                this.widget().render();
-                $(this).trigger("rendered");
-            }
         },
 
         /**
@@ -90,6 +45,7 @@ define(function(){
             if (!this.phantom) return;
 
             if (_(this.view()).isUndefined() || _(this.view()).isNull()) {
+
                 this.view($(this.template()));
             }
 

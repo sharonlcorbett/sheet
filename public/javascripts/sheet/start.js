@@ -24,5 +24,6 @@ require(["/javascripts/sheet/Sheet.js"], function(Sheet){
     });
 
     sheet.materialize($("#tabs-1"));
+    sheet.render();
 
 })

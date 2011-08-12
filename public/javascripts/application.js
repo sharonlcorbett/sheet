@@ -88,24 +88,38 @@ SheetMixins = {
             //$.extend(me.settings, settings);
         },
 
-        add_getter : function(name, private_container){
+        add_getter : function(name){
 
             var me = this;
+
+            if (typeof $(me).data("private") == "undefined"){
+                $(me).data("private") = {}
+            }
+
+            var private_container = $(me).data("private");
+
             me[name] = function(){
 
                 return private_container[name];
             }
         },
 
-        add_setters : function(array_of_names, private_container){
+        add_setters : function(array_of_names){
 
             var me = this;
             var before;
+
+            if (typeof $(me).data("private") == "undefined"){
+                $(me).data("private", {})
+            }
+
+            var private_container = $(me).data("private");
+
             $.each(array_of_names, function(index, name){
 
                 me[name] = function(arg){
 
-                    if(typeof arg != "undefined" & arg != private_container[name]){
+                    if(typeof arg != "undefined" & arg != $(me).data(name)){
 
                         before = private_container[name];
                         private_container[name] = arg;
@@ -114,7 +128,28 @@ SheetMixins = {
                     return private_container[name];
                 }
             })
-        }
+        },
+
+        __set_private : function(name, value){
+
+            if (typeof $(this).data("private") == "undefined"){
+                $(this).data("private", {})
+            }
+            var private = $(this).data("private");
+            private[name] = value;
+        },
+
+        __get_private : function(name){
+
+            if (typeof $(this).data("private") == "undefined"){
+                $(this).data("private", {})
+            }
+            return $(this).data("private")[name];
+        },
+
+        get_private : function(){}
+
+
     }
 }
 

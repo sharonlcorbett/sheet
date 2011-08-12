@@ -37,11 +37,20 @@ define([
 
             var stx = $.extend({}, default_settings, settings);
 
-            this.header_panel = new HeaderPanel(stx.headers);
-            this.cell_grid = new CellGrid();
+            this.header_panel = new HeaderPanel({headers : stx.headers});
+            this.cell_grid = new CellGrid({rows : stx.rows});
 
-            delete stx["header"];
+            delete stx["headers"];
+            delete stx["rows"];
+
             this._super(stx);
+
+            var me = this;
+            $(this).bind("materialized", function(){
+
+                me.header_panel.materialize(this.view())
+            })
+
         },
 
         add_plugin : function(plugin){
@@ -59,6 +68,12 @@ define([
                 _(plugins).each(this.add_plugin);
             }
             return _(pv["rows"]).clone();
+        },
+
+        render : function(){
+
+            this.header_panel.render();
+            //this.cell_grid.render();
         },
 
         header_panel : null,

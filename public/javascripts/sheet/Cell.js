@@ -6,7 +6,7 @@
  * @param settings
  */
 define([
-    "./Control.js",
+    "./WidgetControl.js",
     "./Formatters.js"], function(Control, Formatters){
 
     /**
