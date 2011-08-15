@@ -5,43 +5,37 @@
  * @param table_row
  */
 define([
-    "./Control.js",
     "./Cell.js",
-    "./helpers/ElementsCollection.js"], function(Control, Cell, ElementsCollection){
-
-    var pv = {};
+    "../helpers/ElementsCollection.js"], function(Cell, ElementsCollection){
 
     var default_settings = {
 
-        template : "<tr></tr>",
-        height   : 20
+        height   : 20,
+        orderable: true,
+        editable : false,
+        format   : null
     }
 
-    var Row = Control.extend({
+    var Row = Class.extend({
 
         init       : function(settings){
 
             this.cells = ElementsCollection({
 
-                check : function(cell){ typeof cell.materialize == "undefined" },
+                check : function(cell){ typeof cell.init == "undefined" },
                 class : Cell
             });
 
-            var me = this;
-            $(this.cells).bind("added", function(e, cell){
+            this.add_setters([
+                "height",
+                "orderable",
+                "editable",
+                "format"
+            ]);
 
-                me.bind_cell_events(cell);
-            })
-
-            this._super($.extend({}, default_settings, settings));
-        },
-
-        bind_cell_events : function(c){
-            //привязка к событиям ячеек
-            var me = this;
-            $(c).bind("edit_finished",  function(e, cell){$(me).trigger("edit_finished",  [cell])})
-            $(c).bind("edit_cancelled", function(e, cell){$(me).trigger("edit_cancelled", [cell])})
+            this.setup($.extend({}, default_settings, settings));
         }
+
     })
 
     return Row;

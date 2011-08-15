@@ -13,7 +13,7 @@ define([
 
         class    : "xx-sheet",
         template : "<div class='xx-sheet'></div>",
-        /*plugins: [
+        /*functionality: [
             "./plugins/Resize.js",
             "./plugins/EditByClick.js",
             "./plugins/HighlightRow.js",
@@ -49,7 +49,9 @@ define([
             $(this).bind("materialized", function(){
 
                 me.header_panel.materialize(this.view())
-            })
+            });
+
+
         },
 
         add_plugin : function(plugin){

@@ -5,38 +5,28 @@
  *
  * @param settings
  */
-define([
-    "./WidgetControl.js",
-    "./Formatters.js"], function(Control, Formatters){
-
-    /**
-     * events
-     *  edit_finished
-     *  edit_cancelled
-     *  widget_ready
-     *  click
-     */
-
-    var pv = {};
+define(["./Widget.js"], function(Widget){
 
     var default_settings = {
 
-        template : "<td></td>",
         //флаг, указывающий на возможность редактирования
         editable : true,
         //значение, содержащееся в ячейке
         value      : ""
     }
 
-    var Cell = Control.extend({
+    var Cell = Class.extend({
 
         init       : function(settings){
 
             this.add_setters([
-                "editable"
+                "editable",
+                "value",
+                "format",
+                ["widget", Widget]
             ]);
 
-            this._super($.extend({}, default_settings, settings));
+            this.setup($.extend({}, default_settings, settings));
         }
     })
 

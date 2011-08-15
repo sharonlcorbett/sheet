@@ -115,15 +115,29 @@ SheetMixins = {
 
             var private_container = $(me).data("private");
 
-            $.each(array_of_names, function(index, name){
+            $.each(array_of_names, function(index, arg){
+
+                var name = arg;
+                var class = null;
+
+                if (_(arg).isArray()){
+
+                    name = arg[0];
+                    class = arg[1];
+                }
 
                 me[name] = function(arg){
 
                     if(typeof arg != "undefined" & arg != $(me).data(name)){
 
                         before = private_container[name];
+
+                        if (class != null && typeof arg.init == "undefined"){
+                            arg = new class(arg);
+                        }
+
                         private_container[name] = arg;
-                        $(me).trigger("setter_field_changed", [name, arg, before])
+                        $(me).trigger("setter", [name, arg, before])
                     }
                     return private_container[name];
                 }

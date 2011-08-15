@@ -2,8 +2,8 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(["./Cell.js",
-        "./Meta.js"], function(Cell, Meta){
+define(["./Cell.js"
+        ], function(Cell){
 
     var default_settings = {
 
@@ -26,9 +26,9 @@ define(["./Cell.js",
             ]);
 
             this._super($.extend({}, default_settings, settings));
-        },
+        }
 
-        meta : new Meta()
+        //meta : new Meta()
 
     })
 
