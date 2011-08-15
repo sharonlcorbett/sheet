@@ -35,6 +35,10 @@ define(["./Control.js"], function(Control){
 
             //функция привязки событий виджета, выполняется после его инициализации
             this.widget_loading.done(function(){
+
+                me.widget().value(me.value());
+                me.widget().materialize(me.view());
+
                 $(me.widget()).bind("edit_finished",  function(){$(me).trigger("edit_finished",  [me])})
                 $(me.widget()).bind("edit_cancelled", function(){$(me).trigger("edit_cancelled", [me])})
             })

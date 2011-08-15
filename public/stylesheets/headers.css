@@ -1,0 +1,44 @@
+.header_table {
+  height: 40px;
+  width: 100%; }
+  .header_table table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse; }
+  .header_table th .widget {
+    width: 100%;
+    height: 100%; }
+  .header_table th {
+    border-right: solid 1px #999999;
+    border-left: solid 1px #999999;
+    padding: 0px;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    height: 40px;
+    background-image: url(/images/bg.png);
+    background-color: #c4deff;
+    color: black; }
+    .header_table th table.tbl-column-header {
+      width: 100%;
+      height: 100%;
+      table-layout: fixed; }
+      .header_table th table.tbl-column-header td {
+        padding: 0;
+        margin: 0;
+        border: none; }
+      .header_table th table.tbl-column-header td.column-title {
+        word-wrap: break-word;
+        padding: 7px;
+        padding-right: 0;
+        line-height: 20px;
+        vertical-align: middle;
+        font-weight: bold;
+        fond-size: 9px; }
+      .header_table th table.tbl-column-header td.column-resizer-container {
+        width: 5px; }
+        .header_table th table.tbl-column-header td.column-resizer-container .column-resizer {
+          width: 5px;
+          height: 100%;
+          cursor: e-resize;
+          background-color: transparent; }

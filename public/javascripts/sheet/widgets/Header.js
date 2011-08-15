@@ -5,27 +5,39 @@
  */
 
 /**
- * Виджет заголовка, just text
+ * текстовый виджет, just text
  */
-define(function(){
+define(["../Widget.js"], function(Widget){
 
-    return function(cell){
+    var default_settings = {
 
-        return {
+        value : "Column"
+    }
 
-            render : function(){
-                cell.table_cell.html(
+    var HeaderWidget = Widget.extend({
+
+        init : function(settings){
+
+            this._super($.extend({}, default_settings, settings));
+        },
+
+        render : function(){
+
+            this.view().html(
                     "<table class='tbl-column-header'>" +
                         "<tr>" +
                             "<td class='column-title'>" +
-                                cell.getValue().toString() +
+                                this.value().toString() +
                             "</td>" +
                             "<td class='column-resizer-container'>" +
                                 "<div class='column-resizer'></div>" +
                             "</td>" +
                         "</tr>" +
                     "</table>")
-            }
         }
-    }
+    })
+
+    return HeaderWidget;
+
 })
+

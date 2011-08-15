@@ -25,9 +25,7 @@ define([
         //флаг, указывающий на возможность редактирования
         editable : true,
         //значение, содержащееся в ячейке
-        value      : "",
-        //преобразователь значения ячейки в нужный вид
-        formatter_type  : "to_string"
+        value      : ""
     }
 
     var Cell = Control.extend({
@@ -35,17 +33,10 @@ define([
         init       : function(settings){
 
             this.add_setters([
-                "formatter",
                 "editable"
-            ], pv);
+            ]);
 
             this._super($.extend({}, default_settings, settings));
-
-            //return_obj.formatter
-            if (typeof this.formatter() != "function"){
-                this.formatter(Formatters[this.formatter_type]);
-            }
-
         }
     })
 

@@ -19,6 +19,9 @@ require(["/javascripts/sheet/Sheet.js"], function(Sheet){
             },
             {
                 value : "ПОПО"
+            },
+            {
+                value : "ПОПО"
             }
         ]
     });

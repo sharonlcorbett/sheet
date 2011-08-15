@@ -1,7 +1,10 @@
 /**
  * Строка заголовков, одна на лист
  */
-define(["./Control.js", "./Header.js"], function(Control, Header){
+define([
+    "./Control.js",
+    "./Header.js",
+    "./helpers/ElementsCollection.js"], function(Control, Header, ElementsCollection){
 
     var default_settings = {
 
@@ -19,7 +22,12 @@ define(["./Control.js", "./Header.js"], function(Control, Header){
 
         init       : function(settings){
 
-            this.__set_private("headers", []);
+            this.headers = ElementsCollection({
+
+                check : function(header){ typeof header.materialize == "undefined" },
+                class : Header
+            });
+
             this._super($.extend({}, default_settings, settings));
 
             $(this).bind("materialized", function(){
@@ -31,32 +39,6 @@ define(["./Control.js", "./Header.js"], function(Control, Header){
                     header.materialize(me.view().find("tr"))
                 })
             })
-        },
-
-        add_header : function(header){
-
-            if (typeof header.materialize == "undefined"){
-                header = new Header(header);
-            }
-
-            this.headers().push(header);
-            $(this).trigger("header_added", [header]);
-        },
-
-        remove_header : function(header){
-
-            this.headers(
-                this.headers().without(header));
-            $(this).trigger("header_removed", [header]);
-        },
-
-        headers : function(headers){
-
-            var me = this;
-            if(_(headers).isArray()){
-                _(headers).each($.proxy(me.add_header, me));
-            }
-            return this.__get_private("headers");
         },
 
         render : function(){

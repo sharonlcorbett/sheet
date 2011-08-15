@@ -1,15 +1,19 @@
-define(function(){
+define(["./Control.js"], function(Control){
 
-    var Widget = Class.extend({
+    var default_settings = {
+
+        template: "<div class='widget'></div>"
+    }
+
+    var Widget = Control.extend({
 
         init       : function(settings){
 
             this.add_setters([
-                "value",
-                "parent"
+                "value"
             ])
 
-            this.setup(settings);
+            this._super($.extend({}, default_settings, settings));
         },
 
         render : function(){

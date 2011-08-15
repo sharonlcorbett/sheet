@@ -2,10 +2,8 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(["/javascripts/sheet/Cell.js"], function(Cell){
-
-    var pv = {};
-    var meta_pv = {};
+define(["./Cell.js",
+        "./Meta.js"], function(Cell, Meta){
 
     var default_settings = {
 
@@ -17,20 +15,6 @@ define(["/javascripts/sheet/Cell.js"], function(Cell){
         template   : "<th></th>"
     }
 
-    var Meta = Class.extend({
-
-        init : function(){
-
-            this.add_setters([
-                "widget_type",
-                "editable",
-                "value",
-                "resizable",
-                "orderable"
-            ], meta_pv)
-        }
-    });
-
     var Header = Cell.extend({
 
         init       : function(settings){
@@ -39,7 +23,7 @@ define(["/javascripts/sheet/Cell.js"], function(Cell){
                 "flex",
                 "resizable",
                 "orderable"
-            ], pv);
+            ]);
 
             this._super($.extend({}, default_settings, settings));
         },

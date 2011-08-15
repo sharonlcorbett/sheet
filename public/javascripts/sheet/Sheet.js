@@ -50,7 +50,6 @@ define([
 
                 me.header_panel.materialize(this.view())
             })
-
         },
 
         add_plugin : function(plugin){

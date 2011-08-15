@@ -6,7 +6,8 @@
  */
 define([
     "./Control.js",
-    "./Cell.js"], function(Control, Cell){
+    "./Cell.js",
+    "./helpers/ElementsCollection.js"], function(Control, Cell, ElementsCollection){
 
     var pv = {};
 
@@ -20,28 +21,26 @@ define([
 
         init       : function(settings){
 
-            this._super($.extend({}, default_settings, settings));
+            this.cells = ElementsCollection({
+
+                check : function(cell){ typeof cell.materialize == "undefined" },
+                class : Cell
+            });
+
             var me = this;
+            $(this.cells).bind("added", function(e, cell){
+
+                me.bind_cell_events(cell);
+            })
+
+            this._super($.extend({}, default_settings, settings));
+        },
+
+        bind_cell_events : function(c){
             //привязка к событиям ячеек
-            $(this.cells()).bind("edit_finished",  function(e, cell){$(me).trigger("edit_finished",  [cell])})
-            $(this.cells()).bind("edit_cancelled", function(e, cell){$(me).trigger("edit_cancelled", [cell])})
-        },
-
-        add_cell : function(cell){
-
-            if (typeof cell.materialize == "undefined"){
-                cell = new Cell(cell);
-            }
-            pv["cells"].push(cell);
-            $(this).trigger("cell_added", [cell]);
-        },
-
-        cells : function(cells){
-
-            if(_(cells).isArray()){
-                _(cells).each(this.add_cell);
-            }
-            return _(pv["cells"]).clone();
+            var me = this;
+            $(c).bind("edit_finished",  function(e, cell){$(me).trigger("edit_finished",  [cell])})
+            $(c).bind("edit_cancelled", function(e, cell){$(me).trigger("edit_cancelled", [cell])})
         }
     })
 
