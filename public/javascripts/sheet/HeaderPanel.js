@@ -14,18 +14,20 @@ define([
                     "<tr>" +
                     "</tr>" +
                 "</table>" +
-            "</div>",
-        headers : [{}]
+            "</div>"
     }
 
     var HeaderPanel = Control.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
 
-            this.headers = ElementsCollection({
+            this.definition = definition;
 
-                check : function(header){ typeof header.materialize == "undefined" },
-                class : Header
+            this.headers = []
+            var self = this;
+            _(this.definition.columns()).each(function(column){
+                //создаем объект из Definition
+                self.headers.push(new Header(column.header()));
             });
 
             this._super($.extend({}, default_settings, settings));
@@ -34,9 +36,9 @@ define([
 
                 //при материализиции панели заголовков материализуем Headerы
                 var me = this;
-                _(this.headers()).each(function(header){
+                _(this.headers).each(function(header){
 
-                    header.materialize(me.view().find("tr"))
+                    header.materialize(me.view.find("tr"))
                 })
             })
         },
@@ -44,7 +46,7 @@ define([
         render : function(){
 
             //отрисовка заголовков
-            _(this.headers()).each(function(h){h.render()});
+            _(this.headers).each(function(h){h.render()});
         }
     })
 

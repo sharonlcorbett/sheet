@@ -1,35 +1,18 @@
-/**
- * Класс заголовков таблицы
- * @param settings
- */
-define(["./Cell.js"
-        ], function(Cell){
+define([
+    "./WidgetControl.js"], function(WidgetControl){
 
     var default_settings = {
 
-        //флаг, указывающий на возможность редактирования
-        editable : false,
-        //значение, содержащееся в ячейке
-        value      : "New column",
-        widget_type: "Header",
-        template   : "<th></th>"
+        template : "<td></td>"
     }
 
-    var Header = Cell.extend({
+    var Header = WidgetControl.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
 
-            this.add_setters([
-                "flex",
-                "resizable",
-                "orderable"
-            ]);
-
-            this._super($.extend({}, default_settings, settings));
+            this.definition = definition;
+            this._super(definition, $.extend({}, default_settings, settings));
         }
-
-        //meta : new Meta()
-
     })
 
     return Header;

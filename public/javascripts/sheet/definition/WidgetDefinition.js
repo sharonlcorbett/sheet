@@ -13,7 +13,6 @@ define(function(){
         init       : function(settings){
 
             this.add_setters([
-                "value",
                 "formatter",
                 "type"
             ]);

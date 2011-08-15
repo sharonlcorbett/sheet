@@ -2,7 +2,7 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(['./Header.js', './Widget.js'], function(Header, Widget){
+define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefinition, WidgetDefinition){
 
     var default_settings = {
 
@@ -18,7 +18,7 @@ define(['./Header.js', './Widget.js'], function(Header, Widget){
         }
     }
 
-    var Column = Class.extend({
+    var ColumnDefinition = Class.extend({
 
         init       : function(settings){
 
@@ -29,14 +29,15 @@ define(['./Header.js', './Widget.js'], function(Header, Widget){
                 "editable",
                 "width",
                 "format",
-                ["header", Header],
-                ["widget", Widget]
+                ["header", HeaderDefinition],
+                ["widget", WidgetDefinition]
             ]);
 
             this.setup($.extend({}, default_settings, settings));
         }
+
     })
 
-    return Column;
+    return ColumnDefinition;
 
 })

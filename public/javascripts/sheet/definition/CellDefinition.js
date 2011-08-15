@@ -5,7 +5,7 @@
  *
  * @param settings
  */
-define(["./Widget.js"], function(Widget){
+define(["./WidgetDefinition.js"], function(WidgetDefinition){
 
     var default_settings = {
 
@@ -15,7 +15,7 @@ define(["./Widget.js"], function(Widget){
         value      : ""
     }
 
-    var Cell = Class.extend({
+    var CellDefinition = Class.extend({
 
         init       : function(settings){
 
@@ -23,13 +23,18 @@ define(["./Widget.js"], function(Widget){
                 "editable",
                 "value",
                 "format",
-                ["widget", Widget]
+                "column",
+                ["widget", WidgetDefinition]
             ]);
 
             this.setup($.extend({}, default_settings, settings));
+        },
+
+        inherited_widget : function(){
+            return this.column().widget();
         }
     })
 
-    return Cell;
+    return CellDefinition;
 
 })

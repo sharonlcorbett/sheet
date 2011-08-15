@@ -2,7 +2,7 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(['./Widget.js'], function(Widget){
+define(['./WidgetDefinition.js'], function(WidgetDefinition){
 
     var default_settings = {
 
@@ -21,7 +21,7 @@ define(['./Widget.js'], function(Widget){
 
             this.add_setters([
                 "value",
-                ["widget", Widget]
+                ["widget", WidgetDefinition]
             ]);
 
             this.setup($.extend({}, default_settings, settings));

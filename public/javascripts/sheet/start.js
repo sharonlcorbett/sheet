@@ -32,9 +32,9 @@ require.attach = function (url, contextName, moduleName, callback, type) {
 })*/
 
 
-require(["/javascripts/sheet/definition/SheetDefinition.js"], function(SD){
+require(["/javascripts/sheet/Sheet.js"], function(Sheet){
 
-    sheet = new SD({
+    sheet = new Sheet({
 
         columns : [
             {
@@ -56,7 +56,7 @@ require(["/javascripts/sheet/definition/SheetDefinition.js"], function(SD){
         ]
     });
 
-    //sheet.materialize($("#tabs-1"));
-    //sheet.render();
+    sheet.materialize($("#tabs-1"));
+    sheet.render();
 
 })

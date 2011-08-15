@@ -1,11 +1,12 @@
 
 define([
+    "./definition/SheetDefinition.js",
     "./Control.js",
     "./Header.js",
     "./Row.js",
     "./HeaderPanel.js",
     "./CellGrid.js"
-    ], function(Control, Header, Row, HeaderPanel, CellGrid){
+    ], function(SheetDefinition, Control, Header, Row, HeaderPanel, CellGrid){
 
     var pv = {};
 
@@ -21,7 +22,6 @@ define([
             "./plugins/MoveColumns.js",
             "./plugins/Select.js"
         ],*/
-        headers : [{}]
     }
 
     //загрузка и инициализация плагинов
@@ -33,25 +33,24 @@ define([
 
     var Sheet = Control.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
+
+            this.definition = new SheetDefinition(definition);
 
             var stx = $.extend({}, default_settings, settings);
 
-            this.header_panel = new HeaderPanel({headers : stx.headers});
-            this.cell_grid = new CellGrid({rows : stx.rows});
+            var me = this;
 
-            delete stx["headers"];
-            delete stx["rows"];
+            this.header_panel = new HeaderPanel(me.definition);
+            //this.cell_grid = new CellGrid(me.definition);
 
             this._super(stx);
 
             var me = this;
             $(this).bind("materialized", function(){
 
-                me.header_panel.materialize(this.view())
+                me.header_panel.materialize(this.view)
             });
-
-
         },
 
         add_plugin : function(plugin){

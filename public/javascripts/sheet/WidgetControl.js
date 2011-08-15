@@ -14,20 +14,20 @@ define(["./Control.js"], function(Control){
 
     var default_settings = {
 
-        widget_type   : "Text"
     }
 
     var WidgetControl = Control.extend({
 
-        init       : function(settings){
-
-            this.add_setters([
-                "value",
-                "format",
-                "widget"
-            ]);
+        init       : function(definition, settings){
 
             this._super($.extend({}, default_settings, settings));
+
+            this.definition = definition;
+
+            console.log(this.definition)
+            if (!this.definition.widget() && !this.definition.inherited_widget()){
+                throw "Widget must be set in WidgetControl"
+            }
 
             var me = this;
 
@@ -36,21 +36,18 @@ define(["./Control.js"], function(Control){
             //функция привязки событий виджета, выполняется после его инициализации
             this.widget_loading.done(function(){
 
-                me.widget().value(me.value());
-                me.widget().materialize(me.view());
+                me.widget.value(me.definition.value());
+                me.widget.materialize(me.view);
+            });
 
-                $(me.widget()).bind("edit_finished",  function(){$(me).trigger("edit_finished",  [me])})
-                $(me.widget()).bind("edit_cancelled", function(){$(me).trigger("edit_cancelled", [me])})
-            })
-
-            $(this).bind("setter_field_changed", function(e, name, value){
+            $(this.definition).bind("setter", function(e, name, value){
 
                 switch(name){
                     case "value":
-                        this.widget().value(value);
+                        this.widget.value(value);
 
                         //TODO: Может отдать эту логику виджету?
-                        this.widget().render();
+                        this.widget.render();
                         break;
                 }
             })
@@ -60,15 +57,18 @@ define(["./Control.js"], function(Control){
         load_widget : function(){
 
             var d = $.Deferred();
-            if (this.widget()) {
+            if (this.widget) {
                 this.widget_loading.resolve();
             }
 
             var me = this;
-            //создание виджета на основе типа объекта
-            require(["/javascripts/sheet/widgets/" + this.widget_type + ".js"], function(Widget){
 
-                me.widget(new Widget());
+            var widget_definition = this.definition.widget() || this.definition.inherited_widget();
+
+            //создание виджета на основе типа объекта
+            require(["/javascripts/sheet/widgets/" + widget_definition.type() + ".js"], function(Widget){
+
+                me.widget = new Widget(widget_definition);
                 d.resolve();
             })
             return d;
@@ -83,7 +83,7 @@ define(["./Control.js"], function(Control){
             var me = this;
             this.widget_loading.done(function(){
 
-                me.widget().render();
+                me.widget.render();
                 $(me).trigger("rendered");
             })
         }

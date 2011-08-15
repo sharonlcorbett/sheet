@@ -5,8 +5,8 @@
  * @param table_row
  */
 define([
-    "./Cell.js",
-    "../helpers/ElementsCollection.js"], function(Cell, ElementsCollection){
+    "./CellDefinition.js",
+    "../helpers/ElementsCollection.js"], function(CellDefinition, ElementsCollection){
 
     var default_settings = {
 
@@ -23,7 +23,7 @@ define([
             this.cells = ElementsCollection({
 
                 check : function(cell){ typeof cell.init == "undefined" },
-                class : Cell
+                class : CellDefinition
             });
 
             this.add_setters([

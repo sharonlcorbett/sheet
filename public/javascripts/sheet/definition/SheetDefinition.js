@@ -2,7 +2,7 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(['./Column.js', './Row.js'], function(Column, Row){
+define(['./ColumnDefinition.js', './RowDefinition.js'], function(ColumnDefinition, RowDefinition){
 
     var __def = {};
     var __obj = {};
@@ -16,7 +16,7 @@ define(['./Column.js', './Row.js'], function(Column, Row){
 
             __obj.columns = [];
             _(__def.columns).each(function(column){
-                __obj.columns.push(new Column(column));
+                __obj.columns.push(new ColumnDefinition(column));
             });
 
             __obj.rows = [];
@@ -26,7 +26,15 @@ define(['./Column.js', './Row.js'], function(Column, Row){
 
                     throw "Wrong row definition: Cell count mismatch!"
                 }
-                __obj.rows.push(new Row(row));
+
+                var crow = new RowDefinition(row);
+                __obj.rows.push(crow);
+
+                $(crow.cells()).each(function(index, cell){
+
+                    console.log(cell)
+                    cell.column(me.columns()[index]);
+                })
             });
 
             $(this).trigger("loaded");

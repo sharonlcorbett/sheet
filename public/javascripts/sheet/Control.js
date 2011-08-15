@@ -20,12 +20,9 @@ define(function(){
 
     var Control = Class.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
 
             this.add_setters([
-                "view",
-                "width",
-                "height",
                 "template"
             ]);
 
@@ -44,16 +41,16 @@ define(function(){
             //материализация не разрешается для уже матеарилизованных компонент
             if (!this.phantom) return;
 
-            if (_(this.view()).isUndefined() || _(this.view()).isNull()) {
+            if (_(this.view).isUndefined() || _(this.view).isNull()) {
 
-                this.view($(this.template()));
+                this.view = $(this.template());
             }
 
-            parent.append(this.view());
+            parent.append(this.view);
 
             this.phantom = false;
             //теперь Cell можно получить через data
-            this.view().data("control", this);
+            this.view.data("control", this);
             $(this).trigger("materialized");
         }
 

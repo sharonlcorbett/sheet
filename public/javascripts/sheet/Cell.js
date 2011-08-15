@@ -17,27 +17,20 @@ define([
      *  click
      */
 
-    var pv = {};
 
     var default_settings = {
 
-        template : "<td></td>",
-        //флаг, указывающий на возможность редактирования
-        editable : true,
-        //значение, содержащееся в ячейке
-        value      : ""
+        template : "<td></td>"
     }
 
     var Cell = Control.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
 
-            this.add_setters([
-                "editable"
-            ]);
-
-            this._super($.extend({}, default_settings, settings));
+            this.definition = definition;
+            this._super(definition, $.extend({}, default_settings, settings));
         }
+
     })
 
     return Cell;

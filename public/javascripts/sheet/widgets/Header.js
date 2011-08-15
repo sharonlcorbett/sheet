@@ -23,7 +23,7 @@ define(["../Widget.js"], function(Widget){
 
         render : function(){
 
-            this.view().html(
+            this.view.html(
                     "<table class='tbl-column-header'>" +
                         "<tr>" +
                             "<td class='column-title'>" +
