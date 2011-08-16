@@ -17,7 +17,11 @@ define([
         template     : "<div class='xx-sheet'></div>",
 
         header_panel : null,
-        grid         : null
+        grid         : null,
+        functionality: [
+            "./javascripts/sheet/functionality/Resize.js"
+        ],
+        fn : {}
     };
 
     var Sheet = Control.extend({
@@ -38,6 +42,8 @@ define([
                 me.header_panel.materialize(this.view);
                 me.grid.materialize(this.view);
             });
+
+            this.functions_loading = this.load_functions();
         },
 
         /**
@@ -48,6 +54,26 @@ define([
 
             this.header_panel.render();
             this.grid.render();
+        },
+
+        load_functions : function(){
+
+            var me = this,
+                d;
+
+            d = $.Deferred();
+
+            //создание виджета на основе типа объекта
+            require(this.functionality, function(){
+                //асинхронная загрузка и инициализация виджета
+                _(arguments).each(function(F){
+                    var fn = new F(me);
+                    me.fn[fn.name] = fn;
+                });
+                d.resolve();
+            });
+
+            return d.promise();
         }
     });
 
@@ -66,12 +92,7 @@ functionality: [
     "./plugins/Select.js"
 ]
 
-//загрузка и инициализация плагинов
-require(return_obj.plugins, function(){
-    $.each(arguments, function(){
-        (new this()).init(return_obj)
-    })
-})
+
 
 add_plugin : function(plugin){
 

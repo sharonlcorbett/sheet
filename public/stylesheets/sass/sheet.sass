@@ -22,54 +22,56 @@
 
   @import "headers"
 
-  tr
-
-    &.hover
-      background-color: #f9f9f9
-
-    height: 25px
-
-    td
-
-      overflow: hidden
-      vertical-align : middle
-      border-bottom : thin solid #ddd
-      border-left : thin solid #ddd
-      border-right : thin solid #ddd
-
-      padding: 5px
-      padding-left: 10px
+  .header_table
+    th
       @include cell-font
 
-      overflow: hidden
+  .grid
 
-      &.text-editing
-        padding: 0
-        background-color: #FFFFE8
+    table
+      border-collapse: collapse
+      width: 100%
+      border : 1px solid #ddd
 
-        input
-          @include cell-font
-          border: none
-          padding-left: 9px
-          background-color: transparent
+    tr
 
-      &.selected-cell
-        border-color: #00d
-        border-width: 2px
+      &.hover
+        background-color: #f9f9f9
 
-      div.format-text
+      height: 25px
 
+      td
 
+        border-collapse: collapse
+        overflow: hidden
+        vertical-align : middle
+        border : thin solid #ddd
+        border-top: none
+        border-left: none
 
-    &.hover.ui-sortable-helper
+        padding: 5px
+        padding-left: 7px
+        @include cell-font
 
-    &.row-placeholder
-      background-color : #fdf
-      height: 30px
+        overflow: hidden
 
-  .resize-slider
-    width: 3px
-    background-color: #555
+        &.text-editing
+          padding: 0
+          background-color: #FFFFE8
+
+          input
+            @include cell-font
+            border: none
+            padding-left: 9px
+            background-color: transparent
+
+        &.selected-cell
+          border-color: #00d
+          border-width: 2px
+
+      &.row-placeholder
+        background-color : #fdf
+        height: 30px
 
 body, html
   height: 100%

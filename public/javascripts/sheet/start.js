@@ -33,7 +33,7 @@ require(["/javascripts/sheet/Sheet.js"], function(Sheet){
                         value : "Привет"
                     },
                     {
-                        value : ""
+                        value : "Привет"
                     }
                 ]
             }
