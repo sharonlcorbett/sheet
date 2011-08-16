@@ -19,8 +19,8 @@ define(function(){
 
             this.setup($.extend({}, default_settings, settings));
         }
-    })
+    });
 
     return Widget;
 
-})
+});

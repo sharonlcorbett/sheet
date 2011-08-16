@@ -16,19 +16,19 @@ define(["../Widget.js"], function(Widget){
 
     var TextWidget = Widget.extend({
 
-        init : function(settings){
+        init : function(definition, settings){
 
             this.add_setters([
                 "formatter"
             ]);
 
             this.__set_private("formatter", _.identity);
-            this._super($.extend({}, default_settings, settings));
+            this._super(definition, $.extend({}, default_settings, settings));
         },
 
         render : function(){
 
-            return this.view().html(this.value().toString());
+            return this.view.html(this.value().toString());
         },
 
         edit   : function(){

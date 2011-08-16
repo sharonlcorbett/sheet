@@ -7,13 +7,13 @@ define(["./Control.js"], function(Control){
 
     var Widget = Control.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
 
             this.add_setters([
                 "value"
             ])
 
-            this._super($.extend({}, default_settings, settings));
+            this._super(definition, $.extend({}, default_settings, settings));
         },
 
         render : function(){

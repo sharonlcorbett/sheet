@@ -15,21 +15,15 @@ define(function(){
     var default_settings = {
 
         template : "<div></div>",
-        phantom  : true
+        phantom  : true,
+        view : null
     }
 
     var Control = Class.extend({
 
         init       : function(definition, settings){
 
-            this.add_setters([
-                "template"
-            ]);
-
-            this.setup(default_settings)
-            this.setup(settings);
-
-            var me = this;
+            this.setup($.extend({}, default_settings, settings));
         },
 
         /**
@@ -43,7 +37,7 @@ define(function(){
 
             if (_(this.view).isUndefined() || _(this.view).isNull()) {
 
-                this.view = $(this.template());
+                this.view = $(this.template);
             }
 
             parent.append(this.view);

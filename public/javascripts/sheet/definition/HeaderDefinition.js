@@ -13,7 +13,7 @@ define(['./WidgetDefinition.js'], function(WidgetDefinition){
             type : "Header",
             value: "Column"
         }
-    }
+    };
 
     var Header = Class.extend({
 
@@ -26,8 +26,8 @@ define(['./WidgetDefinition.js'], function(WidgetDefinition){
 
             this.setup($.extend({}, default_settings, settings));
         }
-    })
+    });
 
     return Header;
 
-})
+});

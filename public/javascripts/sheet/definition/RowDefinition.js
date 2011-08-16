@@ -14,14 +14,13 @@ define([
         orderable: true,
         editable : false,
         format   : null
-    }
+    };
 
     var Row = Class.extend({
 
         init       : function(settings){
 
             this.cells = ElementsCollection({
-
                 check : function(cell){ typeof cell.init == "undefined" },
                 class : CellDefinition
             });
@@ -36,7 +35,7 @@ define([
             this.setup($.extend({}, default_settings, settings));
         }
 
-    })
+    });
 
     return Row;
 

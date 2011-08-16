@@ -13,10 +13,10 @@ define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefini
         width       : 0,
         format      : null,
         widget      : {
-            type : "Text",
-            value: ""
-        }
-    }
+            type : "Text"
+        },
+        default_value: ""
+    };
 
     var ColumnDefinition = Class.extend({
 
@@ -29,6 +29,7 @@ define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefini
                 "editable",
                 "width",
                 "format",
+                "default_value",
                 ["header", HeaderDefinition],
                 ["widget", WidgetDefinition]
             ]);
@@ -36,8 +37,8 @@ define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefini
             this.setup($.extend({}, default_settings, settings));
         }
 
-    })
+    });
 
     return ColumnDefinition;
 
-})
+});

@@ -4,23 +4,24 @@
  */
 define(['./ColumnDefinition.js', './RowDefinition.js'], function(ColumnDefinition, RowDefinition){
 
-    var __def = {};
-    var __obj = {};
-
     var SheetDefinition = Class.extend({
 
         init : function(definition){
 
-            $.extend(true, __def, definition);
             var me = this;
 
-            __obj.columns = [];
-            _(__def.columns).each(function(column){
-                __obj.columns.push(new ColumnDefinition(column));
+            this.obj = {};
+            this.def = {};
+            this.obj.columns = [];
+            this.obj.rows    = [];
+
+            $.extend(true, this.def, definition);
+
+            _(this.def.columns).each(function(column){
+                me.obj.columns.push(new ColumnDefinition(column));
             });
 
-            __obj.rows = [];
-            _(__def.rows).each(function(row){
+            _(this.def.rows).each(function(row){
 
                 if(row.cells.length != me.columns_count()){
 
@@ -28,11 +29,10 @@ define(['./ColumnDefinition.js', './RowDefinition.js'], function(ColumnDefinitio
                 }
 
                 var crow = new RowDefinition(row);
-                __obj.rows.push(crow);
+                me.obj.rows.push(crow);
 
                 $(crow.cells()).each(function(index, cell){
 
-                    console.log(cell)
                     cell.column(me.columns()[index]);
                 })
             });
@@ -42,22 +42,22 @@ define(['./ColumnDefinition.js', './RowDefinition.js'], function(ColumnDefinitio
 
         columns  : function(){
 
-            return __obj.columns;
+            return this.obj.columns;
         },
 
         row_count : function(){
 
-            return __obj.rows.length;
+            return this.obj.rows.length;
         },
 
         columns_count : function(){
 
-            return __obj.columns.length;
+            return this.obj.columns.length;
         },
 
         rows : function(){
 
-            return __obj.rows;
+            return this.obj.rows;
         }
 
     })

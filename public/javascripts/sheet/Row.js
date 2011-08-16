@@ -6,41 +6,43 @@
  */
 define([
     "./Control.js",
-    "./Cell.js",
-    "./helpers/ElementsCollection.js"], function(Control, Cell, ElementsCollection){
+    "./Cell.js"], function(Control, Cell){
 
     var pv = {};
 
     var default_settings = {
 
         template : "<tr></tr>",
-        height   : 20
+        height   : 20,
+        cells    : []
     }
 
     var Row = Control.extend({
 
-        init       : function(settings){
+        init       : function(definition, settings){
 
-            this.cells = ElementsCollection({
+            var me = this;
 
-                check : function(cell){ typeof cell.materialize == "undefined" },
-                class : Cell
+            this.definition = definition;
+            this._super(definition, $.extend({}, default_settings, settings));
+
+            _(this.definition.cells()).each(function(cell){
+                //создаем строки на основании Definition
+                me.cells.push(new Cell(cell));
             });
 
-            var me = this;
-            $(this.cells).bind("added", function(e, cell){
-
-                me.bind_cell_events(cell);
-            })
-
-            this._super($.extend({}, default_settings, settings));
+            $(this).bind("materialized", function(){
+                //при материализиции панели заголовков материализуем Headerы
+                _(me.cells).each(function(cell){
+                    cell.materialize(me.view);
+                });
+            });
         },
 
-        bind_cell_events : function(c){
-            //привязка к событиям ячеек
-            var me = this;
-            $(c).bind("edit_finished",  function(e, cell){$(me).trigger("edit_finished",  [cell])})
-            $(c).bind("edit_cancelled", function(e, cell){$(me).trigger("edit_cancelled", [cell])})
+        render : function(){
+
+            //отрисовка заголовков
+            _(this.cells).each(function(c){c.render()});
         }
     })
 

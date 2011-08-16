@@ -13,7 +13,7 @@ define(["./WidgetDefinition.js"], function(WidgetDefinition){
         editable : true,
         //значение, содержащееся в ячейке
         value      : ""
-    }
+    };
 
     var CellDefinition = Class.extend({
 
@@ -32,9 +32,13 @@ define(["./WidgetDefinition.js"], function(WidgetDefinition){
 
         inherited_widget : function(){
             return this.column().widget();
+        },
+
+        inherited_value : function(){
+            return this.column().default_value();
         }
-    })
+    });
 
     return CellDefinition;
 
-})
+});

@@ -16,9 +16,9 @@ define(["../Widget.js"], function(Widget){
 
     var HeaderWidget = Widget.extend({
 
-        init : function(settings){
+        init : function(definition, settings){
 
-            this._super($.extend({}, default_settings, settings));
+            this._super(definition, $.extend({}, default_settings, settings));
         },
 
         render : function(){

@@ -7,7 +7,7 @@
  */
 define([
     "./WidgetControl.js",
-    "./Formatters.js"], function(Control, Formatters){
+    "./Formatters.js"], function(WidgetControl, Formatters){
 
     /**
      * events
@@ -17,20 +17,18 @@ define([
      *  click
      */
 
-
     var default_settings = {
 
         template : "<td></td>"
     }
 
-    var Cell = Control.extend({
+    var Cell = WidgetControl.extend({
 
         init       : function(definition, settings){
 
             this.definition = definition;
             this._super(definition, $.extend({}, default_settings, settings));
         }
-
     })
 
     return Cell;

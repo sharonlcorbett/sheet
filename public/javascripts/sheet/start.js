@@ -7,31 +7,6 @@ require.attach = function (url, contextName, moduleName, callback, type) {
         callback, type);
 }
 
-/*require(["/javascripts/sheet/Sheet.js"], function(Sheet){
-
-    sheet = new Sheet({
-        headers : [
-            {
-                value : "Название задачи"
-            },
-            {
-                value : "Описание"
-            },
-            {
-                value : "ПОПО"
-            },
-            {
-                value : "ПОПО"
-            }
-        ]
-    });
-
-    sheet.materialize($("#tabs-1"));
-    sheet.render();
-
-})*/
-
-
 require(["/javascripts/sheet/Sheet.js"], function(Sheet){
 
     sheet = new Sheet({
@@ -42,14 +17,23 @@ require(["/javascripts/sheet/Sheet.js"], function(Sheet){
                 header : {
                     value : "Название задачи"
                 }
+            },
+            {
+                editable : true,
+                header : {
+                    value : "Описание задачи"
+                }
             }
-        ],
 
+        ],
         rows : [
             {
                 cells : [
                     {
                         value : "Привет"
+                    },
+                    {
+                        value : ""
                     }
                 ]
             }
@@ -58,5 +42,4 @@ require(["/javascripts/sheet/Sheet.js"], function(Sheet){
 
     sheet.materialize($("#tabs-1"));
     sheet.render();
-
 })

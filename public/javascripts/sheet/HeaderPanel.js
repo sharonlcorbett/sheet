@@ -3,8 +3,7 @@
  */
 define([
     "./Control.js",
-    "./Header.js",
-    "./helpers/ElementsCollection.js"], function(Control, Header, ElementsCollection){
+    "./ColumnHeader.js"], function(Control, ColumnHeader){
 
     var default_settings = {
 
@@ -14,33 +13,33 @@ define([
                     "<tr>" +
                     "</tr>" +
                 "</table>" +
-            "</div>"
-    }
+            "</div>",
+        selectors : {
+            materialization : "tr"
+        },
+        headers : []
+    };
 
     var HeaderPanel = Control.extend({
 
         init       : function(definition, settings){
 
-            this.definition = definition;
+            var me = this;
 
-            this.headers = []
-            var self = this;
+            this.definition = definition;
+            this._super(definition, $.extend({}, default_settings, settings));
+
             _(this.definition.columns()).each(function(column){
-                //создаем объект из Definition
-                self.headers.push(new Header(column.header()));
+                //создаем заголовки на основании Definition
+                me.headers.push(new ColumnHeader(column));
             });
 
-            this._super($.extend({}, default_settings, settings));
-
             $(this).bind("materialized", function(){
-
                 //при материализиции панели заголовков материализуем Headerы
-                var me = this;
-                _(this.headers).each(function(header){
-
-                    header.materialize(me.view.find("tr"))
-                })
-            })
+                _(me.headers).each(function(header){
+                    header.materialize(me.view.find(me.selectors.materialization));
+                });
+            });
         },
 
         render : function(){
@@ -48,8 +47,8 @@ define([
             //отрисовка заголовков
             _(this.headers).each(function(h){h.render()});
         }
-    })
+    });
 
     return HeaderPanel;
 
-})
+});
