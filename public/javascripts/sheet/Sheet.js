@@ -34,6 +34,7 @@ define([
 
              //вызов конструктора Control
             this._super(definition, $.extend({}, default_settings, settings));
+
             this.header_panel = new HeaderPanel(this.definition);
             this.grid = new CellGrid(this.definition);
 
@@ -52,8 +53,20 @@ define([
          */
         render : function(){
 
-            this.header_panel.render();
-            this.grid.render();
+            var me = this;
+
+            var d = $.Deferred();
+            this.functions_loading.done(function(){
+
+                (me.header_panel.render(),
+                 me.grid.render())
+                    .done(function(){
+                        d.resolve();
+                        $(me).trigger("rendered");
+                    });
+            });
+
+            return d.promise();
         },
 
         load_functions : function(){

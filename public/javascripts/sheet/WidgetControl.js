@@ -86,10 +86,14 @@ define(["sheet/Control"], function(Control){
         render     : function(){
 
             var me = this;
+            var d = $.Deferred();
             this.widget_loading.done(function(){
                 me.widget.render();
+                d.resolve();
                 $(me).trigger("rendered");
             })
+
+            return d.promise();
         },
 
         /**

@@ -35,7 +35,16 @@ define([
         render : function(){
 
             //отрисовка заголовков
-            _(this.rows).each(function(r){r.render()});
+            var d = $.Deferred();
+
+            var deferred = [];
+            _(this.rows).each(function(r){deferred.push(r.render())});
+
+            $.when.apply(this, deferred).then(function(){
+                d.resolve();
+            });
+
+            return d.promise();
         }
     });
 

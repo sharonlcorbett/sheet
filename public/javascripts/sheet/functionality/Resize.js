@@ -87,6 +87,8 @@ define(function(){
                 }
             });
 
+            $(this.sheet).bind("rendered", $.proxy(this.enable_drag, this));
+
             this.resize_columns();
         },
 
@@ -190,26 +192,29 @@ define(function(){
             //для получения ширины колонок и установки ограничений на
             //движки ресайзинга
 
-
+        enable_drag : function(){
 
             //вертикальная полоска движка для ресайзинга
-            /*var helper = function(){
+            var helper = function(){
                 return $("<div class='" + RESIZE_SLIDER_CLASS + "'></div>")
-                    .height($(sheet.table).height())
-                    .css($(sheet.table).offset());
-            }*/
+                    .height($(sheet.view).height())
+                    .css($(sheet.view).offset());
+            }
 
             /**
              * Использование плагина draggable JQueryUI для
              * перетаскивания движка ресайзинга
              */
-            /*sheet.header_panel.view.find("." + COLUMN_RESIZER_CLASS).draggable({
+            this.sheet.view.find("." + COLUMN_RESIZER_CLASS).draggable({
                 axis   : "x",
-                helper : helper,
+                helper : helper
                 //класс устанавливается на последнюю колонку в режиме screen
-                cancel : "." + RESIZE_REJECT_CLASS,
-                stop   : $.proxy(this.stop_handler, sheet)
-            })*/
+                //cancel : "." + RESIZE_REJECT_CLASS
+                //stop   : $.proxy(this.stop_handler, sheet)
+            })
+        },
+
+
         //},
 
         /**

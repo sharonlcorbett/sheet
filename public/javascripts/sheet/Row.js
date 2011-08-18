@@ -41,8 +41,13 @@ define([
 
         render : function(){
 
-            //отрисовка заголовков
-            _(this.cells).each(function(c){c.render()});
+            var d = $.Deferred();
+            var deferred = []
+            _(this.cells).each(function(c){deferred.push(c.render())});
+            $.when.apply(this, deferred).then(function(){
+                d.resolve();
+            });
+            return d.promise();
         }
     })
 
