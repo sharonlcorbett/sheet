@@ -10,6 +10,11 @@
   text-decoration: none
   font-variant: normal
 
+@mixin unselectable
+  -moz-user-select: none
+  -webkit-user-select: none
+  user-select: none
+
 .xx-sheet
 
   background: #fff
@@ -24,6 +29,7 @@
 
   .header_table
     th
+      @include unselectable
       @include cell-font
 
   .grid
@@ -49,11 +55,12 @@
         border-top: none
         border-left: none
 
-        padding: 5px
-        padding-left: 7px
         @include cell-font
 
         overflow: hidden
+
+        > span
+          margin-left: 7px
 
         &.text-editing
           padding: 0

@@ -12,6 +12,15 @@
   = javascript_include_tag 'lib/jquery.contextmenu.js'
   = javascript_include_tag 'rails'
   = javascript_include_tag 'require'
+
+  :javascript
+      require({
+        paths: {
+            "sheet": "/javascripts/sheet/"
+        },
+      });
+
+
   = stylesheet_link_tag "reset"
   = stylesheet_link_tag "sheet"
   = stylesheet_link_tag "eggplant/jquery-ui-1.8.14.custom"

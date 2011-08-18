@@ -7,7 +7,7 @@
 /**
  * текстовый виджет, just text
  */
-define(["../Widget.js"], function(Widget){
+define(["sheet/Widget"], function(Widget){
 
     var default_settings = {
 

@@ -5,7 +5,10 @@
  *
  * @param settings
  */
-define(["./WidgetDefinition.js"], function(WidgetDefinition){
+define([
+    "sheet/definitions/WidgetDefinition"
+    ], function(
+        WidgetDefinition){
 
     var default_settings = {
 

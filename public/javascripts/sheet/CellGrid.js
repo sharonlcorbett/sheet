@@ -1,6 +1,8 @@
 define([
-    "./Control.js",
-    "./Row.js"], function(Control, Row){
+    "sheet/Control",
+    "sheet/Row"], function(
+        Control,
+        Row){
 
     var default_settings = {
 

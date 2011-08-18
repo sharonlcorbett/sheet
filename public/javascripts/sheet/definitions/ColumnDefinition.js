@@ -2,7 +2,14 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefinition, WidgetDefinition){
+define([
+    'sheet/definitions/Definition',
+    'sheet/definitions/HeaderDefinition',
+    'sheet/definitions/WidgetDefinition'
+    ], function(
+        Definition,
+        HeaderDefinition,
+        WidgetDefinition){
 
     var default_settings = {
 
@@ -15,10 +22,11 @@ define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefini
         widget      : {
             type : "Text"
         },
-        default_value: ""
+        default_value: "",
+        order_id    : null
     };
 
-    var ColumnDefinition = Class.extend({
+    var ColumnDefinition = Definition.extend({
 
         init       : function(settings){
 
@@ -30,6 +38,7 @@ define(['./HeaderDefinition.js', './WidgetDefinition.js'], function(HeaderDefini
                 "width",
                 "format",
                 "default_value",
+                "order_id",
                 ["header", HeaderDefinition],
                 ["widget", WidgetDefinition]
             ]);

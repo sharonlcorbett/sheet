@@ -2,8 +2,10 @@
  * Строка заголовков, одна на лист
  */
 define([
-    "./Control.js",
-    "./ColumnHeader.js"], function(Control, ColumnHeader){
+    "sheet/Control",
+    "sheet/ColumnHeader"], function(
+        Control,
+        ColumnHeader){
 
     var default_settings = {
 

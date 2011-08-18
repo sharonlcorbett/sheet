@@ -1,5 +1,5 @@
 define([
-    "./WidgetControl.js"], function(WidgetControl){
+    "sheet/WidgetControl"], function(WidgetControl){
 
     var default_settings = {
 

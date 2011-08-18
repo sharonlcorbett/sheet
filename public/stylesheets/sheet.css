@@ -38,8 +38,7 @@
           border: none; }
         .xx-sheet .header_table th table.tbl-column-header td.column-title {
           word-wrap: break-word;
-          padding: 7px;
-          padding-right: 0;
+          padding-left: 7px;
           line-height: 20px;
           vertical-align: middle;
           font-weight: bold;
@@ -52,6 +51,9 @@
             cursor: e-resize;
             background-color: transparent; }
   .xx-sheet .header_table th {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
     font-weight: normal;
     font-family: Arial;
     font-size: 10pt;
@@ -76,8 +78,6 @@
       border: thin solid #dddddd;
       border-top: none;
       border-left: none;
-      padding: 5px;
-      padding-left: 7px;
       font-weight: normal;
       font-family: Arial;
       font-size: 10pt;
@@ -88,6 +88,8 @@
       text-decoration: none;
       font-variant: normal;
       overflow: hidden; }
+      .xx-sheet .grid tr td > span {
+        margin-left: 7px; }
       .xx-sheet .grid tr td.text-editing {
         padding: 0;
         background-color: #ffffe8; }

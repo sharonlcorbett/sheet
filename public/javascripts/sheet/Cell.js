@@ -6,8 +6,11 @@
  * @param settings
  */
 define([
-    "./WidgetControl.js",
-    "./Formatters.js"], function(WidgetControl, Formatters){
+    "sheet/WidgetControl",
+    "sheet/Formatters"
+    ], function(
+        WidgetControl,
+        Formatters){
 
     /**
      * events

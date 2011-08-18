@@ -2,7 +2,7 @@
  * Визуальный контрол,
  * содержащий определенный набор разных DOM - элементов листа
  */
-define(["./Control.js"], function(Control){
+define(["sheet/Control"], function(Control){
 
     /**
      * События:
@@ -70,7 +70,7 @@ define(["./Control.js"], function(Control){
             widget_definition = this.definition.widget() || this.definition.inherited_widget();
 
             //создание виджета на основе типа объекта
-            require(["/javascripts/sheet/widgets/" + widget_definition.type() + ".js"], function(Widget){
+            require(["sheet/widgets/" + widget_definition.type()], function(Widget){
                 //асинхронная загрузка и инициализация виджета
                 me.widget = new Widget(widget_definition);
                 d.resolve();

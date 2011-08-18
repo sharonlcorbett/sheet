@@ -1,4 +1,4 @@
-define(["./Control.js"], function(Control){
+define(["sheet/Control"], function(Control){
 
     var default_settings = {
 

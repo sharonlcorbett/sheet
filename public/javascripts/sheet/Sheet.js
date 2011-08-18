@@ -1,9 +1,9 @@
 
 define([
-    "./definition/SheetDefinition.js",
-    "./Control.js",
-    "./HeaderPanel.js",
-    "./CellGrid.js"
+    "sheet/definitions/SheetDefinition",
+    "sheet/Control",
+    "sheet/HeaderPanel",
+    "sheet/CellGrid"
     ], function(
         SheetDefinition,
         Control,
@@ -19,7 +19,7 @@ define([
         header_panel : null,
         grid         : null,
         functionality: [
-            "./javascripts/sheet/functionality/Resize.js"
+            "sheet/functionality/Resize"
         ],
         fn : {}
     };

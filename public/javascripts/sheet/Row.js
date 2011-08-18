@@ -5,8 +5,10 @@
  * @param table_row
  */
 define([
-    "./Control.js",
-    "./Cell.js"], function(Control, Cell){
+    "sheet/Control",
+    "sheet/Cell"], function(
+        Control,
+        Cell){
 
     var pv = {};
 

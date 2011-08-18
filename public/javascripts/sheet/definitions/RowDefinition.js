@@ -5,8 +5,11 @@
  * @param table_row
  */
 define([
-    "./CellDefinition.js",
-    "../helpers/ElementsCollection.js"], function(CellDefinition, ElementsCollection){
+    "sheet/definitions/CellDefinition",
+    "sheet/helpers/ElementsCollection"
+    ], function(
+        CellDefinition,
+        ElementsCollection){
 
     var default_settings = {
 

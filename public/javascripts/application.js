@@ -126,20 +126,23 @@ SheetMixins = {
                     class = arg[1];
                 }
 
-                me[name] = function(arg){
+                if (typeof me[name] == "undefined"){
 
-                    if(typeof arg != "undefined" & arg != $(me).data(name)){
+                    me[name] = function(arg){
 
-                        before = private_container[name];
+                        if(typeof arg != "undefined" & arg != $(me).data(name)){
 
-                        if (class != null && typeof arg.init == "undefined"){
-                            arg = new class(arg);
+                            before = private_container[name];
+
+                            if (class != null && typeof arg.init == "undefined"){
+                                arg = new class(arg);
+                            }
+
+                            private_container[name] = arg;
+                            $(me).trigger("setter", [name, arg, before])
                         }
-
-                        private_container[name] = arg;
-                        $(me).trigger("setter", [name, arg, before])
+                        return private_container[name];
                     }
-                    return private_container[name];
                 }
             })
         },
@@ -161,8 +164,10 @@ SheetMixins = {
             return $(this).data("private")[name];
         },
 
-        get_private : function(){}
+        add_fields : function(){
 
+            this.add_setters.apply(this, arguments);
+        }
 
     }
 }

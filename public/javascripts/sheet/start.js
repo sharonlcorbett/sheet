@@ -7,19 +7,24 @@ require.attach = function (url, contextName, moduleName, callback, type) {
         callback, type);
 }
 
-require(["/javascripts/sheet/Sheet.js"], function(Sheet){
+require(["sheet/Sheet"], function(Sheet){
 
     sheet = new Sheet({
+
+        resize_mode : "free",
 
         columns : [
             {
                 editable : true,
+                width: 200,
                 header : {
                     value : "Название задачи"
                 }
             },
             {
                 editable : true,
+                flex  : 0.5,
+                width : 1500,
                 header : {
                     value : "Описание задачи"
                 }
