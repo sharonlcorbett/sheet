@@ -1,13 +1,15 @@
 define(["sheet/Control"], function(Control){
 
-    var default_settings = {
 
-        template: "<div class='widget'></div>"
-    }
 
     var Widget = Control.extend({
 
         init       : function(definition, settings){
+
+            var default_settings = {
+
+                template: "<div class='widget'></div>"
+            }
 
             this.add_setters([
                 "value"

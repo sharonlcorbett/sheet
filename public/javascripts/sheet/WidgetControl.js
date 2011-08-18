@@ -12,15 +12,15 @@ define(["sheet/Control"], function(Control){
      *  widget_ready
      */
 
-    var default_settings = {
-
-        widget : null
-    };
-
     var WidgetControl = Control.extend({
 
 
         init       : function(definition, settings){
+
+            var default_settings = {
+
+                widget : null
+            };
 
             var me = this;
             this._super(definition, $.extend({}, default_settings, settings));

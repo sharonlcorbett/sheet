@@ -10,23 +10,23 @@ define([
         HeaderPanel,
         CellGrid){
 
-    var default_settings = {
-
-        //класс, который будет добавлен к div-у листа
-        class        : "xx-sheet",
-        template     : "<div class='xx-sheet'></div>",
-
-        header_panel : null,
-        grid         : null,
-        functionality: [
-            "sheet/functionality/Resize"
-        ],
-        fn : {}
-    };
-
     var Sheet = Control.extend({
 
         init       : function(definition, settings){
+
+            var default_settings = {
+
+                //класс, который будет добавлен к div-у листа
+                class        : "xx-sheet",
+                template     : "<div class='xx-sheet'></div>",
+
+                header_panel : null,
+                grid         : null,
+                functionality: [
+                    "sheet/functionality/Resize"
+                ],
+                fn : {}
+            };
 
             var me = this;
             //создается объект SheetDefinition, вся работа с листом будет идти через него

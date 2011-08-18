@@ -10,17 +10,16 @@ define([
     ], function(
         WidgetDefinition){
 
-    var default_settings = {
-
-        //флаг, указывающий на возможность редактирования
-        editable : true,
-        //значение, содержащееся в ячейке
-        value      : ""
-    };
-
     var CellDefinition = Class.extend({
 
         init       : function(settings){
+
+            var default_settings = {
+                //флаг, указывающий на возможность редактирования
+                editable : true,
+                //значение, содержащееся в ячейке
+                value      : ""
+            };
 
             this.add_setters([
                 "editable",

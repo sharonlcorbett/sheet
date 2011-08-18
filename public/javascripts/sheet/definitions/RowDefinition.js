@@ -11,17 +11,16 @@ define([
         CellDefinition,
         ElementsCollection){
 
-    var default_settings = {
-
-        height   : 20,
-        orderable: true,
-        editable : false,
-        format   : null
-    };
-
     var Row = Class.extend({
 
         init       : function(settings){
+
+            var default_settings = {
+                height   : 20,
+                orderable: true,
+                editable : false,
+                format   : null
+            };
 
             this.cells = ElementsCollection({
                 check : function(cell){ typeof cell.init == "undefined" },

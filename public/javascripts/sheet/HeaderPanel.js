@@ -7,24 +7,24 @@ define([
         Control,
         ColumnHeader){
 
-    var default_settings = {
-
-        template :
-            "<div class='header_table'>" +
-                "<table>" +
-                    "<tr>" +
-                    "</tr>" +
-                "</table>" +
-            "</div>",
-        selectors : {
-            materialization : "tr"
-        },
-        headers : []
-    };
-
     var HeaderPanel = Control.extend({
 
         init       : function(definition, settings){
+
+            var default_settings = {
+
+                template :
+                    "<div class='header_table'>" +
+                        "<table>" +
+                        "<tr>" +
+                        "</tr>" +
+                        "</table>" +
+                        "</div>",
+                selectors : {
+                    materialization : "tr"
+                },
+                headers : []
+            };
 
             var me = this;
 

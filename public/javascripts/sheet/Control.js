@@ -12,16 +12,15 @@ define(function(){
      *  widget_ready
      */
 
-    var default_settings = {
-
-        template : "<div></div>",
-        phantom  : true,
-        view : null
-    }
-
     var Control = Class.extend({
 
         init       : function(definition, settings){
+
+            var default_settings = {
+                template : "<div></div>",
+                phantom  : true,
+                view : null
+            }
 
             this.setup($.extend({}, default_settings, settings));
         },

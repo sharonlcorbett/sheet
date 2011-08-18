@@ -10,18 +10,16 @@ define([
         Control,
         Cell){
 
-    var pv = {};
-
-    var default_settings = {
-
-        template : "<tr></tr>",
-        height   : 20,
-        cells    : []
-    }
-
     var Row = Control.extend({
 
         init       : function(definition, settings){
+
+            var default_settings = {
+
+                template : "<tr></tr>",
+                height   : 20,
+                cells    : []
+            }
 
             var me = this;
 

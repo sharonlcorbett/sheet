@@ -9,14 +9,15 @@
  */
 define(["sheet/Widget"], function(Widget){
 
-    var default_settings = {
 
-        value : "Column"
-    }
 
     var HeaderWidget = Widget.extend({
 
         init : function(definition, settings){
+
+            var default_settings = {
+                value : "Column"
+            }
 
             this._super(definition, $.extend({}, default_settings, settings));
         },

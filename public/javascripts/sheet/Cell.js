@@ -20,14 +20,15 @@ define([
      *  click
      */
 
-    var default_settings = {
 
-        template : "<td></td>"
-    }
 
     var Cell = WidgetControl.extend({
 
         init       : function(definition, settings){
+
+            var default_settings = {
+                template : "<td></td>"
+            }
 
             this.definition = definition;
             this._super(definition, $.extend({}, default_settings, settings));

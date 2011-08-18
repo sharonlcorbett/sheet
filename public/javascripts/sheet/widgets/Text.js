@@ -9,14 +9,15 @@
  */
 define(["sheet/Widget"], function(Widget){
 
-    var default_settings = {
 
-        template: "<span></span>"
-    }
 
     var TextWidget = Widget.extend({
 
         init : function(definition, settings){
+
+            var default_settings = {
+               template: "<span></span>"
+            }
 
             this.add_setters([
                 "formatter"

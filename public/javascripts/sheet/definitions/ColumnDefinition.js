@@ -11,24 +11,23 @@ define([
         HeaderDefinition,
         WidgetDefinition){
 
-    var default_settings = {
-
-        flex        : 1,
-        resizable   : false,
-        orderable   : false,
-        editable    : false,
-        width       : 0,
-        format      : null,
-        widget      : {
-            type : "Text"
-        },
-        default_value: "",
-        order_id    : null
-    };
-
     var ColumnDefinition = Definition.extend({
 
         init       : function(settings){
+
+            var default_settings = {
+                flex        : 1,
+                resizable   : false,
+                orderable   : false,
+                editable    : false,
+                width       : 0,
+                format      : null,
+                widget      : {
+                    type : "Text"
+                },
+                default_value: "",
+                order_id    : null
+            };
 
             this.add_setters([
                 "flex",
