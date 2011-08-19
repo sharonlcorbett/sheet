@@ -88,6 +88,14 @@ define([
             });
 
             return d.promise();
+        },
+
+        __operations : [],
+
+        runOperation : function(operation){
+
+            this.__operations.push(operation);
+            operation.execute(this.definition);
         }
     });
 
