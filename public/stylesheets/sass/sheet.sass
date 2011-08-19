@@ -18,10 +18,8 @@
 .xx-sheet
 
   background: #fff
-  border-width: 1px
-  border-collapse: collapse
+  border:none
   width: 100%
-  table-layout: fixed
 
   overflow : auto
 
@@ -31,29 +29,31 @@
     th
       @include unselectable
       @include cell-font
+      color: white
 
   .grid
 
     table
       border-collapse: collapse
       width: 100%
-      border : 1px solid #ddd
+      table-layout: fixed
 
     tr
 
       &.hover
         background-color: #f9f9f9
 
-      height: 30px
+      height: 25px
 
       td
 
         border-collapse: collapse
         overflow: hidden
         vertical-align : middle
-        border : thin solid #ddd
-        border-top: none
-        border-left: none
+        border-right : solid 1px #ddd
+        border-bottom : solid 1px #ddd
+        border-top : solid 1px #ddd
+        padding: 0px
 
         @include cell-font
 

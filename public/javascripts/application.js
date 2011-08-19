@@ -130,7 +130,9 @@ SheetMixins = {
                     class = arg[1];
                 }
 
-                me.setters[name] = function(arg){
+                me.setters[name] = function(arg, go_trigger){
+
+                    if (typeof go_trigger == "undefined") go_trigger = true;
 
                     if(typeof arg != "undefined"){
 
@@ -142,7 +144,9 @@ SheetMixins = {
 
                         private_container[name] = arg;
                         //$(me).trigger("setter", [name, arg, before]);
-                        $(me).trigger(name+"Changed", [arg, before]);
+                        if (go_trigger){
+                            $(me).trigger(name+"Changed", [arg, before]);
+                        }
                     }
                     return private_container[name];
                 }

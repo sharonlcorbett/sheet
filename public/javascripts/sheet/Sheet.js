@@ -59,7 +59,7 @@ define([
             var d = $.Deferred();
             this.functionsLoading.done(function(){
 
-                (me.headersPanel.render(),
+                $.when(me.headersPanel.render(),
                  me.grid.render())
                     .done(function(){
                         d.resolve();

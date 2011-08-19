@@ -28,9 +28,9 @@ define([
             this.setup($.extend({}, default_settings, settings));
         },
 
-        value : function(value){
+        value : function(){
 
-            var val = this.setters["value"](value);
+            var val = this.setters["value"].apply(this, arguments);
             if (typeof val == "undefined"){
                 return this.inheritedValue();
             }

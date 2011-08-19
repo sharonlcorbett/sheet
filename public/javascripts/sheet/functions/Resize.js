@@ -32,6 +32,8 @@ define(function(){
             var me = this;
             this.sheet = sheet;
 
+            console.log(sheet.definition.resizeMode())
+
             sheet.definition.addFields([
 
                 /**
@@ -119,7 +121,7 @@ define(function(){
             sheet.view.width("100%");
 
             //вычисляем ширину листа
-            var sheet_width = sheet.view.width();
+            var sheet_width = sheet.view.innerWidth() - 2;
 
             //считаем сумму всех flex
             var total_flex = 0;
@@ -127,15 +129,22 @@ define(function(){
                 total_flex += header.column_definition.flex();
             });
 
+            var total_width = 0
             $.each(sheet.headersPanel.headers, function(index, header){
                 //для каждого столбца обновляем метаинформацию width и
                 //физическую ширину ячейки
-                var width = (this.column_definition.flex()/total_flex)*sheet_width
+                var width = Math.round((this.column_definition.flex()/total_flex)*sheet_width);
 
                 this.column_definition.width(width);
+                total_width += width;
                 //триггер события
                 $(this).trigger("after_resize")
             });
+
+            if (total_width > sheet_width){
+                var width = sheet.definition.columns()[0].width();
+                sheet.definition.columns()[0].width(width - (total_width-sheet_width-20));
+            }
         },
 
         freeModeResize : function(){
@@ -151,7 +160,7 @@ define(function(){
             })
 
             //ставим размер листа равным ширине колонок
-            sheet.view.width(total_width);
+            sheet.view.width(total_width + 2);
 
             var me = this;
             $.each(sheet.headersPanel.headers, function(index, header){
@@ -196,8 +205,8 @@ define(function(){
             //вертикальная полоска движка для ресайзинга
             var helper = function(){
                 return $("<div class='" + RESIZE_SLIDER_CLASS + "'></div>")
-                    .height($(sheet.view).height())
-                    .css($(sheet.view).offset());
+                    .height(sheet.headersPanel.view.height())
+                    .css($(sheet.view).offset())
             }
 
             /**
@@ -206,10 +215,10 @@ define(function(){
              */
             this.sheet.view.find("." + COLUMN_RESIZER_CLASS).draggable({
                 axis   : "x",
-                helper : helper
+                helper : helper,
                 //класс устанавливается на последнюю колонку в режиме screen
                 //cancel : "." + RESIZE_REJECT_CLASS
-                //stop   : $.proxy(this.stop_handler, sheet)
+                stop   : $.proxy(this.stopHandler, this)
             })
         },
 
@@ -240,20 +249,20 @@ define(function(){
          * @param e
          * @param ui
          */
-        stop_handler : function(e, ui){
+        stopHandler : function(e, ui){
 
-            var sheet = this;
+            var sheet = this.sheet;
 
             //на сколько пикселей смещен ползунок, может быть отрицательным
             var move = ui.position.left - ui.originalPosition.left;
 
             //ячейка Cell, у которой тянули ползунок
-            var cell = ui.helper.parents("th").data("cell")
+            var header = ui.helper.parents("th").data("component");
 
             //не уменьшаем колонку, если достигнут минимум
-            if (move < 0 && cell.width <= 40) return
+            if (move < 0 && header.column_definition.width() <= 40) return
 
-            switch(sheet.resize_mode()){
+            switch(sheet.definition.resizeMode()){
 
                 case FREE_MODE:
 
@@ -263,7 +272,7 @@ define(function(){
                      * выйти за границы экрана и появятся скролбары.
                      */
 
-                    var new_width = cell.width + move
+                    var new_width = header.column_definition.width() + move
                     if (new_width < MIN_COLUMN_WIDTH) {
                         new_width = MIN_COLUMN_WIDTH
                     }
@@ -272,7 +281,8 @@ define(function(){
                     $(this).trigger("before_resize", [ new_width ])
 
                     //добавляем ширину
-                    cell.width = new_width
+                    header.column_definition.width(new_width);
+                    this.freeModeResize();
                     break;
 
                 case SCREEN_MODE:
@@ -283,43 +293,43 @@ define(function(){
                      */
 
                     //ищем соседнюю колонку
-                    var next_cell = $(cell.table_cell).next("th").data("cell");
+                    var next_header = $(header.view).next("th").data("component"),
+                        header_width = header.column_definition.width(),
+                        next_header_width = next_header.column_definition.width(),
 
-                    var new_width_cell      = cell.width + move
-                    var new_width_next_cell = next_cell.width - move
+                        new_header_width      = header.column_definition.width() + move,
+                        new_next_header_width = next_header.column_definition.width() - move
 
                     if (move < 0){
-                        if (new_width_cell < MIN_COLUMN_WIDTH){
-                            new_width_cell = MIN_COLUMN_WIDTH
-                            new_width_next_cell = next_cell.width + cell.width - MIN_COLUMN_WIDTH
+                        if (new_header_width < MIN_COLUMN_WIDTH){
+                            new_header_width = MIN_COLUMN_WIDTH
+                            new_next_header_width = next_header_width + header_width - MIN_COLUMN_WIDTH - 1
                         }
                     } else {
-                        if (new_width_next_cell < MIN_COLUMN_WIDTH){
-                            new_width_next_cell = MIN_COLUMN_WIDTH
-                            new_width_cell = cell.width + next_cell.width - MIN_COLUMN_WIDTH
+                        if (new_next_header_width < MIN_COLUMN_WIDTH){
+                            new_next_header_width = MIN_COLUMN_WIDTH
+                            new_header_width = header_width + next_header_width - MIN_COLUMN_WIDTH - 1
                         }
                     }
 
                     //триггер события
-                    $(cell)     .trigger("before_resize", [ new_width_cell ])
-                    $(next_cell).trigger("before_resize", [ new_width_next_cell ])
+                    $(header)     .trigger("before_resize", [ new_header_width ])
+                    $(next_header).trigger("before_resize", [ new_next_header_width ])
 
                     //добавляем ширину
-                    cell.width = new_width_cell
-                    next_cell.width = new_width_next_cell
+                    header.column_definition.width(new_header_width)
+                    next_header.column_definition.width(new_next_header_width)
 
                     break;
             }
 
             //считаем общую ширину листа
-            var total_width = sheet.table.width()
-            $.each(sheet.headers, function(){
+            var total_width = sheet.grid.view.innerWidth()
+            _.each(sheet.definition.columns(), function(column){
                 //обновляем flex у каждого столбца
-                this.flex = this.width / total_width;
+                column.flex(column.width() / total_width, false);
             })
 
-            //применяем изменения
-            sheet.resize_columns()
         }
 
         /*column_definition_changed : function(sheet, column_definition, column_header, name, value){

@@ -1,12 +1,4 @@
 
-var oldAttach = require.attach;
-require.attach = function (url, contextName, moduleName, callback, type) {
-    url += (url.indexOf('?') === -1 ? '?' : '&') + 'bust=' + (new
-        Date()).getTime()
-    return oldAttach.call(require, url, contextName, moduleName,
-        callback, type);
-}
-
 require(["sheet/Sheet"], function(Sheet){
 
     sheet = new Sheet({
@@ -43,12 +35,25 @@ require(["sheet/Sheet"], function(Sheet){
                 ]
             },
             {
-                cells : [
-                    {
-                    },
-                    {
-                    }
-                ]
+                cells : [{}, {}],
+            },
+            {
+                cells : [{}, {}],
+            },
+            {
+                cells : [{}, {}],
+            },
+            {
+                cells : [{}, {}],
+            },
+            {
+                cells : [{}, {}],
+            },
+            {
+                cells : [{}, {}],
+            },
+            {
+                cells : [{}, {}],
             }
         ]
     });
