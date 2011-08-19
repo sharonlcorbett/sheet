@@ -6,10 +6,10 @@
  * @param settings
  */
 define([
-    "sheet/WidgetControl",
+    "sheet/WidgetComponent",
     "sheet/Formatters"
     ], function(
-        WidgetControl,
+        WidgetComponent,
         Formatters){
 
     /**
@@ -20,9 +20,7 @@ define([
      *  click
      */
 
-
-
-    var Cell = WidgetControl.extend({
+    var Cell = WidgetComponent.extend({
 
         init       : function(definition, settings){
 
@@ -32,6 +30,20 @@ define([
 
             this.definition = definition;
             this._super(definition, $.extend({}, default_settings, settings));
+
+            var me = this;
+
+            /*$(this.definition).bind("setter", function(e, name, val){
+
+                switch(name){
+
+                    case "value":
+                        if (me.widgetLoading.isResolved()){
+                            me.widget.value(val);
+                        }
+                    break;
+                }
+            })*/
         }
     })
 

@@ -9,21 +9,19 @@
  */
 define(["sheet/Widget"], function(Widget){
 
-
-
     var TextWidget = Widget.extend({
 
         init : function(definition, settings){
 
             var default_settings = {
-               template: "<span></span>"
+               template: "<span></span>",
+               formatter: _.identity
             }
 
-            this.add_setters([
+            this.addSetters([
                 "formatter"
             ]);
 
-            this.__set_private("formatter", _.identity);
             this._super(definition, $.extend({}, default_settings, settings));
         },
 

@@ -22,24 +22,24 @@ define([
                 editable    : false,
                 width       : 0,
                 format      : null,
-                widget      : {
+                defaultWidget: {
                     type : "Text"
                 },
-                default_value: "",
-                order_id    : null
+                defaultValue : "",
+                orderId     : null
             };
 
-            this.add_setters([
+            this.addSetters([
                 "flex",
                 "resizable",
                 "orderable",
                 "editable",
                 "width",
                 "format",
-                "default_value",
-                "order_id",
+                "defaultValue",
+                "orderId",
                 ["header", HeaderDefinition],
-                ["widget", WidgetDefinition]
+                ["defaultWidget", WidgetDefinition]
             ]);
 
             this.setup($.extend({}, default_settings, settings));

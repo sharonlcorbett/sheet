@@ -11,7 +11,7 @@ define(function(){
                 formatter  : function(x){return x}
             }
 
-            this.add_setters([
+            this.addSetters([
                 "formatter",
                 "type"
             ]);

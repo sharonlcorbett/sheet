@@ -32,7 +32,7 @@ define(function(){
             var me = this;
             this.sheet = sheet;
 
-            sheet.definition.add_fields([
+            sheet.definition.addFields([
 
                 /**
                  * Режим работы с шириной:
@@ -45,12 +45,12 @@ define(function(){
                  *           таблица может быть шире экрана. Ресайз происходим путем
                  *           увеличения ширины только одной колонки.
                  */
-                "resize_mode"
+                "resizeMode"
             ]);
 
-            sheet.definition.setup_if({
+            sheet.definition.setupIf({
 
-                resize_mode: SCREEN_MODE
+                resizeMode: SCREEN_MODE
             });
 
             var me = this;
@@ -58,62 +58,61 @@ define(function(){
             //если ресайзится окно, то в режиме screen нужно ресайзить лист
             //и обновлять значения ширины колонок
             $(window).resize(function(){
-                if(me.sheet.definition.resize_mode() == SCREEN_MODE) me.screen_mode_resize();
+                if(me.sheet.definition.resizeMode() == SCREEN_MODE) me.screenModeResize();
             });
 
-            _(sheet.header_panel.headers).each(function(header){
-                $(header.column_definition).bind("setter", function(e, name, val){
-                    switch(name){
-                        case "width":
-                            me.transmit_column_size(header);
-                            break;
-                        case "flex":
-                            me.screen_mode_resize();
-                            break;
+            _(sheet.headersPanel.headers).each(function(header){
+
+                header.column_definition.fieldsListener({
+                    width : function(){
+                        me.transmitColumnSize(header);
+                    },
+                    flex : function(){
+                        me.screenModeResize();
                     }
-                })
+                });
+
             });
 
-            $(sheet.definition).bind("setter", function(e, name, val){
+            sheet.definition.fieldsListener({
 
-                switch(name){
-                    case "resize_mode":
-                        if (val == FREE_MODE){
-                            me.free_mode_resize();
-                        } else {
-                            me.screen_mode_resize();
-                        }
-                    break;
+                "resizeMode" : function(e, val){
+
+                    if (val == FREE_MODE){
+                        me.freeModeResize();
+                    } else {
+                        me.screenModeResize();
+                    }
                 }
             });
 
-            $(this.sheet).bind("rendered", $.proxy(this.enable_drag, this));
+            $(this.sheet).bind("rendered", $.proxy(this.enableDrag, this));
 
-            this.resize_columns();
+            this.resizeColumns();
         },
 
-        toggle_screen_mode : function(){
+        toggleScreenMode : function(){
 
-            this.sheet.definition.resize_mode(SCREEN_MODE);
+            this.sheet.definition.resizeMode(SCREEN_MODE);
         },
 
-        toggle_free_mode : function(){
+        toggleFreeMode : function(){
 
-            this.sheet.definition.resize_mode(FREE_MODE);
+            this.sheet.definition.resizeMode(FREE_MODE);
         },
 
-        transmit_column_size : function(column_header){
+        transmitColumnSize : function(column_header){
 
             var width = column_header.column_definition.width();
             column_header.view.width(width);
-            this.sheet.grid.rows[0].cells[column_header.column_definition.order_id()].view.width(width);
+            this.sheet.grid.rows[0].cells[column_header.column_definition.orderId()].view.width(width);
         },
 
-        screen_mode_resize : function(){
+        screenModeResize : function(){
 
             var sheet = this.sheet;
 
-            if (sheet.definition.resize_mode() != SCREEN_MODE) return;
+            if (sheet.definition.resizeMode() != SCREEN_MODE) return;
 
             //ширина листа - 100% доступного пространства
 
@@ -124,11 +123,11 @@ define(function(){
 
             //считаем сумму всех flex
             var total_flex = 0;
-            _.each(sheet.header_panel.headers, function(header){
+            _.each(sheet.headersPanel.headers, function(header){
                 total_flex += header.column_definition.flex();
             });
 
-            $.each(sheet.header_panel.headers, function(index, header){
+            $.each(sheet.headersPanel.headers, function(index, header){
                 //для каждого столбца обновляем метаинформацию width и
                 //физическую ширину ячейки
                 var width = (this.column_definition.flex()/total_flex)*sheet_width
@@ -139,15 +138,15 @@ define(function(){
             });
         },
 
-        free_mode_resize : function(){
+        freeModeResize : function(){
 
             var sheet = this.sheet;
 
-            if (sheet.definition.resize_mode() != FREE_MODE) return;
+            if (sheet.definition.resizeMode() != FREE_MODE) return;
 
             //ширина листа -- сумма ширины колонок, вычисляем ее
             var total_width = 0
-            _.each(sheet.header_panel.headers, function(header){
+            _.each(sheet.headersPanel.headers, function(header){
                 total_width += header.column_definition.width();
             })
 
@@ -155,8 +154,8 @@ define(function(){
             sheet.view.width(total_width);
 
             var me = this;
-            $.each(sheet.header_panel.headers, function(index, header){
-                me.transmit_column_size(header);
+            $.each(sheet.headersPanel.headers, function(index, header){
+                me.transmitColumnSize(header);
             });
         },
 
@@ -165,21 +164,21 @@ define(function(){
          * на основании метаданных flex и width соответствующих ячеек
          * и режима ресайзинга.
          */
-        resize_columns: function(){
+        resizeColumns: function(){
 
             //me - Sheet
             var sheet = this.sheet;
 
-            switch(sheet.definition.resize_mode()){
+            switch(sheet.definition.resizeMode()){
 
                 case FREE_MODE:
 
-                    this.free_mode_resize();
+                    this.freeModeResize();
                     break;
 
                 case SCREEN_MODE:
 
-                    this.screen_mode_resize();
+                    this.screenModeResize();
                     break;
             }
         },
@@ -192,7 +191,7 @@ define(function(){
             //для получения ширины колонок и установки ограничений на
             //движки ресайзинга
 
-        enable_drag : function(){
+        enableDrag : function(){
 
             //вертикальная полоска движка для ресайзинга
             var helper = function(){
@@ -228,11 +227,11 @@ define(function(){
         resize_mode_handler : function(e, sheet, mode){
 
             sheet.resize_columns()
-            sheet.header_panel.view.find("." + COLUMN_RESIZER_CLASS).removeClass(RESIZE_REJECT_CLASS)
+            sheet.headersPanel.view.find("." + COLUMN_RESIZER_CLASS).removeClass(RESIZE_REJECT_CLASS)
             if(mode == "screen"){
-                sheet.header_panel.view.find("." + COLUMN_RESIZER_CLASS + ":last").addClass(RESIZE_REJECT_CLASS)
+                sheet.headersPanel.view.find("." + COLUMN_RESIZER_CLASS + ":last").addClass(RESIZE_REJECT_CLASS)
             }
-            sheet.header_panel.view.find("." + NOT_RESIZABLE_COLUMN_CLASS).find("." + COLUMN_RESIZER_CLASS).addClass(RESIZE_REJECT_CLASS)
+            sheet.headersPanel.view.find("." + NOT_RESIZABLE_COLUMN_CLASS).find("." + COLUMN_RESIZER_CLASS).addClass(RESIZE_REJECT_CLASS)
         },
 
         /**

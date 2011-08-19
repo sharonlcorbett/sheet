@@ -1,10 +1,10 @@
 define([
-    "sheet/Control",
+    "sheet/Component",
     "sheet/Row"], function(
-        Control,
+        Component,
         Row){
 
-    var CellGrid = Control.extend({
+    var CellGrid = Component.extend({
 
         init       : function(definition, settings){
 
@@ -27,7 +27,7 @@ define([
                 //при материализиции панели заголовков материализуем Headerы
                 var table = me.view.find("table");
                 _(me.rows).each(function(row){
-                    row.materialize(me.view.find("table"));
+                    row.materializeTo(me.view.find("table"));
                 });
             });
         },

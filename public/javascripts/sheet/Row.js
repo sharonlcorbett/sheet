@@ -5,12 +5,12 @@
  * @param table_row
  */
 define([
-    "sheet/Control",
+    "sheet/Component",
     "sheet/Cell"], function(
-        Control,
+        Component,
         Cell){
 
-    var Row = Control.extend({
+    var Row = Component.extend({
 
         init       : function(definition, settings){
 
@@ -34,7 +34,7 @@ define([
             $(this).bind("materialized", function(){
                 //при материализиции панели заголовков материализуем Headerы
                 _(me.cells).each(function(cell){
-                    cell.materialize(me.view);
+                    cell.materializeTo(me.view);
                 });
             });
         },

@@ -1,7 +1,7 @@
 define([
-    "sheet/WidgetControl"], function(WidgetControl){
+    "sheet/WidgetComponent"], function(WidgetComponent){
 
-    var ColumnHeader = WidgetControl.extend({
+    var ColumnHeader = WidgetComponent.extend({
 
         init       : function(definition, settings){
 

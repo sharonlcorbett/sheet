@@ -1,16 +1,16 @@
 
 define([
     "sheet/definitions/SheetDefinition",
-    "sheet/Control",
+    "sheet/Component",
     "sheet/HeaderPanel",
     "sheet/CellGrid"
     ], function(
         SheetDefinition,
-        Control,
+        Component,
         HeaderPanel,
         CellGrid){
 
-    var Sheet = Control.extend({
+    var Sheet = Component.extend({
 
         init       : function(definition, settings){
 
@@ -20,10 +20,11 @@ define([
                 class        : "xx-sheet",
                 template     : "<div class='xx-sheet'></div>",
 
-                header_panel : null,
-                grid         : null,
-                functionality: [
-                    "sheet/functionality/Resize"
+                headersPanel : null,
+                grid        : null,
+
+                functions: [
+                    "sheet/functions/Resize"
                 ],
                 fn : {}
             };
@@ -32,19 +33,19 @@ define([
             //создается объект SheetDefinition, вся работа с листом будет идти через него
             this.definition = new SheetDefinition(definition);
 
-             //вызов конструктора Control
+             //вызов конструктора Component
             this._super(definition, $.extend({}, default_settings, settings));
 
-            this.header_panel = new HeaderPanel(this.definition);
+            this.headersPanel = new HeaderPanel(this.definition);
             this.grid = new CellGrid(this.definition);
 
             //после м. листа м. дочерние компоненты
             $(this).bind("materialized", function(){
-                me.header_panel.materialize(this.view);
-                me.grid.materialize(this.view);
+                me.headersPanel.materializeTo(this.view);
+                me.grid.materializeTo(this.view);
             });
 
-            this.functions_loading = this.load_functions();
+            this.functionsLoading = this.loadFunctions();
         },
 
         /**
@@ -56,9 +57,9 @@ define([
             var me = this;
 
             var d = $.Deferred();
-            this.functions_loading.done(function(){
+            this.functionsLoading.done(function(){
 
-                (me.header_panel.render(),
+                (me.headersPanel.render(),
                  me.grid.render())
                     .done(function(){
                         d.resolve();
@@ -69,7 +70,7 @@ define([
             return d.promise();
         },
 
-        load_functions : function(){
+        loadFunctions : function(){
 
             var me = this,
                 d;
@@ -77,7 +78,7 @@ define([
             d = $.Deferred();
 
             //создание виджета на основе типа объекта
-            require(this.functionality, function(){
+            require(this.functions, function(){
                 //асинхронная загрузка и инициализация виджета
                 _(arguments).each(function(F){
                     var fn = new F(me);
@@ -94,34 +95,3 @@ define([
 
 });
 
-/*
-
-functionality: [
-    "./plugins/Resize.js",
-    "./plugins/EditByClick.js",
-    "./plugins/HighlightRow.js",
-    "./plugins/MoveRows.js",
-    "./plugins/MoveColumns.js",
-    "./plugins/Select.js"
-]
-
-
-
-add_plugin : function(plugin){
-
-            if (typeof plugin.init == "function"){
-                var plugin = new plugin({sheet: this});
-                pv["plugins"].push(plugin);
-            }
-            $(this).trigger("plugin_added", [plugin]);
-        },
-
-        plugins : function(plugins){
-
-            if(_(plugins).isArray()){
-                _(plugins).each(this.add_plugin);
-            }
-            return _(pv["rows"]).clone();
-        },
-
- */

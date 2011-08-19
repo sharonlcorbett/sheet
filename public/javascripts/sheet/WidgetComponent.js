@@ -2,7 +2,7 @@
  * Визуальный контрол,
  * содержащий определенный набор разных DOM - элементов листа
  */
-define(["sheet/Control"], function(Control){
+define(["sheet/Component"], function(Component){
 
     /**
      * События:
@@ -12,7 +12,7 @@ define(["sheet/Control"], function(Control){
      *  widget_ready
      */
 
-    var WidgetControl = Control.extend({
+    var WidgetComponent = Component.extend({
 
 
         init       : function(definition, settings){
@@ -27,36 +27,28 @@ define(["sheet/Control"], function(Control){
 
             this.definition = definition;
 
-            //проверяем наличие описания виджета в Definition
-            if (!this.definition.widget() && !this.definition.inherited_widget()){
-                throw "Widget must be set in WidgetControl";
-            }
-
-            //widget_loading — Deffered объект, который будет отпущен после загрузки виджета
-            this.widget_loading = this.load_widget();
+            //widgetLoading — Deffered объект, который будет отпущен после загрузки виджета
+            this.widgetLoading = this.loadWidget();
 
             //функция привязки событий виджета, выполняется после его инициализации
-            this.widget_loading.done(function(){
+            this.widgetLoading.done(function(){
 
                 //передача виджету первоначального значения из контрола
                 me.widget.value(me.definition.value());
             });
 
-            $(this.definition).bind("setter", function(e, name, value){
-
-                switch(name){
-                    case "value":
-                        //при изменении значения value в definition мы должны изменить значение в виджете
-                        this.widget.value(value);
-                        //TODO: Может отдать эту логику виджету?
-                        this.widget.render();
-                        break;
+            this.definition.fieldsListener({
+                "value" : function(e, value){
+                    //при изменении значения value в definition мы должны изменить значение в виджете
+                    me.widget.value(value);
+                    //TODO: Может отдать эту логику виджету?
+                    me.widget.render();
                 }
             });
 
         },
 
-        load_widget : function(){
+        loadWidget : function(){
 
             var me = this,
                 widget_definition,
@@ -64,10 +56,14 @@ define(["sheet/Control"], function(Control){
 
             d = $.Deferred();
             if (this.widget) {
-                this.widget_loading.resolve();
+                this.widgetLoading.resolve();
             }
 
-            widget_definition = this.definition.widget() || this.definition.inherited_widget();
+            //проверяем наличие описания виджета в Definition
+            widget_definition = this.definition.widget() || this.definition.inheritedWidget();
+            if (!widget_definition){
+                throw "Widget must be set in WidgetComponent";
+            }
 
             //создание виджета на основе типа объекта
             require(["sheet/widgets/" + widget_definition.type()], function(Widget){
@@ -87,7 +83,7 @@ define(["sheet/Control"], function(Control){
 
             var me = this;
             var d = $.Deferred();
-            this.widget_loading.done(function(){
+            this.widgetLoading.done(function(){
                 me.widget.render();
                 d.resolve();
                 $(me).trigger("rendered");
@@ -100,18 +96,18 @@ define(["sheet/Control"], function(Control){
          * Добавление в DOM
          * @param parent
          */
-        materialize : function(parent){
+        materializeTo : function(parent){
 
             var me = this;
             //матеарилизация компонента
             this._super(parent);
             //материализация виджета компонента
-            this.widget_loading.done(function(){
-                me.widget.materialize(me.view);
+            this.widgetLoading.done(function(){
+                me.widget.materializeTo(me.view);
             });
         }
     });
 
-    return WidgetControl;
+    return WidgetComponent;
 
 })

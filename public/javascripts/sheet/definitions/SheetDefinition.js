@@ -5,11 +5,13 @@
 define([
     'sheet/definitions/Definition',
     'sheet/definitions/ColumnDefinition',
-    'sheet/definitions/RowDefinition'
+    'sheet/definitions/RowDefinition',
+    'sheet/definitions/CellDefinition'
     ], function(
         Definition,
         ColumnDefinition,
-        RowDefinition){
+        RowDefinition,
+        CellDefinition){
 
     var SheetDefinition = Definition.extend({
 
@@ -26,21 +28,21 @@ define([
             $(this).trigger("loaded");
         },
 
-        load_columns : function(columns){
+        loadColumns : function(columns){
 
             var me = this;
             $.each(columns, function(index, column){
-                column["order_id"] = index;
+                column["orderId"] = index;
                 me.obj.columns.push(new ColumnDefinition(column));
             });
         },
 
-        load_rows : function(rows){
+        loadRows : function(rows){
 
             var me = this;
             _(rows).each(function(row){
 
-                if(row.cells.length != me.columns_count()){
+                if(row.cells.length != me.columnsCount()){
                     throw "Wrong row definition: Cell count mismatch!"
                 }
 
@@ -56,25 +58,38 @@ define([
         columns  : function(columns){
 
             if (typeof columns != "undefined"){
-                this.load_columns(columns);
+                this.loadColumns(columns);
             }
             return this.obj.columns;
         },
 
-        row_count : function(){
+        rowCount : function(){
 
             return this.obj.rows.length;
         },
 
-        columns_count : function(){
+        columnsCount : function(){
 
             return this.obj.columns.length;
+        },
+
+        buildInheritedCellDefinitions : function(){
+
+            var cells = [];
+
+            _(this.columns()).each(function(column){
+                cells.append(new CellDefinition({
+                    column : column
+                }));
+            });
+
+            return cells;
         },
 
         rows : function(rows){
 
             if (typeof rows != "undefined"){
-                this.load_rows(rows);
+                this.loadRows(rows);
             }
             return this.obj.rows;
         }

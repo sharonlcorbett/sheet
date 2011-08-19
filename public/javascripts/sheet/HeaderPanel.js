@@ -2,12 +2,12 @@
  * Строка заголовков, одна на лист
  */
 define([
-    "sheet/Control",
+    "sheet/Component",
     "sheet/ColumnHeader"], function(
-        Control,
+        Component,
         ColumnHeader){
 
-    var HeaderPanel = Control.extend({
+    var HeaderPanel = Component.extend({
 
         init       : function(definition, settings){
 
@@ -39,7 +39,7 @@ define([
             $(this).bind("materialized", function(){
                 //при материализиции панели заголовков материализуем Headerы
                 _(me.headers).each(function(header){
-                    header.materialize(me.view.find(me.selectors.materialization));
+                    header.materializeTo(me.view.find(me.selectors.materialization));
                 });
             });
         },

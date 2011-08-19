@@ -12,7 +12,7 @@ define(function(){
      *  widget_ready
      */
 
-    var Control = Class.extend({
+    var Component = Class.extend({
 
         init       : function(definition, settings){
 
@@ -25,11 +25,16 @@ define(function(){
             this.setup($.extend({}, default_settings, settings));
         },
 
+        parentView : function(){
+
+            return $(this.view).parent();
+        },
+
         /**
          * Добавление в DOM
          * @param parent
          */
-        materialize : function(parent){
+        materializeTo : function(parent){
 
             //материализация не разрешается для уже матеарилизованных компонент
             if (!this.phantom) return;
@@ -43,12 +48,12 @@ define(function(){
 
             this.phantom = false;
             //теперь Cell можно получить через data
-            this.view.data("control", this);
+            this.view.data("component", this);
             $(this).trigger("materialized");
         }
 
     })
 
-    return Control;
+    return Component;
 
 })

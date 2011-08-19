@@ -27,7 +27,7 @@ define([
                 class : CellDefinition
             });
 
-            this.add_setters([
+            this.addSetters([
                 "height",
                 "orderable",
                 "editable",

@@ -7,7 +7,7 @@ define({
      * преобразует значение в строку
      * @param value
      */
-    to_string : function(value){
+    toString : function(value){
         return value.toString()
     }
 

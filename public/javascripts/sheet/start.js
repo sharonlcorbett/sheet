@@ -11,7 +11,7 @@ require(["sheet/Sheet"], function(Sheet){
 
     sheet = new Sheet({
 
-        resize_mode : "free",
+        resizeMode : "screen",
 
         columns : [
             {
@@ -29,8 +29,8 @@ require(["sheet/Sheet"], function(Sheet){
                     value : "Описание задачи"
                 }
             }
-
         ],
+
         rows : [
             {
                 cells : [
@@ -45,66 +45,14 @@ require(["sheet/Sheet"], function(Sheet){
             {
                 cells : [
                     {
-                        value : "Привет"
                     },
                     {
-                        value : "Привет"
                     }
                 ]
-            },
-            {
-                cells : [
-                    {
-                        value : "Привет"
-                    },
-                    {
-                        value : "Привет"
-                    }
-                ]
-            },
-            {
-                cells : [
-                    {
-                        value : "Привет"
-                    },
-                    {
-                        value : "Привет"
-                    }
-                ]
-            },
-            {
-                cells : [
-                    {
-                        value : "Привет"
-                    },
-                    {
-                        value : "Привет"
-                    }
-                ]
-            },
-            {
-                cells : [
-                    {
-                        value : "Привет"
-                    },
-                    {
-                        value : "Привет"
-                    }
-                ]
-            },
-            {
-                cells : [
-                    {
-                        value : "Привет"
-                    },
-                    {
-                        value : "Привет"
-                    }
-                ]
-            },
+            }
         ]
     });
 
-    sheet.materialize($("#tabs-1"));
+    sheet.materializeTo($("#tabs-1"));
     sheet.render();
 })

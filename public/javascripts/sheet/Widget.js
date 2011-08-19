@@ -1,8 +1,8 @@
-define(["sheet/Control"], function(Control){
+define(["sheet/Component"], function(Component){
 
 
 
-    var Widget = Control.extend({
+    var Widget = Component.extend({
 
         init       : function(definition, settings){
 
@@ -11,12 +11,15 @@ define(["sheet/Control"], function(Control){
                 template: "<div class='widget'></div>"
             }
 
-            this.add_setters([
+            this.addSetters([
                 "value"
             ])
 
             this._super(definition, $.extend({}, default_settings, settings));
+
         },
+
+        autoRender : true,
 
         render : function(){
 

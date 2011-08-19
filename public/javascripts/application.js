@@ -104,13 +104,17 @@ SheetMixins = {
             }
         },
 
-        add_setters : function(array_of_names){
+        addSetters : function(array_of_names){
 
             var me = this;
             var before;
 
             if (typeof $(me).data("private") == "undefined"){
                 $(me).data("private", {})
+            }
+
+            if (typeof me.setters == "undefined"){
+                me.setters = {};
             }
 
             var private_container = $(me).data("private");
@@ -126,23 +130,25 @@ SheetMixins = {
                     class = arg[1];
                 }
 
-                if (typeof me[name] == "undefined"){
+                me.setters[name] = function(arg){
 
-                    me[name] = function(arg){
+                    if(typeof arg != "undefined"){
 
-                        if(typeof arg != "undefined" & arg != $(me).data(name)){
+                        before = private_container[name];
 
-                            before = private_container[name];
-
-                            if (class != null && typeof arg.init == "undefined"){
-                                arg = new class(arg);
-                            }
-
-                            private_container[name] = arg;
-                            $(me).trigger("setter", [name, arg, before])
+                        if (class != null && typeof arg.init == "undefined"){
+                            arg = new class(arg);
                         }
-                        return private_container[name];
+
+                        private_container[name] = arg;
+                        //$(me).trigger("setter", [name, arg, before]);
+                        $(me).trigger(name+"Changed", [arg, before]);
                     }
+                    return private_container[name];
+                }
+
+                if (typeof me[name] == "undefined"){
+                    me[name] = me.setters[name]
                 }
             })
         },
@@ -164,9 +170,17 @@ SheetMixins = {
             return $(this).data("private")[name];
         },
 
-        add_fields : function(){
+        addFields : function(){
 
-            this.add_setters.apply(this, arguments);
+            this.addSetters.apply(this, arguments);
+        },
+
+        fieldsListener : function(objects){
+
+            var me = this;
+            _(objects).each(function(callback, key){
+                $(me).bind(key + "Changed", callback)
+            });
         }
 
     }

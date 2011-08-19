@@ -12,7 +12,6 @@ define([
         init       : function(settings){
 
             var default_settings = {
-                //флаг, указывающий на возможность редактирования
                 //значение, содержащееся в ячейке
                 value      : "Column",
                 widget : {
@@ -21,7 +20,7 @@ define([
                 }
             };
 
-            this.add_setters([
+            this.addSetters([
                 "value",
                 ["widget", WidgetDefinition]
             ]);

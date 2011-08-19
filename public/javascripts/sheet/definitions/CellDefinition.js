@@ -15,16 +15,12 @@ define([
         init       : function(settings){
 
             var default_settings = {
-                //флаг, указывающий на возможность редактирования
-                editable : true,
-                //значение, содержащееся в ячейке
-                value      : ""
             };
 
-            this.add_setters([
+            this.addSetters([
                 "editable",
-                "value",
                 "format",
+                "value",
                 "column",
                 ["widget", WidgetDefinition]
             ]);
@@ -32,12 +28,25 @@ define([
             this.setup($.extend({}, default_settings, settings));
         },
 
-        inherited_widget : function(){
-            return this.column().widget();
+        value : function(value){
+
+            var val = this.setters["value"](value);
+            if (typeof val == "undefined"){
+                return this.inheritedValue();
+            }
+            return val;
         },
 
-        inherited_value : function(){
-            return this.column().default_value();
+        inheritedWidget : function(){
+            return this.column().defaultWidget();
+        },
+
+        inheritedEditable : function(){
+            return this.column().editable();
+        },
+
+        inheritedValue : function(){
+            return this.column().defaultValue();
         }
     });
 
