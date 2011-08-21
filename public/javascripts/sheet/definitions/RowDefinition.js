@@ -5,13 +5,15 @@
  * @param table_row
  */
 define([
+    'sheet/definitions/Definition',
     "sheet/definitions/CellDefinition",
     "sheet/helpers/ElementsCollection"
     ], function(
+        Definition,
         CellDefinition,
         ElementsCollection){
 
-    var Row = Class.extend({
+    var Row = Definition.extend({
 
         init       : function(settings){
 
@@ -31,7 +33,8 @@ define([
                 "height",
                 "orderable",
                 "editable",
-                "format"
+                "format",
+                "idx"
             ]);
 
             this.setup($.extend({}, default_settings, settings));

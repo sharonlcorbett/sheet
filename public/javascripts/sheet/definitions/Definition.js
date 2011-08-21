@@ -8,7 +8,10 @@ define(function(){
 
         init       : function(){
 
+            this.operationManager = null
         },
+
+        operationStack : null,
 
         setup      : function(settings){
 
@@ -37,8 +40,70 @@ define(function(){
                     me[key](value);
                 }
             });
-        }
+        },
 
+        addSetters : function(settings){
+
+            var me = this;
+            var before;
+
+            if (typeof $(me).data("private") == "undefined"){
+                $(me).data("private", {});
+            }
+
+            if (typeof me.setters == "undefined"){
+                me.setters = {};
+            }
+
+            if (typeof me.constructed_setters == "undefined"){
+                me.constructed_setters = {};
+            }
+
+            var private_container = $(me).data("private");
+
+            $.each(settings, function(index, arg){
+
+                var name = arg,
+                    class_obj = null,
+                    setter_constructor;
+
+                if (!_(arg).isString()){
+
+                    name = arg["name"];
+                    class_obj = arg["class"];
+                    setter_constructor = arg["setter_constructor"]
+                }
+
+                me.setters[name] = function(arg, go_trigger){
+
+                    if (typeof go_trigger == "undefined") go_trigger = true;
+
+                    if(typeof arg != "undefined"){
+
+                        before = private_container[name];
+
+                        if (class_obj != null && typeof arg.init == "undefined"){
+                            arg = new class_obj(arg);
+                        }
+
+                        private_container[name] = arg;
+                        //$(me).trigger("setter", [name, arg, before]);
+                        if (go_trigger){
+                            $(me).trigger(name+"Changed", [arg, before]);
+                        }
+                    }
+                    return private_container[name];
+                }
+
+                if (typeof setter_constructor != "undefined"){
+                    me.constructed_setters[name] = setter_constructor(name);
+                }
+
+                if (typeof me[name] == "undefined"){
+                        me[name] = (me.constructed_setters[name] || me.setters[name])
+                }
+            })
+        }
     });
 
     return Definition;

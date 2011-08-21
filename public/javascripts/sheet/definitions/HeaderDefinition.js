@@ -3,11 +3,13 @@
  * @param settings
  */
 define([
+    'sheet/definitions/Definition',
     'sheet/definitions/WidgetDefinition'
     ], function(
+        Definition,
         WidgetDefinition){
 
-    var Header = Class.extend({
+    var Header = Definition.extend({
 
         init       : function(settings){
 
@@ -22,7 +24,7 @@ define([
 
             this.addSetters([
                 "value",
-                ["widget", WidgetDefinition]
+                { name : "widget", class : WidgetDefinition}
             ]);
 
             this.setup($.extend({}, default_settings, settings));

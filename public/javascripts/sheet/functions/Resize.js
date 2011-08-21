@@ -32,8 +32,6 @@ define(function(){
             var me = this;
             this.sheet = sheet;
 
-            console.log(sheet.definition.resizeMode())
-
             sheet.definition.addFields([
 
                 /**
@@ -107,7 +105,7 @@ define(function(){
 
             var width = column_header.column_definition.width();
             column_header.view.width(width);
-            this.sheet.grid.rows[0].cells[column_header.column_definition.orderId()].view.width(width);
+            this.sheet.grid.rows[0].cells[column_header.column_definition.idx()].view.width(width);
         },
 
         screenModeResize : function(){
@@ -201,6 +199,8 @@ define(function(){
             //движки ресайзинга
 
         enableDrag : function(){
+
+            var sheet = this.sheet;
 
             //вертикальная полоска движка для ресайзинга
             var helper = function(){

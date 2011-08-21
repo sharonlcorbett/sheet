@@ -26,7 +26,7 @@ define([
                     type : "Text"
                 },
                 defaultValue : "",
-                orderId     : null
+                idx     : null
             };
 
             this.addSetters([
@@ -37,9 +37,15 @@ define([
                 "width",
                 "format",
                 "defaultValue",
-                "orderId",
-                ["header", HeaderDefinition],
-                ["defaultWidget", WidgetDefinition]
+                {
+                    name : "header",
+                    class: HeaderDefinition
+                },
+                {
+                    name : "defaultWidget",
+                    class: WidgetDefinition
+                },
+                "idx"
             ]);
 
             this.setup($.extend({}, default_settings, settings));

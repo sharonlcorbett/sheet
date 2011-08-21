@@ -1,6 +1,8 @@
-define(function(){
+define([
+    'sheet/definitions/Definition'
+    ], function(Definition){
 
-    var Widget = Class.extend({
+    var Widget = Definition.extend({
 
         init       : function(settings){
 

@@ -121,13 +121,15 @@ SheetMixins = {
 
             $.each(array_of_names, function(index, arg){
 
-                var name = arg;
-                var class = null;
+                var name = arg,
+                    class_obj = null,
+                    setter_constructor = null
 
-                if (_(arg).isArray()){
+                if (!_(arg).isString()){
 
-                    name = arg[0];
-                    class = arg[1];
+                    name = arg["name"];
+                    class_obj = arg["class"];
+                    setter_constructor = arg["operation"]
                 }
 
                 me.setters[name] = function(arg, go_trigger){
@@ -138,8 +140,8 @@ SheetMixins = {
 
                         before = private_container[name];
 
-                        if (class != null && typeof arg.init == "undefined"){
-                            arg = new class(arg);
+                        if (class_obj != null && typeof arg.init == "undefined"){
+                            arg = new class_obj(arg);
                         }
 
                         private_container[name] = arg;
