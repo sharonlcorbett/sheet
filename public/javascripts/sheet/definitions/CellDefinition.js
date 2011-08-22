@@ -7,38 +7,14 @@
  */
 define([
     "sheet/Operation",
+    "sheet/OperationManager",
     "sheet/definitions/WidgetDefinition",
     "sheet/definitions/Definition"
     ], function(
         Operation,
+        OperationManager,
         WidgetDefinition,
         Definition){
-
-    var ChangeCellFieldValue = Operation.extend({
-
-        init : function(row_idx, col_idx, field_name, value){
-
-            this.row_idx  = row_idx;
-            this.col_idx = col_idx;
-            this.value = value;
-            this.field_name = field_name;
-
-            this._super();
-        },
-
-        forwardFunction : function(sheet_def){
-
-            var cell = sheet_def.cell(this.row_idx, this.col_idx);
-            this.revert_value = cell.setters[this.field_name]();
-            cell.setters[this.field_name](this.value);
-        },
-
-        backwardFunction: function(sheet_def){
-
-            var cell = sheet_def.cell(this.row_idx, this.col_idx);
-            cell.setters[this.field_name](this.revert_value);
-        }
-    });
 
     var CellDefinition = Definition.extend({
 
@@ -72,17 +48,20 @@ define([
             var me = this;
 
             return function(value){
-                console.log(me.row_idx() + " " + me.col_idx())
-                var op = new ChangeCellFieldValue(me.row_idx(), me.col_idx(), field_name, value)
-                console.log(op)
-                console.log(this.operationManager)
-                me.operationManager.executeOperation(op);
+
+                if(typeof value != "undefined"){
+                    var op = this.operationManager.createAndRunOperation(
+                        "cell_field_operation", [me.row_idx(), me.col_idx(), field_name, value])
+                    me.operationManager.executeOperation(op);
+                } else {
+                    return me.setters[field_name]();
+                }
             }
         },
 
         value : function(){
 
-            var val = this.setters["value"].apply(this, arguments);
+            var val = this.constructed_setters["value"].apply(this, arguments);
             if (typeof val == "undefined"){
                 return this.inheritedValue();
             }

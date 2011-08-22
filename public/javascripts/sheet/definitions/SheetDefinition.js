@@ -7,13 +7,14 @@ define([
     'sheet/definitions/ColumnDefinition',
     'sheet/definitions/RowDefinition',
     'sheet/definitions/CellDefinition',
-    'sheet/OperationManager'
+    'sheet/OperationManager',
     ], function(
         Definition,
         ColumnDefinition,
         RowDefinition,
         CellDefinition,
-        OperationManager){
+        OperationManager,
+        Operations){
 
     var SheetDefinition = Definition.extend({
 

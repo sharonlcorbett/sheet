@@ -1,5 +1,5 @@
 
-require(["sheet/Sheet", "sheet/Operation"], function(Sheet, Operation){
+require(["sheet/Sheet", "sheet/Operations"], function(Sheet, Operation){
 
     var sheet = new Sheet({
 
