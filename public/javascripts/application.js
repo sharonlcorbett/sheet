@@ -1,71 +1,89 @@
 
-/* Simple JavaScript Inheritance
- * By John Resig http://ejohn.org/
- * MIT Licensed.
- */
-/* Simple JavaScript Inheritance
- * By John Resig http://ejohn.org/
- * MIT Licensed.
- */
-// Inspired by base2 and Prototype
+/*
+---
+
+name: Class.PatternMutators
+
+description: Pattern-Based Mutation for MooTools 1.3
+
+license: MIT-style license.
+
+copyright: Mark Obcena
+
+requires: Class
+
+provides: [Class.defineMutator, Class.define]
+
+...
+*/
+
+
 (function(){
-  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
-  // The base Class implementation (does nothing)
-  this.Class = function(){};
 
-  // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
-    var _super = this.prototype;
+var matchers = [];
 
-    // Instantiate a base class (but only create the instance,
-    // don't run the init constructor)
-    initializing = true;
-    var prototype = new this();
-    initializing = false;
+var lookup = function(key){
+	var i = matchers.length;
+	while (i--){
+		var matcher = matchers[i],
+			match = key.match(matcher);
+		if (match) return ['$mutator:' + matcher, match.slice(1)];
+	}
+	return null;
+};
 
-    // Copy the properties over onto the new prototype
-    for (var name in prop) {
-      // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" &&
-        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-        (function(name, fn){
-          return function() {
-            var tmp = this._super;
+Class.defineMutator = function(key, fn){
+	if (typeOf(key) == 'regexp'){
+		matchers.push(key);
+		key = '$mutator:' + key;
+		var _fn = fn;
+		fn = function(values){
+			return _fn.apply(this, values);
+		};
+	}
+	Class.Mutators[key] = fn;
+	return this;
+};
 
-            // Add a new ._super() method that is the same method
-            // but on the super-class
-            this._super = _super[name];
+var define = Class.prototype.implement;
+Class.implement('define', define);
 
-            // The method only need to be bound temporarily, so we
-            // remove it when we're done executing
-            var ret = fn.apply(this, arguments);
-            this._super = tmp;
+var implement = Class.prototype.implement = function(key, value, retain){
+	var mutator = lookup(key);
+	if (mutator){
+		key = mutator.shift();
+		mutator[0].unshift(value);
+		value = mutator.shift();
+	}
+	return define.call(this, key, value, retain);
+}.overloadSetter();
 
-            return ret;
-          };
-        })(name, prop[name]) :
-        prop[name];
-    }
+// Default Mutators
+Class.defineMutator(/^protected\s(\w+)/, function(fn, name){
+	this.define(name, fn.protect());
+});
 
-    // The dummy class constructor
-    function Class() {
-      // All construction is actually done in the init method
-      if ( !initializing && this.init )
-        this.init.apply(this, arguments);
-    }
+Class.defineMutator(/^linked\s(\w+)/, function(value, name){
+	this.prototype[name] = value;
+});
 
-    // Populate our constructed prototype object
-    Class.prototype = prototype;
+Class.defineMutator(/^static\s(\w+)/, function(fn, name){
+	this.extend(name, fn);
+});
 
-    // Enforce the constructor to be what we expect
-    Class.prototype.constructor = Class;
+// Reimplement "implement" in all classes..
+for (var i in window){
+	try {
+		var klass = window[i];
+		if (klass instanceof Function && typeOf(klass) == 'class'){
+			klass.implement = implement;
+			klass.define = define;
+		}
+	} catch(e){}
+}
 
-    // And make this class extendable
-    Class.extend = arguments.callee;
-
-    return Class;
-  };
 })();
+
 
 SheetMixins = {
 
@@ -191,8 +209,3 @@ SheetMixins = {
 
     }
 }
-
-$.extend(Class.prototype, SheetMixins.setup_mixin)
-
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults

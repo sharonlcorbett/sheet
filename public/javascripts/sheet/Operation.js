@@ -6,12 +6,12 @@
  */
 define( function(){
 
-    var Operation = Class.extend({
+    var Operation = new Class({
 
-        init : function(){
+        initialize : function(){
 
-            this.__resolved = false;
-            this.__reverted = false;
+            this.resolved = false;
+            this.reverted = false;
 
             if (typeof this.forwardFunction == "undefined" ||
                 typeof this.backwardFunction == "undefined"){
@@ -25,9 +25,9 @@ define( function(){
          */
         execute : function(def){
 
-            if (!this.__resolved || this.__reverted){
+            if (!this.resolved || this.reverted){
                 this.forwardFunction(def);
-                this.__resolved = true;
+                this.resolved = true;
             } else {
                 throw "You trying to execute operation than has been executed already!"
             }
@@ -39,10 +39,10 @@ define( function(){
          */
         rollback : function(def){
 
-            if (this.__resolved || !this.__reverted){
+            if (this.resolved || !this.reverted){
                 this.backwardFunction(def);
-                this.__reverted = true;
-                this.__resolved = false;
+                this.reverted = true;
+                this.resolved = false;
             } else {
                 throw "You trying to revert operation than has not been executed!"
             }
@@ -53,7 +53,7 @@ define( function(){
          */
         isResolved : function(){
 
-            return this.__resolved;
+            return this.resolved;
         },
 
         /**
@@ -61,7 +61,7 @@ define( function(){
          */
         isReverted : function(){
 
-            return this.__reverted;
+            return this.reverted;
         }
     })
 

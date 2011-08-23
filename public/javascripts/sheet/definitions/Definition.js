@@ -2,21 +2,24 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(function(){
+define(['sheet/helpers/Field',
+        'sheet/helpers/CollectionField'], function(Field, CollectionField){
 
-    var Definition = Class.extend({
+    var Definition = new Class({
 
-        init       : function(){
+        fields : {},
 
+        initialize       : function(stx){
+
+            this.setup(stx);
             this.operationManager = null
         },
-
-        operationStack : null,
 
         setup      : function(settings){
 
             this.setupIf(settings, false);
         },
+
 
         /**
          * Настроечная фукнция, передает настроечное значение
@@ -32,76 +35,48 @@ define(function(){
 
             if (!settings) return;
             var me = this;
-            $.each(settings, function(key, value){
-                if (!(check_if_null * (typeof me[key] != "undefined"))){
-                    if (typeof me[key] != "function"){
-                        me.addSetters([key]);
-                    }
+            Object.each(settings, function(value, key){
+
+                if (typeof me[key] == "undefined"){
+                    throw "Unknown field in definition: " + key
+                }
+
+                if (!(check_if_null * (typeof me[key]() != "undefined"))){
                     me[key](value);
                 }
             });
         },
 
-        addSetters : function(settings){
+        addField : function(stx){
+
+            if(typeOf(stx.name) == "null"){
+                throw "name of the field must be set"
+            }
+
+            if (stx.type == "collection"){
+                this.fields[stx.name] = new CollectionField(stx);
+            } else {
+                this.fields[stx.name] = new Field(stx);
+            }
 
             var me = this;
-            var before;
+            this[stx.name] = function(){
 
-            if (typeof $(me).data("private") == "undefined"){
-                $(me).data("private", {});
+                if(arguments.length > 0){
+                    return me.fields[stx.name].defaultSetMethod.apply(me.fields[stx.name], arguments);
+                }
+                return me.fields[stx.name].defaultGetMethod();
             }
 
-            if (typeof me.setters == "undefined"){
-                me.setters = {};
-            }
+            this[stx.name].field = this.fields[stx.name];
+        },
 
-            if (typeof me.constructed_setters == "undefined"){
-                me.constructed_setters = {};
-            }
+        addFields : function(array){
 
-            var private_container = $(me).data("private");
+            var me = this;
+            array.each(function(field_stx){
 
-            $.each(settings, function(index, arg){
-
-                var name = arg,
-                    class_obj = null,
-                    setter_constructor;
-
-                if (!_(arg).isString()){
-
-                    name = arg["name"];
-                    class_obj = arg["class"];
-                    setter_constructor = arg["setter_constructor"]
-                }
-
-                me.setters[name] = function(arg, go_trigger){
-
-                    if (typeof go_trigger == "undefined") go_trigger = true;
-
-                    if(typeof arg != "undefined"){
-
-                        before = private_container[name];
-
-                        if (class_obj != null && typeof arg.init == "undefined"){
-                            arg = new class_obj(arg);
-                        }
-
-                        private_container[name] = arg;
-                        //$(me).trigger("setter", [name, arg, before]);
-                        if (go_trigger){
-                            $(me).trigger(name+"Changed", [arg, before]);
-                        }
-                    }
-                    return private_container[name];
-                }
-
-                if (typeof setter_constructor != "undefined"){
-                    me.constructed_setters[name] = setter_constructor(name);
-                }
-
-                if (typeof me[name] == "undefined"){
-                        me[name] = (me.constructed_setters[name] || me.setters[name])
-                }
+                me.addField(field_stx);
             })
         }
     });

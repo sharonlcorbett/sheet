@@ -6,38 +6,45 @@
  */
 define([
     'sheet/definitions/Definition',
-    "sheet/definitions/CellDefinition",
-    "sheet/helpers/ElementsCollection"
+    "sheet/definitions/CellDefinition"
     ], function(
         Definition,
-        CellDefinition,
-        ElementsCollection){
+        CellDefinition){
 
-    var Row = Definition.extend({
+    var Row = new Class({
 
-        init       : function(settings){
+        Extends : Definition,
 
-            var default_settings = {
-                height   : 20,
-                orderable: true,
-                editable : false,
-                format   : null
-            };
+        initialize       : function(def){
 
-            this.cells = ElementsCollection({
-                check : function(cell){ typeof cell.init == "undefined" },
-                class : CellDefinition
-            });
-
-            this.addSetters([
-                "height",
-                "orderable",
-                "editable",
-                "format",
-                "idx"
+            this.addFields([
+                {
+                    name : "height",
+                    defaultValue : 20
+                },
+                {
+                    name : "orderable",
+                    defaultValue : true
+                },
+                {
+                    name : "editable",
+                    defaultValue : false
+                },
+                {
+                    name : "format",
+                    defaultValue : null
+                },
+                {
+                    name : "idx"
+                },
+                {
+                    name : "cells",
+                    type : "collection",
+                    construct : CellDefinition
+                }
             ]);
 
-            this.setup($.extend({}, default_settings, settings));
+            this.parent(def);
         }
 
     });

@@ -6,41 +6,42 @@
  * @param settings
  */
 define([
-    "sheet/Operation",
-    "sheet/OperationManager",
     "sheet/definitions/WidgetDefinition",
     "sheet/definitions/Definition"
     ], function(
-        Operation,
-        OperationManager,
         WidgetDefinition,
         Definition){
 
-    var CellDefinition = Definition.extend({
+    var CellDefinition = new Class({
 
-        init       : function(settings){
+        Extends : Definition,
 
-            var default_settings = {
-            };
+        initialize       : function(def){
 
-            this.createOperation = $.proxy(this.createOperation, this);
-
-            this.addSetters([
-                "editable",
-                "format",
+            this.addFields([
                 {
-                    name:"value",
-                    setter_constructor : this.createOperation
+                    name : "editable"
                 },
-                "column",
-                "row",
+                {
+                    name : "format"
+                },
+                {
+                    name: "value"
+                    //setter_constructor : this.createOperation
+                },
+                {
+                    name : "column"
+                },
+                {
+                    name : "row"
+                },
                 {
                     name : "widget",
-                    class : WidgetDefinition
+                    valueConstructor : WidgetDefinition
                 }
             ]);
 
-            this.setup($.extend({}, default_settings, settings));
+            this.parent(def);
         },
 
         createOperation : function(field_name){
@@ -80,12 +81,12 @@ define([
             return this.column().defaultValue();
         },
 
-        row_idx : function(){
+        rowIdx : function(){
 
             return this.row().idx();
         },
 
-        col_idx : function(){
+        colIdx : function(){
 
             return this.column().idx();
         }

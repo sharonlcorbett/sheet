@@ -7,49 +7,60 @@ define([
     'sheet/definitions/ColumnDefinition',
     'sheet/definitions/RowDefinition',
     'sheet/definitions/CellDefinition',
-    'sheet/OperationManager',
+    'sheet/OperationManager'
     ], function(
         Definition,
         ColumnDefinition,
         RowDefinition,
         CellDefinition,
-        OperationManager,
-        Operations){
+        OperationManager){
 
-    var SheetDefinition = Definition.extend({
+    var SheetDefinition = new Class({
 
-        init : function(definition){
+        Extends: Definition,
 
-            this.obj = {columns : [], rows : []};
+        Binds: ['createColumns', 'createRows'],
+
+        initialize : function(def){
+
             this.operationManager = new OperationManager(this);
-            this.setup(definition);
 
-            $(this).trigger("loaded");
+            this.parent();
+
+            this.addFields([
+                {
+                    name : "resizeMode",
+                    defaultValue : "screen"
+                },
+                {
+                    name : "columns",
+                    type : "collection",
+                    collectionConstructor : this.createColumns
+                },
+                {
+                    name : "rows",
+                    type : "collection",
+                    collectionConstructor : this.createRows
+                }
+            ]);
+
+            this.parent(def);
         },
 
-        columns  : function(columns){
+        rowsCount : function(){
 
-            if (typeof columns != "undefined"){
-                this.loadColumns(columns);
-            }
-            return this.obj.columns;
-        },
-
-        rowCount : function(){
-
-            return this.obj.rows.length;
+            return this.columns.field.count();
         },
 
         columnsCount : function(){
 
-            return this.obj.columns.length;
+            return this.rows.field.count();
         },
 
         buildInheritedCellDefinitions : function(){
 
             var cells = [];
-
-            _(this.columns()).each(function(column){
+            this.columns().each(function(column){
                 cells.append(new CellDefinition({
                     column : column
                 }));
@@ -58,32 +69,24 @@ define([
             return cells;
         },
 
-        rows : function(rows){
-
-            if (typeof rows != "undefined"){
-                this.loadRows(rows);
-            }
-            return this.obj.rows;
-        },
-
         /**
          * Возвращает ячейку с координатами (row, col)
          * @param row индекс строки
          * @param col индекс столбца
          */
-        cell : function(row, col){
+        cellAt : function(row, col){
 
-            return this.rows()[row].cells()[col];
+            return this.rows.field.getAt(row).cells.field.getAt(col);
         },
 
-        column : function(col_idx){
+        columnAt : function(col_idx){
 
-            return this.columns()[col_idx];
+            return this.columns.field.getAt(col_idx);
         },
 
-        row : function(row_idx){
+        rowAt : function(row_idx){
 
-            return this.rows()[row_idx];
+            return this.rows.field.getAt(row_idx);
         },
 
 
@@ -91,21 +94,27 @@ define([
          * LOADING MECHANICS
          */
 
-         loadColumns : function(columns){
+        createColumns : function(columns){
 
             var me = this;
-            $.each(columns, function(index, column){
+            var collection = []
+            columns.each(function(column, index){
+
                 var ccol = new ColumnDefinition(column);
                 ccol.operationManager = me.operationManager;
                 ccol.idx(index);
-                me.obj.columns.push(ccol);
+                collection.push(ccol);
             });
+
+            return collection;
         },
 
-        loadRows : function(rows){
+        createRows : function(rows){
 
             var me = this;
-            $(rows).each(function(index, row){
+            var collection = []
+
+            rows.each(function(row, index){
 
                 if(row.cells.length != me.columnsCount()){
                     throw "Wrong row definition: Cell count mismatch!"
@@ -113,16 +122,19 @@ define([
 
                 var crow = new RowDefinition(row);
                 crow.operationManager = me.operationManager
-                me.obj.rows.push(crow);
+
+                collection.push(crow);
 
                 crow.idx(index);
 
-                $(crow.cells()).each(function(index, cell){
+                crow.cells().each(function(cell, index){
                     cell.operationManager = me.operationManager;
                     cell.row(crow);
-                    cell.column(me.columns()[index]);
+                    cell.column(collection[index]);
                 });
             });
+
+            return collection;
         }
 
     })
