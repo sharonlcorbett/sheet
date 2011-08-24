@@ -16,7 +16,6 @@ define([
                     name : "type"
                 }
             ]);
-
             this.parent(def)
         }
     });

@@ -12,17 +12,22 @@ define(function(){
      *  widget_ready
      */
 
-    var Component = Class.extend({
+    var Component = new Class({
 
-        init       : function(definition, settings){
+        Implements : [Options, Events],
 
-            var default_settings = {
-                template : "<div></div>",
-                phantom  : true,
-                view : null
-            }
+        options : {
+            elementTag : 'div',
+            elementProperties : {},
+            elementTemplate : null
+        },
 
-            this.setup($.extend({}, default_settings, settings));
+        phantom  : true,
+        view : null,
+
+        initialize       : function(options){
+
+           this.setOptions(options || {});
         },
 
         parentView : function(){
@@ -30,26 +35,43 @@ define(function(){
             return $(this.view).parent();
         },
 
+        compileTemplate : function(template){
+
+            return new Mooml.Template('template', template);
+        },
+
         /**
          * Добавление в DOM
          * @param parent
          */
-        materializeTo : function(parent){
+        inject : function(parent){
 
             //материализация не разрешается для уже матеарилизованных компонент
             if (!this.phantom) return;
 
-            if (_(this.view).isUndefined() || _(this.view).isNull()) {
-
-                this.view = $(this.template);
+            if (!this.view) {
+                if (this.options.elementTemplate){
+                    this.options.elementTemplate = this.compileTemplate(this.options.elementTemplate);
+                    this.view = this.options.elementTemplate.render();
+                } else {
+                    this.view = new Element(this.options.elementTag, this.options.elementProperties)
+                }
             }
 
-            parent.append(this.view);
+            this.view.inject(parent)
 
             this.phantom = false;
+
             //теперь Cell можно получить через data
-            this.view.data("component", this);
-            $(this).trigger("materialized");
+            this.view.store("component", this);
+            this.fireEvent("injected");
+        },
+
+        definition : null,
+
+        applyDefinition : function(def){
+
+            this.definition = def;
         }
 
     })

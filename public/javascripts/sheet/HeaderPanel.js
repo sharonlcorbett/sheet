@@ -7,53 +7,59 @@ define([
         Component,
         ColumnHeader){
 
-    var HeaderPanel = Component.extend({
+    var HeaderPanel = new Class({
 
-        init       : function(definition, settings){
+        Extends : Component,
 
-            var default_settings = {
+        options : {
+            elementTemplate : function(){
+                div({class:'header_table'},
+                    table(
+                        tr()
+                    )
+                )
+            }
+        },
 
-                template :
-                    "<div class='header_table'>" +
-                        "<table>" +
-                        "<tr>" +
-                        "</tr>" +
-                        "</table>" +
-                        "</div>",
-                selectors : {
-                    materialization : "tr"
-                },
-                headers : []
-            };
+        headers : [],
+
+        initialize       : function(options){
 
             var me = this;
+            this.parent(options)
+        },
 
-            this.definition = definition;
-            this._super(definition, $.extend({}, default_settings, settings));
+        applyDefinition : function(def){
 
-            _(this.definition.columns()).each(function(column){
+            var me = this;
+            this.parent(def);
+
+            def.each(function(column){
                 //создаем заголовки на основании Definition
-                me.headers.push(new ColumnHeader(column));
+                var col = new ColumnHeader()
+                col.applyDefinition(column);
+                me.headers.push(col);
             });
+        },
 
-            $(this).bind("materialized", function(){
-                //при материализиции панели заголовков материализуем Headerы
-                _(me.headers).each(function(header){
-                    header.materializeTo(me.view.find(me.selectors.materialization));
-                });
+        inject : function(element){
+
+            this.parent(element);
+
+            var me = this,
+                view = this.view.getElement('tr');
+
+            this.headers.each(function(header){
+                header.inject(view);
             });
         },
 
         render : function(){
 
-            var d = $.Deferred();
-            //отрисовка заголовков
-            var deferred = []
-            _(this.headers).each(function(h){deferred.push(h.render())});
-            $.when.apply(this, deferred).then(function(){
-                d.resolve();
-            });
-            return d.promise();
+            this.headers.each(function(header){
+                header.render();
+            })
+            this.fireEvent('rendered')
         }
     });
 

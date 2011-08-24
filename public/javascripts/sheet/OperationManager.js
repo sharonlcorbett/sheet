@@ -1,5 +1,5 @@
 
-define(function(){
+define(['sheet/operations/Operations'], function(Operations){
 
     var operation_classes = {};
 
@@ -57,6 +57,11 @@ define(function(){
         operation.alias = alias;
         operation_classes[alias] = operation;
     }
+
+    Object.each(Operations, function(value, key){
+
+        OperationMananger.register(key, value);
+    })
 
     return OperationMananger;
 

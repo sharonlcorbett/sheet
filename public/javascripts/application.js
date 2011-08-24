@@ -84,6 +84,9 @@ for (var i in window){
 
 })();
 
+c = function(a){
+    console.log(a)
+}
 
 SheetMixins = {
 

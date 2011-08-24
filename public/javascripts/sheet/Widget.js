@@ -1,22 +1,22 @@
 define(["sheet/Component"], function(Component){
 
+    var Widget = new Class({
 
+        Extends : Component,
 
-    var Widget = Component.extend({
+        options : {
 
-        init       : function(definition, settings){
-
-            var default_settings = {
-
-                template: "<div class='widget'></div>"
+            elementTag: 'div',
+            elementProperties: {
+                class : 'widget'
             }
+        },
 
-            this.addSetters([
-                "value"
-            ])
+        value : null,
 
-            this._super(definition, $.extend({}, default_settings, settings));
+        initialize : function(options){
 
+            this.parent(options);
         },
 
         autoRender : true,

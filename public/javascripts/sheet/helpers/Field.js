@@ -41,14 +41,19 @@ define(function(){
             this.setValueStrict(undefined);
         },
 
+        getValueStrict : function(){
+
+            return this.value
+        },
+
         getValue : function(){
 
             if (typeof this.value == "undefined" && typeOf(this.emptyGetter) == "function"){
-                return this.emptyGetter()
+                return this.emptyGetter();
             }
 
             if (typeof this.value == "undefined" && typeOf(this.defaultValue) != "undefined"){
-                return this.defaultValue
+                return this.constructValue(this.defaultValue);
             }
 
             return this.value;
@@ -64,16 +69,9 @@ define(function(){
             this.freezed = false;
         },
 
-        setValue : function(val){
-
-            if (this.fixed && this.applied || this.freezed) return;
-
-            if (typeOf(this.changer) != "null"){
-                return this.changer(this);
-            }
+        constructValue : function(val){
 
             var value;
-
             switch(typeOf(this.valueConstructor)){
 
                 case "class":
@@ -87,6 +85,18 @@ define(function(){
                     break;
             }
 
+            return value;
+        },
+
+        setValue : function(val){
+
+            if (this.fixed && this.applied || this.freezed) return;
+
+            if (typeOf(this.changer) != "null"){
+                return this.changer(this);
+            }
+
+            var value = this.constructValue(val);
 
             return this.setValueStrict(value);
         },

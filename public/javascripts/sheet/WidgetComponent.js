@@ -4,75 +4,39 @@
  */
 define(["sheet/Component"], function(Component){
 
-    /**
-     * События:
-     *  materialized
-     *  edit_finished
-     *  edit_cancelled
-     *  widget_ready
-     */
+    var WidgetComponent = new Class({
 
-    var WidgetComponent = Component.extend({
+        Extends : Component,
 
+        widget : null,
 
-        init       : function(definition, settings){
-
-            var default_settings = {
-
-                widget : null
-            };
+        initialize : function(options){
 
             var me = this;
-            this._super(definition, $.extend({}, default_settings, settings));
+            this.parent(options);
 
-            this.definition = definition;
-
-            //widgetLoading — Deffered объект, который будет отпущен после загрузки виджета
-            this.widgetLoading = this.loadWidget();
-
-            //функция привязки событий виджета, выполняется после его инициализации
-            this.widgetLoading.done(function(){
-
-                //передача виджету первоначального значения из контрола
-                me.widget.value(me.definition.value());
-            });
-
-            this.definition.fieldsListener({
+            /*this.definition.fieldsListener({
                 "value" : function(e, value){
                     //при изменении значения value в definition мы должны изменить значение в виджете
                     me.widget.value(value);
                     //TODO: Может отдать эту логику виджету?
                     me.widget.render();
                 }
-            });
+            }); */
 
         },
 
-        loadWidget : function(){
+        applyDefinition : function(def){
 
-            var me = this,
-                widget_definition,
-                d;
+            this.parent(def);
+            this.initializeWidget();
+        },
 
-            d = $.Deferred();
-            if (this.widget) {
-                this.widgetLoading.resolve();
-            }
+        initializeWidget : function(){
 
-            //проверяем наличие описания виджета в Definition
-            widget_definition = this.definition.widget() || this.definition.inheritedWidget();
-            if (!widget_definition){
-                throw "Widget must be set in WidgetComponent";
-            }
-
-            //создание виджета на основе типа объекта
-            require(["sheet/widgets/" + widget_definition.type()], function(Widget){
-                //асинхронная загрузка и инициализация виджета
-                me.widget = new Widget(widget_definition);
-                d.resolve();
-            });
-
-            return d.promise();
+            var widget = require('sheet/widgets/' + this.definition.widget().type());
+            this.widget = new widget();
+            this.widget.applyDefinition(this.definition.widget())
         },
 
         /**
@@ -81,30 +45,18 @@ define(["sheet/Component"], function(Component){
          */
         render     : function(){
 
-            var me = this;
-            var d = $.Deferred();
-            this.widgetLoading.done(function(){
-                me.widget.render();
-                d.resolve();
-                $(me).trigger("rendered");
-            })
-
-            return d.promise();
         },
 
         /**
          * Добавление в DOM
          * @param parent
          */
-        materializeTo : function(parent){
+        inject : function(element){
 
             var me = this;
             //матеарилизация компонента
-            this._super(parent);
-            //материализация виджета компонента
-            this.widgetLoading.done(function(){
-                me.widget.materializeTo(me.view);
-            });
+            this.parent(element);
+            this.widget.inject(me.view);
         }
     });
 

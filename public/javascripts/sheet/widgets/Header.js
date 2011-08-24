@@ -9,32 +9,34 @@
  */
 define(["sheet/Widget"], function(Widget){
 
+    var HeaderWidget = new Class({
 
+        Extends : Widget,
 
-    var HeaderWidget = Widget.extend({
+        options : {
 
-        init : function(definition, settings){
-
-            var default_settings = {
-                value : "Column"
+            elementTemplate: function(params){
+                table({class: 'tbl-column-header'},
+                    tr(
+                        td({class: 'column-title'},
+                            params.value
+                        ),
+                        td({class: 'column-resizer-container'},
+                            div({class: 'column-resizer'})
+                        )
+                    )
+                )
             }
+        },
 
-            this._super(definition, $.extend({}, default_settings, settings));
+        initialize : function(options){
+
+            this.parent(options);
         },
 
         render : function(){
 
-            this.view.html(
-                    "<table class='tbl-column-header'>" +
-                        "<tr>" +
-                            "<td class='column-title'>" +
-                                this.value().toString() +
-                            "</td>" +
-                            "<td class='column-resizer-container'>" +
-                                "<div class='column-resizer'></div>" +
-                            "</td>" +
-                        "</tr>" +
-                    "</table>")
+            this.options.elementTemplate.render({value:this.value}).replaces(this.view);
         }
     })
 

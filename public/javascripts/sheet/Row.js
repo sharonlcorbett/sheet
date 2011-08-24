@@ -10,44 +10,50 @@ define([
         Component,
         Cell){
 
-    var Row = Component.extend({
+    var Row = new Class({
 
-        init       : function(definition, settings){
+        Extends : Component,
 
-            var default_settings = {
+        options : {
 
-                template : "<tr></tr>",
-                height   : 20,
-                cells    : []
-            }
+            elementTag : 'tr'
+        },
+
+        cells : [],
+
+        initialize : function(options){
 
             var me = this;
+            this.parent(options);
+        },
 
-            this.definition = definition;
-            this._super(definition, $.extend({}, default_settings, settings));
+        applyDefinition : function(def){
 
-            _(this.definition.cells()).each(function(cell){
+            var me = this;
+            this.parent(def);
+            def.cells().each(function(cell){
                 //создаем строки на основании Definition
-                me.cells.push(new Cell(cell));
-            });
+                var c = new Cell();
+                c.applyDefinition(cell);
+                me.cells.push(c);
+            })
+        },
 
-            $(this).bind("materialized", function(){
-                //при материализиции панели заголовков материализуем Headerы
-                _(me.cells).each(function(cell){
-                    cell.materializeTo(me.view);
-                });
+        inject : function(element){
+
+            var me = this;
+            this.parent(element);
+            this.cells.each(function(cell){
+                cell.inject(me.view);
             });
         },
 
         render : function(){
 
-            var d = $.Deferred();
-            var deferred = []
-            _(this.cells).each(function(c){deferred.push(c.render())});
-            $.when.apply(this, deferred).then(function(){
-                d.resolve();
+            this.cells.each(function(cell){
+                cell.render();
             });
-            return d.promise();
+            this.fireEvent('rendered');
         }
     })
 

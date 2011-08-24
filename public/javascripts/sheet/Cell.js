@@ -6,11 +6,9 @@
  * @param settings
  */
 define([
-    "sheet/WidgetComponent",
-    "sheet/Formatters"
+    "sheet/WidgetComponent"
     ], function(
-        WidgetComponent,
-        Formatters){
+        WidgetComponent){
 
     /**
      * events
@@ -20,16 +18,18 @@ define([
      *  click
      */
 
-    var Cell = WidgetComponent.extend({
+    var Cell = new Class({
 
-        init       : function(definition, settings){
+        Extends : WidgetComponent,
 
-            var default_settings = {
-                template : "<td></td>"
-            }
+        options : {
 
-            this.definition = definition;
-            this._super(definition, $.extend({}, default_settings, settings));
+            elementTag: 'td'
+        },
+
+        initialize       : function(options){
+
+            this.parent(options);
 
             var me = this;
 

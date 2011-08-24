@@ -1,8 +1,10 @@
 
+require([
+    "sheet/definitions/SheetDefinition",
+    "sheet/Sheet",
 
-
-
-require(["sheet/definitions/SheetDefinition"], function(SD){
+    'sheet/widgets/Header',
+    'sheet/widgets/Text'], function(SD, S){
 
     sd = new SD({
 
@@ -62,6 +64,11 @@ require(["sheet/definitions/SheetDefinition"], function(SD){
         ]
     })
 
+    sheet = new S()
+
+    sheet.applyDefinition(sd);
+    sheet.inject(document.getElement('body'));
+    sheet.render();
 })
 
 /*require(["sheet/Sheet", "sheet/Operations"], function(Sheet, Operation){

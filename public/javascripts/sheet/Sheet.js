@@ -10,42 +10,47 @@ define([
         HeaderPanel,
         CellGrid){
 
-    var Sheet = Component.extend({
+    var Sheet = new Class({
 
-        init       : function(definition, settings){
+        Extends : Component,
 
-            var default_settings = {
+        Binds : ['injectComponents'],
 
-                //класс, который будет добавлен к div-у листа
-                class        : "xx-sheet",
-                template     : "<div class='xx-sheet'></div>",
+        options : {
+            elementTag : "div",
+            elementProperties : {
+                class : "xx-sheet"
+            }
+        },
 
-                headersPanel : null,
-                grid        : null,
+        fn : {},
 
-                functions: [
-                    "sheet/functions/Resize"
-                ],
-                fn : {}
-            };
+        functions : [
+            //'sheet/functions/Resize'
+        ],
 
-            var me = this;
-            //создается объект SheetDefinition, вся работа с листом будет идти через него
-            this.definition = new SheetDefinition(definition);
+        initialize : function(options){
 
-             //вызов конструктора Component
-            this._super(definition, $.extend({}, default_settings, settings));
+            this.parent(options)
 
-            this.headersPanel = new HeaderPanel(this.definition);
-            this.grid = new CellGrid(this.definition);
-
-            //после м. листа м. дочерние компоненты
-            $(this).bind("materialized", function(){
-                me.headersPanel.materializeTo(this.view);
-                me.grid.materializeTo(this.view);
-            });
+            this.headersPanel = new HeaderPanel();
+            this.grid         = new CellGrid();
 
             this.functionsLoading = this.loadFunctions();
+        },
+
+        inject : function(element){
+
+            this.parent(element);
+            this.headersPanel.inject(this.view);
+            this.grid.inject(this.view);
+        },
+
+        applyDefinition : function(def){
+
+            this.parent(def);
+            this.headersPanel.applyDefinition(def.columns());
+            this.grid.applyDefinition(def.rows());
         },
 
         /**
@@ -56,46 +61,25 @@ define([
 
             var me = this;
 
-            var d = $.Deferred();
-            this.functionsLoading.done(function(){
+            me.headersPanel.render();
+            me.grid.render();
 
-                $.when(me.headersPanel.render(),
-                 me.grid.render())
-                    .done(function(){
-                        d.resolve();
-                        $(me).trigger("rendered");
-                    });
-            });
-
-            return d.promise();
+            me.fireEvent("rendered");
         },
 
         loadFunctions : function(){
 
-            var me = this,
-                d;
-
-            d = $.Deferred();
-
-            //создание виджета на основе типа объекта
+            var me = this;
             require(this.functions, function(){
+
                 //асинхронная загрузка и инициализация виджета
                 _(arguments).each(function(F){
                     var fn = new F(me);
                     me.fn[fn.name] = fn;
                 });
-                d.resolve();
+
+                me.fireEvent("ready");
             });
-
-            return d.promise();
-        },
-
-        __operations : [],
-
-        runOperation : function(operation){
-
-            this.__operations.push(operation);
-            operation.execute(this.definition);
         }
     });
 
