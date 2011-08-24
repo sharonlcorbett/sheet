@@ -15,16 +15,14 @@ define([
 
         Extends : Definition,
 
+        idx : null,
+
         initialize       : function(def){
 
             this.addFields([
                 {
                     name : "height",
                     defaultValue : 20
-                },
-                {
-                    name : "orderable",
-                    defaultValue : true
                 },
                 {
                     name : "editable",
@@ -35,12 +33,9 @@ define([
                     defaultValue : null
                 },
                 {
-                    name : "idx"
-                },
-                {
                     name : "cells",
                     type : "collection",
-                    construct : CellDefinition
+                    elementConstructor : CellDefinition
                 }
             ]);
 

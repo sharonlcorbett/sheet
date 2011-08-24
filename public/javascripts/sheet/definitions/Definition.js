@@ -41,7 +41,8 @@ define(['sheet/helpers/Field',
                     throw "Unknown field in definition: " + key
                 }
 
-                if (!(check_if_null * (typeof me[key]() != "undefined"))){
+                if (!(check_if_null * (typeof me[key].field.value != "undefined"))){
+                    //console.log("Setup " + key + " with '" + value + "'")
                     me[key](value);
                 }
             });
@@ -78,6 +79,20 @@ define(['sheet/helpers/Field',
 
                 me.addField(field_stx);
             })
+        },
+
+        asJSON : function(){
+
+            var dump = {}
+            Object.each(this.fields, function(field, key){
+
+                var field_dump = field.asJSON();
+                if (typeof field_dump != "undefined"){
+                    dump[field.name] = field_dump;
+                }
+            });
+
+            return dump;
         }
     });
 

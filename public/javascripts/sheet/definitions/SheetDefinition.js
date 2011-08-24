@@ -25,8 +25,6 @@ define([
 
             this.operationManager = new OperationManager(this);
 
-            this.parent();
-
             this.addFields([
                 {
                     name : "resizeMode",
@@ -45,16 +43,6 @@ define([
             ]);
 
             this.parent(def);
-        },
-
-        rowsCount : function(){
-
-            return this.columns.field.count();
-        },
-
-        columnsCount : function(){
-
-            return this.rows.field.count();
         },
 
         buildInheritedCellDefinitions : function(){
@@ -101,8 +89,9 @@ define([
             columns.each(function(column, index){
 
                 var ccol = new ColumnDefinition(column);
+
                 ccol.operationManager = me.operationManager;
-                ccol.idx(index);
+                ccol.idx = index;
                 collection.push(ccol);
             });
 
@@ -116,7 +105,7 @@ define([
 
             rows.each(function(row, index){
 
-                if(row.cells.length != me.columnsCount()){
+                if(row.cells.length != me.columns.field.count()){
                     throw "Wrong row definition: Cell count mismatch!"
                 }
 
@@ -125,12 +114,12 @@ define([
 
                 collection.push(crow);
 
-                crow.idx(index);
+                crow.idx = index;
 
                 crow.cells().each(function(cell, index){
                     cell.operationManager = me.operationManager;
-                    cell.row(crow);
-                    cell.column(collection[index]);
+                    cell.row = crow;
+                    cell.column = collection[index];
                 });
             });
 

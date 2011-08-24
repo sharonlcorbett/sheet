@@ -16,28 +16,35 @@ define([
 
         Extends : Definition,
 
+        column : null,
+
+        row : null,
+
         initialize       : function(def){
 
             this.addFields([
                 {
-                    name : "editable"
+                    name : "editable",
+                    emptyGetter : function(){
+                        this.column.editable();
+                    }
                 },
                 {
                     name : "format"
                 },
                 {
-                    name: "value"
+                    name: "value",
+                    emptyGetter : function(){
+                        this.column.defaultValue();
+                    }
                     //setter_constructor : this.createOperation
                 },
                 {
-                    name : "column"
-                },
-                {
-                    name : "row"
-                },
-                {
                     name : "widget",
-                    valueConstructor : WidgetDefinition
+                    valueConstructor : WidgetDefinition,
+                    emptyGetter : function(){
+                        this.column.defaultWidget();
+                    }
                 }
             ]);
 
@@ -60,35 +67,14 @@ define([
             }
         },
 
-        value : function(){
-
-            var val = this.constructed_setters["value"].apply(this, arguments);
-            if (typeof val == "undefined"){
-                return this.inheritedValue();
-            }
-            return val;
-        },
-
-        inheritedWidget : function(){
-            return this.column().defaultWidget();
-        },
-
-        inheritedEditable : function(){
-            return this.column().editable();
-        },
-
-        inheritedValue : function(){
-            return this.column().defaultValue();
-        },
-
         rowIdx : function(){
 
-            return this.row().idx();
+            return this.row.idx;
         },
 
         colIdx : function(){
 
-            return this.column().idx();
+            return this.column.idx;
         }
     });
 

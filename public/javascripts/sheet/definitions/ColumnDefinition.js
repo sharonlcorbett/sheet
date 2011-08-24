@@ -11,44 +11,57 @@ define([
         HeaderDefinition,
         WidgetDefinition){
 
-    var ColumnDefinition = Definition.extend({
+    var ColumnDefinition = new Class({
 
-        init       : function(settings){
+        Extends : Definition,
 
-            var default_settings = {
-                flex        : 1,
-                resizable   : false,
-                orderable   : false,
-                editable    : false,
-                width       : 0,
-                format      : null,
-                defaultWidget: {
-                    type : "Text"
+        idx : null,
+
+        initialize       : function(def){
+
+            this.addFields([
+                {
+                    name : "flex",
+                    defaultValue : 1
                 },
-                defaultValue : "",
-                idx     : null
-            };
-
-            this.addSetters([
-                "flex",
-                "resizable",
-                "orderable",
-                "editable",
-                "width",
-                "format",
-                "defaultValue",
+                {
+                    name : "resizable",
+                    defaultValue : false
+                },
+                {
+                    name : "orderable",
+                    defaultValue : false
+                },
+                {
+                    name : "editable",
+                    defaultValue : false
+                },
+                {
+                    name : "width",
+                    defaultValue : 0
+                },
+                {
+                    name : "format",
+                    defaultValue : null
+                },
+                {
+                    name : "defaultValue",
+                    defaultValue : ""
+                },
                 {
                     name : "header",
-                    class: HeaderDefinition
+                    valueConstructor: HeaderDefinition
                 },
                 {
                     name : "defaultWidget",
-                    class: WidgetDefinition
-                },
-                "idx"
+                    valueConstructor: WidgetDefinition,
+                    defaultValue : {
+                        type : "Text"
+                    }
+                }
             ]);
 
-            this.setup($.extend({}, default_settings, settings));
+            this.parent(def)
         }
 
     });

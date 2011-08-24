@@ -2,23 +2,22 @@ define([
     'sheet/definitions/Definition'
     ], function(Definition){
 
-    var Widget = Definition.extend({
+    var Widget = new Class({
 
-        init       : function(settings){
+        Extends : Definition,
 
-            var default_settings = {
-                type       : "Text",
-                //значение, содержащееся в ячейке
-                value      : "",
-                formatter  : function(x){return x}
-            }
+        initialize       : function(def){
 
-            this.addSetters([
-                "formatter",
-                "type"
+            this.addFields([
+                {
+                    name : "settings"
+                },
+                {
+                    name : "type"
+                }
             ]);
 
-            this.setup($.extend({}, default_settings, settings));
+            this.parent(def)
         }
     });
 

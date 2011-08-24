@@ -17,6 +17,8 @@ define(function(){
             this.elementConstructor = stx.elementConstructor || null;
             this.collectionConstructor = stx.collectionConstructor || null;
             this.collection = [];
+
+            this.serialize = stx.serialize;
         },
 
         getAll : function(){
@@ -27,8 +29,18 @@ define(function(){
         addElement : function(elem){
 
             var el = elem;
-            if (typeOf(this.elementConstructor) == "function"){
-                el = new this.elementConstructor(elem);
+
+            switch(typeOf(this.elementConstructor)){
+
+                case "class":
+                    el = new this.elementConstructor(elem);
+                    break;
+                case "function":
+                    el = this.elementConstructor(elem);
+                    break;
+                default :
+                    el = elem;
+                    break;
             }
 
             this.collection.push(el);
@@ -71,6 +83,15 @@ define(function(){
         count : function(){
 
             return this.collection.length;
+        },
+
+        asJSON: function(){
+
+            var dump = [];
+            this.collection.each(function(elem){
+                dump.push(elem.asJSON());
+            })
+            return dump;
         }
     })
 })

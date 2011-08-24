@@ -22,16 +22,17 @@ define(function(){
             this.value = undefined;
             this.fixed = stx.fixed || false;
 
-            this.setDefault();
-
             this.applied = false;
             this.freezed = false;
+
+            this.serialize = stx.serialize;
+            if (typeof this.serialize == "undefined") this.serialize = true;
         },
 
-        setDefault : function(){
+        setToDefault : function(){
 
-            if (typeOf(this.defaultValue) != "null"){
-                this.setValue(this.defaultValue);
+            if (typeof this.defaultValue != "undefined"){
+                this.setValueStrict(undefined);
             }
         },
 
@@ -42,9 +43,14 @@ define(function(){
 
         getValue : function(){
 
-            if (typeof this.value == "undefined" && typeOf(this.empty) == "function"){
-                return this.empty()
+            if (typeof this.value == "undefined" && typeOf(this.emptyGetter) == "function"){
+                return this.emptyGetter()
             }
+
+            if (typeof this.value == "undefined" && typeOf(this.defaultValue) != "undefined"){
+                return this.defaultValue
+            }
+
             return this.value;
         },
 
@@ -66,10 +72,22 @@ define(function(){
                 return this.changer(this);
             }
 
-            var value = val;
-            if (typeOf(this.valueConstructor) != "null"){
-               return this.setValueStrict(this.valueConstructor(value));
+            var value;
+
+            switch(typeOf(this.valueConstructor)){
+
+                case "class":
+                    value = new this.valueConstructor(val);
+                    break;
+                case "function":
+                    value = this.valueConstructor(val);
+                    break;
+                default :
+                    value = val;
+                    break;
             }
+
+
             return this.setValueStrict(value);
         },
 
@@ -91,6 +109,17 @@ define(function(){
             this.fireEvent("changed");
             this.applied = true;
             return this.value;
+        },
+
+        asJSON: function(){
+
+            if (typeof this.value == "undefined" || !this.serialize) return;
+
+            if (typeOf(this.value.asJSON) == "function"){
+                return this.value.asJSON()
+            } else {
+                return this.value;
+            }
         }
     })
 })

@@ -9,25 +9,27 @@ define([
         Definition,
         WidgetDefinition){
 
-    var Header = Definition.extend({
+    var Header = new Class({
 
-        init       : function(settings){
+        Extends : Definition,
 
-            var default_settings = {
-                //значение, содержащееся в ячейке
-                value      : "Column",
-                widget : {
-                    type : "Header",
-                    value: "Column"
+        initialize       : function(def){
+
+            this.addFields([
+                {
+                    name : "value",
+                    defaultValue : "Header"
+                },
+                {
+                    name : "widget",
+                    valueConstructor : WidgetDefinition,
+                    defaultValue : {
+                        type : "Header"
+                    }
                 }
-            };
-
-            this.addSetters([
-                "value",
-                { name : "widget", class : WidgetDefinition}
             ]);
 
-            this.setup($.extend({}, default_settings, settings));
+            this.parent(def)
         }
     });
 
