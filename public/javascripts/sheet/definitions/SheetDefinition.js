@@ -7,13 +7,11 @@ define([
     'sheet/definitions/ColumnDefinition',
     'sheet/definitions/RowDefinition',
     'sheet/definitions/CellDefinition',
-    'sheet/OperationManager'
     ], function(
         Definition,
         ColumnDefinition,
         RowDefinition,
-        CellDefinition,
-        OperationManager){
+        CellDefinition){
 
     var SheetDefinition = new Class({
 
