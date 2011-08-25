@@ -1,8 +1,6 @@
 
 - content_for :head do
 
-
-
   = #javascript_include_tag 'rails'
   = javascript_include_tag 'require'
   = javascript_include_tag 'lib/underscore-min'
@@ -10,7 +8,7 @@
   = javascript_include_tag 'lib/mootools-more-1.3.2.1.js'
   = javascript_include_tag 'lib/mooml.js'
   = javascript_include_tag 'application'
-
+  = javascript_include_tag 'qunit.js'
 
   :javascript
       require({
@@ -22,10 +20,9 @@
 
   = stylesheet_link_tag "reset"
   = stylesheet_link_tag "sheet"
+  = stylesheet_link_tag "qunit"
 
 %body
-
-
 
   :javascript
 
@@ -40,3 +37,12 @@
     require(["sheet/start"])
 
     //$("#tabs").tabs();
+
+  %h1#qunit-header
+    QUnit example
+  %h2#qunit-banner
+  #qunit-testrunner-toolbar
+  %h2#qunit-userAgent
+  %ol#qunit-tests
+  #qunit-fixture
+    test markup, will be hidden

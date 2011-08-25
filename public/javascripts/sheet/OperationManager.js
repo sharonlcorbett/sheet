@@ -5,11 +5,11 @@ define(['sheet/operations/Operations'], function(Operations){
 
     var OperationMananger = new Class({
 
-        initialize : function(sheet_def){
+        initialize : function(sheet){
 
             this.operations = [];
             this.current_op_idx = -1;
-            this.sheet_def = sheet_def;
+            this.sheet = sheet;
         },
 
         executeOperation : function(operation){
@@ -22,14 +22,14 @@ define(['sheet/operations/Operations'], function(Operations){
 
         rollback : function(){
 
-            this.operations[this.current_op_idx].rollback(this.sheet_def);
+            this.operations[this.current_op_idx].rollback(this.sheet);
             this.current_op_idx--;
         },
 
         goForward : function(){
 
             this.current_op_idx++;
-            this.operations[this.current_op_idx].execute(this.sheet_def);
+            this.operations[this.current_op_idx].execute(this.sheet);
         },
 
         createOperation : function(alias, args){
@@ -39,8 +39,7 @@ define(['sheet/operations/Operations'], function(Operations){
                 throw 'Operation ' + alias + ' is not registered!'
             }
 
-            var op =  new operation_class();
-            operation_class.apply(op, args);
+            var op = new operation_class(args);
             return op;
         },
 

@@ -54,7 +54,7 @@ define(function(){
                 return this.emptyGetter();
             }
 
-            if (typeof this.value == 'undefined' && typeOf(this.defaultValue) != 'undefined'){
+            if (typeof this.value == 'undefined' && typeOf(this.defaultValue) != 'null'){
                 if(!this.constructedDefault){
                     this.constructedDefault = this.constructValue(this.defaultValue)
                 }
@@ -101,6 +101,11 @@ define(function(){
                 return this.changer(this);
             }
 
+            if (typeof val == "undefined"){
+                this.removeValue()
+                return;
+            }
+
             var value = this.constructValue(val);
 
             return this.setValueStrict(value);
@@ -118,7 +123,7 @@ define(function(){
 
         setValueStrict : function(val){
 
-            if (this.fixed && this.applied) return;
+            if (this.fixed && this.applied || this.freezed) return;
 
             this.value = val;
             this.fireEvent('changed', [this, this.getValue()]);

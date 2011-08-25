@@ -9,12 +9,12 @@ define([
 
             Extends : Operation,
 
-            initilize : function(rowx, colx, field_name, value){
+            initialize : function(stx){
 
-                this.row_idx  = rowx;
-                this.col_idx = colx;
-                this.value = value;
-                this.field_name = field_name;
+                this.row_idx    = stx.row_idx;
+                this.col_idx    = stx.col_idx;
+                this.value      = stx.value;
+                this.field_name = stx.field_name;
 
                 this.parent();
             },

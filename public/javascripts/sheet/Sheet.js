@@ -3,12 +3,15 @@ define([
     'sheet/definitions/SheetDefinition',
     'sheet/Component',
     'sheet/HeaderPanel',
-    'sheet/CellGrid'
+    'sheet/CellGrid',
+    'sheet/OperationManager',
+    'sheet/unit/definitions'
     ], function(
         SheetDefinition,
         Component,
         HeaderPanel,
-        CellGrid){
+        CellGrid,
+        OperationManager){
 
     var Sheet = new Class({
 
@@ -29,6 +32,8 @@ define([
             //'sheet/functions/Resize'
         ],
 
+        operationManager : null,
+
         initialize : function(options){
 
             this.parent(options)
@@ -37,6 +42,7 @@ define([
             this.grid         = new CellGrid();
 
             this.functionsLoading = this.loadFunctions();
+            this.operationManager = new OperationManager(this);
         },
 
         inject : function(element){
