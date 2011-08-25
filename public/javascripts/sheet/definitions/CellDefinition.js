@@ -26,8 +26,8 @@ define([
                 {
                     name : "editable",
                     emptyGetter : function(){
-                        this.column.editable();
-                    }
+                        return this.column.editable();
+                    }.bind(this)
                 },
                 {
                     name : "format"
@@ -35,16 +35,16 @@ define([
                 {
                     name: "value",
                     emptyGetter : function(){
-                        this.column.defaultValue();
-                    }
+                        return this.column.defaultValue();
+                    }.bind(this)
                     //setter_constructor : this.createOperation
                 },
                 {
                     name : "widget",
                     valueConstructor : WidgetDefinition,
                     emptyGetter : function(){
-                        this.column.defaultWidget();
-                    }
+                        return this.column.defaultWidget();
+                    }.bind(this)
                 }
             ]);
 

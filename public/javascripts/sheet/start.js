@@ -6,7 +6,7 @@ require([
     'sheet/widgets/Header',
     'sheet/widgets/Text'], function(SD, S){
 
-    sd = new SD({
+    sd = {
 
         resizeMode : "screen",
 
@@ -39,30 +39,16 @@ require([
                         value : "Привет"
                     }
                 ]
-            },
-            {
-                cells : [{}, {}]
-            },
-            {
-                cells : [{}, {}]
-            },
-            {
-                cells : [{}, {}]
-            },
-            {
-                cells : [{}, {}]
-            },
-            {
-                cells : [{}, {}]
-            },
-            {
-                cells : [{}, {}]
-            },
-            {
-                cells : [{}, {}]
             }
         ]
-    })
+    }
+
+    for(var i=1; i<56; i++){
+
+        sd.rows.push({cells:[{value:Math.random()},{value:Math.random()}]});
+    }
+
+    sd = new SD(sd);
 
     sheet = new S()
 

@@ -29,22 +29,27 @@ define([
 
         initialize       : function(options){
 
-            this.parent(options);
+            this.parent(options)
+        },
 
-            var me = this;
+        render : function(){
 
-            /*$(this.definition).bind("setter", function(e, name, val){
+            this.widget.render();
+        },
 
-                switch(name){
+        applyDefinition: function(def){
 
-                    case "value":
-                        if (me.widgetLoading.isResolved()){
-                            me.widget.value(val);
-                        }
-                    break;
-                }
-            })*/
+            this.parent(def);
+            this.widget.value = this.definition.value();
+
+            this.definition.watchFields({
+                value : function(field, value){
+                    this.widget.value = value;
+                    this.widget.render();
+                }.bind(this)
+            });
         }
+
     })
 
     return Cell;

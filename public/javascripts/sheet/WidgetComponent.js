@@ -14,16 +14,6 @@ define(["sheet/Component"], function(Component){
 
             var me = this;
             this.parent(options);
-
-            /*this.definition.fieldsListener({
-                "value" : function(e, value){
-                    //при изменении значения value в definition мы должны изменить значение в виджете
-                    me.widget.value(value);
-                    //TODO: Может отдать эту логику виджету?
-                    me.widget.render();
-                }
-            }); */
-
         },
 
         applyDefinition : function(def){

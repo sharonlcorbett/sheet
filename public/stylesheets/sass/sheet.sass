@@ -21,7 +21,7 @@
   border:none
   width: 100%
 
-  overflow : auto
+  height: 100%
 
   @import "headers"
 
@@ -31,12 +31,17 @@
       @include cell-font
       color: white
 
+  overflow: auto
+
   .grid
+
+    height : 100%
 
     table
       border-collapse: collapse
       width: 100%
       table-layout: fixed
+      overflow: scroll
 
     tr
 
@@ -101,5 +106,3 @@ body, html
   margin: 0
   padding: 0
   height: 100%
-
-

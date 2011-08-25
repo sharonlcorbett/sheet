@@ -119,7 +119,7 @@ define([
                 crow.cells().each(function(cell, index){
                     cell.operationManager = me.operationManager;
                     cell.row = crow;
-                    cell.column = collection[index];
+                    cell.column = me.columnAt(index);
                 });
             });
 

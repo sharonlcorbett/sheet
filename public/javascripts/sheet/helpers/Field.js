@@ -46,6 +46,8 @@ define(function(){
             return this.value
         },
 
+        constructedDefault : null,
+
         getValue : function(){
 
             if (typeof this.value == "undefined" && typeOf(this.emptyGetter) == "function"){
@@ -53,7 +55,10 @@ define(function(){
             }
 
             if (typeof this.value == "undefined" && typeOf(this.defaultValue) != "undefined"){
-                return this.constructValue(this.defaultValue);
+                if(!this.constructedDefault){
+                    this.constructedDefault = this.constructValue(this.defaultValue)
+                }
+                return this.constructedDefault;
             }
 
             return this.value;
@@ -116,9 +121,8 @@ define(function(){
             if (this.fixed && this.applied) return;
 
             this.value = val;
-            this.fireEvent("changed");
+            this.fireEvent("changed", [this, this.getValue()]);
             this.applied = true;
-            return this.value;
         },
 
         asJSON: function(){

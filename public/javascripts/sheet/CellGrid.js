@@ -22,14 +22,19 @@ define([
         initialize       : function(options){
 
             var me = this;
-
             this.parent(options);
+        },
 
-            /*_(this.definition.rows()).each(function(row_d){
+        applyDefinition : function(def){
+
+            this.parent(def)
+            var me = this;
+            def.each(function(row){
                 //создаем строки на основании Definition
-                var crow = new Row(row_d);
+                var crow = new Row();
+                crow.applyDefinition(row);
                 me.rows.push(crow);
-            });*/
+            });
         },
 
         inject : function(element){
