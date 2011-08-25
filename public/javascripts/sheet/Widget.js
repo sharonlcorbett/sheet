@@ -1,4 +1,4 @@
-define(["sheet/Component"], function(Component){
+define(['sheet/Component'], function(Component){
 
     var Widget = new Class({
 

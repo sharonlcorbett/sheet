@@ -27,17 +27,17 @@ define([
 
             this.addFields([
                 {
-                    name : "resizeMode",
-                    defaultValue : "screen"
+                    name : 'resizeMode',
+                    defaultValue : 'screen'
                 },
                 {
-                    name : "columns",
-                    type : "collection",
+                    name : 'columns',
+                    type : 'collection',
                     collectionConstructor : this.createColumns
                 },
                 {
-                    name : "rows",
-                    type : "collection",
+                    name : 'rows',
+                    type : 'collection',
                     collectionConstructor : this.createRows
                 }
             ]);
@@ -106,7 +106,7 @@ define([
             rows.each(function(row, index){
 
                 if(row.cells.length != me.columns.field.count()){
-                    throw "Wrong row definition: Cell count mismatch!"
+                    throw 'Wrong row definition: Cell count mismatch!'
                 }
 
                 var crow = new RowDefinition(row);

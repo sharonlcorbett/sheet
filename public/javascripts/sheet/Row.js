@@ -5,8 +5,8 @@
  * @param table_row
  */
 define([
-    "sheet/Component",
-    "sheet/Cell"], function(
+    'sheet/Component',
+    'sheet/Cell'], function(
         Component,
         Cell){
 

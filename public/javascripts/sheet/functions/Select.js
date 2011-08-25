@@ -10,7 +10,7 @@ define(function(){
 
             init: function(sheet){
                 $(sheet.getCells()).click(function(){
-                    //$(this.table_cell).addClass("selected-cell")
+                    //$(this.table_cell).addClass('selected-cell')
                 })
             }
         }

@@ -1,9 +1,9 @@
 
 define([
-    "sheet/definitions/SheetDefinition",
-    "sheet/Component",
-    "sheet/HeaderPanel",
-    "sheet/CellGrid"
+    'sheet/definitions/SheetDefinition',
+    'sheet/Component',
+    'sheet/HeaderPanel',
+    'sheet/CellGrid'
     ], function(
         SheetDefinition,
         Component,
@@ -17,9 +17,9 @@ define([
         Binds : ['injectComponents'],
 
         options : {
-            elementTag : "div",
+            elementTag : 'div',
             elementProperties : {
-                class : "xx-sheet"
+                class : 'xx-sheet'
             }
         },
 
@@ -64,7 +64,7 @@ define([
             me.headersPanel.render();
             me.grid.render();
 
-            me.fireEvent("rendered");
+            me.fireEvent('rendered');
         },
 
         loadFunctions : function(){
@@ -78,7 +78,7 @@ define([
                     me.fn[fn.name] = fn;
                 });
 
-                me.fireEvent("ready");
+                me.fireEvent('ready');
             });
         }
     });

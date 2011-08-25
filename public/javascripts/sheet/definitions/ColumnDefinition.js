@@ -21,42 +21,42 @@ define([
 
             this.addFields([
                 {
-                    name : "flex",
+                    name : 'flex',
                     defaultValue : 1
                 },
                 {
-                    name : "resizable",
+                    name : 'resizable',
                     defaultValue : false
                 },
                 {
-                    name : "orderable",
+                    name : 'orderable',
                     defaultValue : false
                 },
                 {
-                    name : "editable",
+                    name : 'editable',
                     defaultValue : false
                 },
                 {
-                    name : "width",
+                    name : 'width',
                     defaultValue : 0
                 },
                 {
-                    name : "format",
+                    name : 'format',
                     defaultValue : null
                 },
                 {
-                    name : "defaultValue",
-                    defaultValue : ""
+                    name : 'defaultValue',
+                    defaultValue : ''
                 },
                 {
-                    name : "header",
+                    name : 'header',
                     valueConstructor: HeaderDefinition
                 },
                 {
-                    name : "defaultWidget",
+                    name : 'defaultWidget',
                     valueConstructor: WidgetDefinition,
                     defaultValue : {
-                        type : "Text"
+                        type : 'Text'
                     }
                 }
             ]);

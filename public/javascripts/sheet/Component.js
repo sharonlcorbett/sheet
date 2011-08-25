@@ -63,8 +63,8 @@ define(function(){
             this.phantom = false;
 
             //теперь Cell можно получить через data
-            this.view.store("component", this);
-            this.fireEvent("injected");
+            this.view.store('component', this);
+            this.fireEvent('injected');
         },
 
         definition : null,

@@ -6,7 +6,7 @@
  */
 define([
     'sheet/definitions/Definition',
-    "sheet/definitions/CellDefinition"
+    'sheet/definitions/CellDefinition'
     ], function(
         Definition,
         CellDefinition){
@@ -21,20 +21,20 @@ define([
 
             this.addFields([
                 {
-                    name : "height",
+                    name : 'height',
                     defaultValue : 20
                 },
                 {
-                    name : "editable",
+                    name : 'editable',
                     defaultValue : false
                 },
                 {
-                    name : "format",
+                    name : 'format',
                     defaultValue : null
                 },
                 {
-                    name : "cells",
-                    type : "collection",
+                    name : 'cells',
+                    type : 'collection',
                     elementConstructor : CellDefinition
                 }
             ]);

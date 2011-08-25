@@ -17,14 +17,14 @@ define([
 
             this.addFields([
                 {
-                    name : "value",
-                    defaultValue : "Header"
+                    name : 'value',
+                    defaultValue : 'Header'
                 },
                 {
-                    name : "widget",
+                    name : 'widget',
                     valueConstructor : WidgetDefinition,
                     defaultValue : {
-                        type : "Header"
+                        type : 'Header'
                     }
                 }
             ]);

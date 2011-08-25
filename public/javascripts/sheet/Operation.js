@@ -13,9 +13,9 @@ define( function(){
             this.resolved = false;
             this.reverted = false;
 
-            if (typeof this.forwardFunction == "undefined" ||
-                typeof this.backwardFunction == "undefined"){
-                throw "Operation must provide forward and backward functions"
+            if (typeof this.forwardFunction == 'undefined' ||
+                typeof this.backwardFunction == 'undefined'){
+                throw 'Operation must provide forward and backward functions'
             }
         },
 
@@ -29,7 +29,7 @@ define( function(){
                 this.forwardFunction(def);
                 this.resolved = true;
             } else {
-                throw "You trying to execute operation than has been executed already!"
+                throw 'You trying to execute operation than has been executed already!'
             }
         },
 
@@ -44,7 +44,7 @@ define( function(){
                 this.reverted = true;
                 this.resolved = false;
             } else {
-                throw "You trying to revert operation than has not been executed!"
+                throw 'You trying to revert operation than has not been executed!'
             }
         },
 

@@ -6,7 +6,7 @@
  * @param settings
  */
 define([
-    "sheet/WidgetComponent"
+    'sheet/WidgetComponent'
     ], function(
         WidgetComponent){
 

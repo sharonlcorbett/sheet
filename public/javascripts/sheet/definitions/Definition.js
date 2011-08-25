@@ -31,19 +31,19 @@ define(['sheet/helpers/Field',
          */
         setupIf : function(settings, check_if_null){
 
-            if (typeof check_if_null == "undefined") check_if_null = true;
+            if (typeof check_if_null == 'undefined') check_if_null = true;
 
             if (!settings) return;
             var me = this;
 
             Object.each(settings, function(value, key){
 
-                if (typeof me[key] == "undefined"){
-                    throw "Unknown field in definition: " + key
+                if (typeof me[key] == 'undefined'){
+                    throw 'Unknown field in definition: ' + key
                 }
 
-                if (!(check_if_null * (typeof me[key].field.value != "undefined"))){
-                    //console.log("Setup " + key + " with '" + value + "'")
+                if (!(check_if_null * (typeof me[key].field.value != 'undefined'))){
+                    //console.log('Setup ' + key + ' with '' + value + ''')
                     me[key](value);
                 }
             });
@@ -65,10 +65,10 @@ define(['sheet/helpers/Field',
 
             var me = this;
 
-            if(typeOf(stx.name) == "null"){throw "name of the field must be set"}
+            if(typeOf(stx.name) == 'null'){throw 'name of the field must be set'}
 
             switch(stx.type){
-                case "collection":
+                case 'collection':
                     this.fields[stx.name] = new CollectionField(stx);
                 break;
 
@@ -111,7 +111,7 @@ define(['sheet/helpers/Field',
             Object.each(this.fields, function(field, key){
 
                 var field_dump = field.asJSON();
-                if (typeof field_dump != "undefined"){
+                if (typeof field_dump != 'undefined'){
                     dump[field.name] = field_dump;
                 }
             });
@@ -123,7 +123,7 @@ define(['sheet/helpers/Field',
 
             var me = this;
             Object.each(stx, function(callback, field_name){
-                me.fields[field_name].addEvent("changed", callback);
+                me.fields[field_name].addEvent('changed', callback);
             })
         }
 

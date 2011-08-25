@@ -10,10 +10,10 @@ define([
 
             this.addFields([
                 {
-                    name : "settings"
+                    name : 'settings'
                 },
                 {
-                    name : "type"
+                    name : 'type'
                 }
             ]);
             this.parent(def)

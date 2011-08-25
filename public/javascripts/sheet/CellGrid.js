@@ -1,6 +1,6 @@
 define([
-    "sheet/Component",
-    "sheet/Row"], function(
+    'sheet/Component',
+    'sheet/Row'], function(
         Component,
         Row){
 

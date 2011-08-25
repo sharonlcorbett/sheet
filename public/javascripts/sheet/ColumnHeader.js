@@ -1,5 +1,5 @@
 define([
-    "sheet/WidgetComponent"], function(WidgetComponent){
+    'sheet/WidgetComponent'], function(WidgetComponent){
 
     var ColumnHeader = new Class({
 

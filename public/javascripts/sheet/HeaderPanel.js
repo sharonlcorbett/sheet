@@ -2,8 +2,8 @@
  * Строка заголовков, одна на лист
  */
 define([
-    "sheet/Component",
-    "sheet/ColumnHeader"], function(
+    'sheet/Component',
+    'sheet/ColumnHeader'], function(
         Component,
         ColumnHeader){
 

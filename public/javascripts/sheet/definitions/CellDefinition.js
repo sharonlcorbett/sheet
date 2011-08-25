@@ -6,8 +6,8 @@
  * @param settings
  */
 define([
-    "sheet/definitions/WidgetDefinition",
-    "sheet/definitions/Definition"
+    'sheet/definitions/WidgetDefinition',
+    'sheet/definitions/Definition'
     ], function(
         WidgetDefinition,
         Definition){
@@ -24,23 +24,23 @@ define([
 
             this.addFields([
                 {
-                    name : "editable",
+                    name : 'editable',
                     emptyGetter : function(){
                         return this.column.editable();
                     }.bind(this)
                 },
                 {
-                    name : "format"
+                    name : 'format'
                 },
                 {
-                    name: "value",
+                    name: 'value',
                     emptyGetter : function(){
                         return this.column.defaultValue();
                     }.bind(this)
                     //setter_constructor : this.createOperation
                 },
                 {
-                    name : "widget",
+                    name : 'widget',
                     valueConstructor : WidgetDefinition,
                     emptyGetter : function(){
                         return this.column.defaultWidget();
@@ -57,9 +57,9 @@ define([
 
             return function(value){
 
-                if(typeof value != "undefined"){
+                if(typeof value != 'undefined'){
                     var op = this.operationManager.createAndRunOperation(
-                        "cell_field_operation", [me.row_idx(), me.col_idx(), field_name, value])
+                        'cell_field_operation', [me.row_idx(), me.col_idx(), field_name, value])
                     me.operationManager.executeOperation(op);
                 } else {
                     return me.setters[field_name]();

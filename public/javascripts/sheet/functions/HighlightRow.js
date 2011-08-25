@@ -8,12 +8,12 @@ define(function(){
         return {
 
             bind_row : function(e, row){
-                row.table_row.bind("mouseenter", function(){
-                    $(this).addClass("hover");
+                row.table_row.bind('mouseenter', function(){
+                    $(this).addClass('hover');
                 })
 
-                row.table_row.bind("mouseleave", function(){
-                    $(this).removeClass("hover");
+                row.table_row.bind('mouseleave', function(){
+                    $(this).removeClass('hover');
                 })
             },
 
@@ -24,7 +24,7 @@ define(function(){
                     me.bind_row(null, this)
                 })
 
-                $(sheet).bind("row_added", this.bind_row)
+                $(sheet).bind('row_added', this.bind_row)
             }
         }
     }

@@ -5,7 +5,7 @@
  * Отслеживать обновление или удаление колонок в этом плагине не нужно, т.к.
  * это делает JQueryUI
  */
-define(["/javascripts/sheet/plugins/Resize.js"],function(){
+define(['/javascripts/sheet/plugins/Resize.js'],function(){
 
     return function(){
 
@@ -19,20 +19,20 @@ define(["/javascripts/sheet/plugins/Resize.js"],function(){
             init : function(sheet){
 
                 sheet.table.sorttable({
-                    //placeholder : "row_placeholder"
+                    //placeholder : 'row_placeholder'
                     //helper : fix_helper,
-                    axis : "x",
+                    axis : 'x',
                     //delay: 100,
                     //cursorAt: {left:20, top:30},
                     opacity:0.5,
                     scroll: true,
                     snap: true,
-                    snapMode: "both",
+                    snapMode: 'both',
                     distance: 15,
-                    cancel: ".th-sep",
-                    items : "th:not(.not-orderable)",
+                    cancel: '.th-sep',
+                    items : 'th:not(.not-orderable)',
                     stop  : function(e, ui){
-                        $(sheet).trigger("column_moved", [ui.item.data("cell")])
+                        $(sheet).trigger('column_moved', [ui.item.data('cell')])
                     }
                 })
 

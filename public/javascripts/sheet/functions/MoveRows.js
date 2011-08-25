@@ -21,10 +21,10 @@ define(function(){
                     return ui;
                 };
 
-                sheet.table.find("tbody:first").sortable({
+                sheet.table.find('tbody:first').sortable({
                     helper: fix_helper,
-                    items: "tr:has(td)",
-                    axis  : "y",
+                    items: 'tr:has(td)',
+                    axis  : 'y',
                     delay: 100
                 })
 

@@ -7,7 +7,7 @@
 /**
  * текстовый виджет, just text
  */
-define(["sheet/Widget"], function(Widget){
+define(['sheet/Widget'], function(Widget){
 
     var TextWidget = new Class({
 
@@ -42,13 +42,13 @@ define(["sheet/Widget"], function(Widget){
 //        var save_state = this.view().html();
 //
 //        //сохраняем высоту и ширину ячейки
-//        var height = "100%";//cell.table_cell.innerHeight();
+//        var height = '100%';//cell.table_cell.innerHeight();
 //        var width  = this.view().width();
 //
 //        //заменяем содержимое ячейки полем ввода
 //        this.view()
-//            .html($("<input type='text' value='"+ cell.getValue() + "'></input>"))
-//            .addClass("text-editing")
+//            .html($('<input type='text' value=''+ cell.getValue() + ''></input>'))
+//            .addClass('text-editing')
 //
 //
 //        /**
@@ -59,11 +59,11 @@ define(["sheet/Widget"], function(Widget){
 //        var cancel_handler = function(){
 //
 //            //удаляем служебные классы и восстанавливаем состояние поля
-//            me.view().removeClass("text-editing")
+//            me.view().removeClass('text-editing')
 //            me.render()
 //
 //            //триггер события edit_cancelled
-//            $(me).trigger("edit_cancelled")
+//            $(me).trigger('edit_cancelled')
 //        }
 //
 //        /**
@@ -73,15 +73,15 @@ define(["sheet/Widget"], function(Widget){
 //         */
 //        var save_handler = function(){
 //
-//            var val = me.view().find("input").val()
+//            var val = me.view().find('input').val()
 //            //удаляем служебные классы
-//            me.view().removeClass("text-editing")
+//            me.view().removeClass('text-editing')
 //
 //            if (me.value() != val){
 //                me.value(val);
-//                $(me).trigger("edit_finished");
+//                $(me).trigger('edit_finished');
 //            } else {
-//                $(me).trigger("edit_cancelled");
+//                $(me).trigger('edit_cancelled');
 //            }
 //
 //            //рендер обновленного значения
@@ -89,17 +89,17 @@ define(["sheet/Widget"], function(Widget){
 //        }
 //
 //        me.view()
-//            .find("input")
+//            .find('input')
 //            //высота и ширина поля ввода должны полностью
 //            //соответстовать ячейке
-//            .css("height", height)
-//            .css("width",  "96%")
+//            .css('height', height)
+//            .css('width',  '96%')
 //            //фокус на поле ввода
 //            .focus()
 //            //сброс выделения
-//            .val(me.view().find("input").val())
+//            .val(me.view().find('input').val())
 //            //привязка событий
-//            .bind("blur change", save_handler)
+//            .bind('blur change', save_handler)
 //            .keydown(function(e) {
 //                // ESCAPE key pressed
 //                if (e.keyCode == 27) {

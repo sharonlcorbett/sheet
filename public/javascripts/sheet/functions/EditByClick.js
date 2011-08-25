@@ -32,10 +32,10 @@ define(function(){
                     me.bind_row.call(me, null, this)
                 })
 
-                $(sheet).bind("row_added", $.proxy(this.bind_row, me))
+                $(sheet).bind('row_added', $.proxy(this.bind_row, me))
 
                 //восстанавливаем двойной клик
-                $(sheet).bind("edit_finished edit_cancelled",
+                $(sheet).bind('edit_finished edit_cancelled',
                     function(e, cell){
                         cell.table_cell.dblclick(function(){me.handler(cell)})
                     })

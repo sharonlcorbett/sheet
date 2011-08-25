@@ -35,8 +35,8 @@ define(['sheet/operations/Operations'], function(Operations){
         createOperation : function(alias, args){
 
             var operation_class = operation_classes[alias];
-            if (typeof operation_class == "undefined"){
-                throw "Operation " + alias + " is not registered!"
+            if (typeof operation_class == 'undefined'){
+                throw 'Operation ' + alias + ' is not registered!'
             }
 
             var op =  new operation_class();
@@ -48,8 +48,6 @@ define(['sheet/operations/Operations'], function(Operations){
 
             this.executeOperation(this.createOperation(alias, args));
         }
-
-
     });
 
     OperationMananger.register = function(alias, operation){

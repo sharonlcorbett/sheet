@@ -1,14 +1,14 @@
 
 require([
-    "sheet/definitions/SheetDefinition",
-    "sheet/Sheet",
+    'sheet/definitions/SheetDefinition',
+    'sheet/Sheet',
 
     'sheet/widgets/Header',
     'sheet/widgets/Text'], function(SD, S){
 
     sd = {
 
-        resizeMode : "screen",
+        resizeMode : 'screen',
 
         columns : [
             {
@@ -16,7 +16,7 @@ require([
                 flex : 1,
                 width: 200,
                 header : {
-                    value : "Название задачи"
+                    value : 'Название задачи'
                 }
             },
             {
@@ -24,7 +24,7 @@ require([
                 flex  : 2,
                 width : 1500,
                 header : {
-                    value : "Описание задачи"
+                    value : 'Описание задачи'
                 }
             }
         ],
@@ -33,10 +33,10 @@ require([
             {
                 cells : [
                     {
-                        value : "Привет"
+                        value : 'Привет'
                     },
                     {
-                        value : "Привет"
+                        value : 'Привет'
                     }
                 ]
             }
@@ -57,11 +57,11 @@ require([
     sheet.render();
 })
 
-/*require(["sheet/Sheet", "sheet/Operations"], function(Sheet, Operation){
+/*require(['sheet/Sheet', 'sheet/Operations'], function(Sheet, Operation){
 
     var sheet = new Sheet({
 
-        resizeMode : "screen",
+        resizeMode : 'screen',
 
         columns : [
             {
@@ -69,7 +69,7 @@ require([
                 flex : 1,
                 width: 200,
                 header : {
-                    value : "Название задачи"
+                    value : 'Название задачи'
                 }
             },
             {
@@ -77,7 +77,7 @@ require([
                 flex  : 2,
                 width : 1500,
                 header : {
-                    value : "Описание задачи"
+                    value : 'Описание задачи'
                 }
             }
         ],
@@ -86,10 +86,10 @@ require([
             {
                 cells : [
                     {
-                        value : "Привет"
+                        value : 'Привет'
                     },
                     {
-                        value : "Привет"
+                        value : 'Привет'
                     }
                 ]
             },
@@ -119,7 +119,7 @@ require([
 
     sheet_def = sheet.definition;
 
-    sheet.materializeTo($("#tabs-1"));
+    sheet.materializeTo($('#tabs-1'));
     sheet.render();
 
 

@@ -32,10 +32,10 @@ define(function(){
 
             switch(typeOf(this.elementConstructor)){
 
-                case "class":
+                case 'class':
                     el = new this.elementConstructor(elem);
                     break;
-                case "function":
+                case 'function':
                     el = this.elementConstructor(elem);
                     break;
                 default :
@@ -44,13 +44,13 @@ define(function(){
             }
 
             this.collection.push(el);
-            this.fireEvent("element_added", el)
+            this.fireEvent('element_added', el)
         },
 
         addElements : function(elems){
 
             var me = this;
-            if (typeOf(this.collectionConstructor) == "function"){
+            if (typeOf(this.collectionConstructor) == 'function'){
                 me.collection = this.collectionConstructor(elems);
             } else {
                 elems.each(function(elem){
@@ -72,7 +72,7 @@ define(function(){
         removeElement : function(el){
 
             this.collection.erase(el);
-            this.fireEvent("element_removed", el)
+            this.fireEvent('element_removed', el)
         },
 
         getAt : function(index){
