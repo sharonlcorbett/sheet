@@ -4,8 +4,7 @@ define([
     'sheet/Component',
     'sheet/HeaderPanel',
     'sheet/CellGrid',
-    'sheet/OperationManager',
-    'sheet/unit/definitions'
+    'sheet/OperationManager'
     ], function(
         SheetDefinition,
         Component,

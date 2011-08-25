@@ -43,10 +43,12 @@ define([
             this.widget.value = this.definition.value();
 
             this.definition.watchFields({
-                value : function(field, value){
-                    this.widget.value = value;
-                    this.widget.render();
-                }.bind(this)
+                value : {
+                    changed: function(field, value){
+                        this.widget.value = value;
+                        this.widget.render();
+                    }.bind(this)
+                }
             });
         }
 

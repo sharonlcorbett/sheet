@@ -44,7 +44,7 @@ define(function(){
             }
 
             this.collection.push(el);
-            this.fireEvent('element_added', el)
+            this.fireEvent('elementAdded', [el, this])
         },
 
         addElements : function(elems){
@@ -72,7 +72,7 @@ define(function(){
         removeElement : function(el){
 
             this.collection.erase(el);
-            this.fireEvent('element_removed', el)
+            this.fireEvent('elementRemoved', [el, this])
         },
 
         getAt : function(index){
@@ -89,7 +89,11 @@ define(function(){
 
             var dump = [];
             this.collection.each(function(elem){
-                dump.push(elem.asJSON());
+                if (typeOf(elem.asJSON) == 'function'){
+                    dump.push(elem.asJSON());
+                } else {
+                    dump.push(elem);
+                }
             })
             return dump;
         }

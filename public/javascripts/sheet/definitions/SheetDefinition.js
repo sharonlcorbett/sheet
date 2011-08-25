@@ -23,8 +23,6 @@ define([
 
         initialize : function(def){
 
-            this.operationManager = new OperationManager(this);
-
             this.addFields([
                 {
                     name : 'resizeMode',
@@ -45,7 +43,7 @@ define([
             this.parent(def);
         },
 
-        buildInheritedCellDefinitions : function(){
+        /*buildInheritedCellDefinitions : function(){
 
             var cells = [];
             this.columns().each(function(column){
@@ -55,7 +53,7 @@ define([
             });
 
             return cells;
-        },
+        },*/
 
         /**
          * Возвращает ячейку с координатами (row, col)
@@ -77,7 +75,6 @@ define([
             return this.rows.field.getAt(row_idx);
         },
 
-
         /**
          * LOADING MECHANICS
          */
@@ -90,7 +87,6 @@ define([
 
                 var ccol = new ColumnDefinition(column);
 
-                ccol.operationManager = me.operationManager;
                 ccol.idx = index;
                 collection.push(ccol);
             });
@@ -110,14 +106,12 @@ define([
                 }
 
                 var crow = new RowDefinition(row);
-                crow.operationManager = me.operationManager
 
                 collection.push(crow);
 
                 crow.idx = index;
 
                 crow.cells().each(function(cell, index){
-                    cell.operationManager = me.operationManager;
                     cell.row = crow;
                     cell.column = me.columnAt(index);
                 });

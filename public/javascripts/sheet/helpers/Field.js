@@ -126,7 +126,7 @@ define(function(){
             if (this.fixed && this.applied || this.freezed) return;
 
             this.value = val;
-            this.fireEvent('changed', [this, this.getValue()]);
+            this.fireEvent('changed', [this.getValue(), this]);
             this.applied = true;
         },
 

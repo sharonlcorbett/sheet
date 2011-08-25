@@ -4,7 +4,10 @@ require([
     'sheet/Sheet',
 
     'sheet/widgets/Header',
-    'sheet/widgets/Text'], function(SD, S){
+    'sheet/widgets/Text',
+
+    'sheet/unit/definitions',
+    'sheet/unit/sheet_definition'], function(SD, S){
 
     sd = {
 

@@ -37,7 +37,6 @@ define([
                     emptyGetter : function(){
                         return this.column.defaultValue();
                     }.bind(this)
-                    //setter_constructor : this.createOperation
                 },
                 {
                     name : 'widget',
@@ -49,22 +48,6 @@ define([
             ]);
 
             this.parent(def);
-        },
-
-        createOperation : function(field_name){
-
-            var me = this;
-
-            return function(value){
-
-                if(typeof value != 'undefined'){
-                    var op = this.operationManager.createAndRunOperation(
-                        'cell_field_operation', [me.row_idx(), me.col_idx(), field_name, value])
-                    me.operationManager.executeOperation(op);
-                } else {
-                    return me.setters[field_name]();
-                }
-            }
         },
 
         rowIdx : function(){

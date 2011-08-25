@@ -13,7 +13,6 @@ define(['sheet/helpers/Field',
         initialize       : function(stx){
 
             this.setup(stx);
-            this.operationManager = null
         },
 
         setup      : function(settings){
@@ -43,7 +42,6 @@ define(['sheet/helpers/Field',
                 }
 
                 if (!(check_if_null * (typeof me[key].field.value != 'undefined'))){
-                    //console.log('Setup ' + key + ' with '' + value + ''')
                     me[key](value);
                 }
             });
@@ -122,8 +120,10 @@ define(['sheet/helpers/Field',
         watchFields : function(stx){
 
             var me = this;
-            Object.each(stx, function(callback, field_name){
-                me.fields[field_name].addEvent('changed', callback);
+            Object.each(stx, function(events, field_name){
+                Object.each(events, function(callback, event_name){
+                    me.fields[field_name].addEvent(event_name, callback);
+                })
             })
         }
 
