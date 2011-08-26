@@ -14,16 +14,26 @@ define(function(){
 
             this.uid  = String.uniqueID();
             this.name = stx.name;
+
             this.elementConstructor = stx.elementConstructor || null;
             this.collectionConstructor = stx.collectionConstructor || null;
             this.collection = [];
 
             this.serialize = stx.serialize;
+
+            this.field = this;
         },
 
         getAll : function(){
 
             return this.collection;
+        },
+
+        addElementStrict : function(el){
+
+            this.collection.push(el);
+            this.fireEvent('elementAdded', [el, this]);
+            return el;
         },
 
         addElement : function(elem){
@@ -43,8 +53,7 @@ define(function(){
                     break;
             }
 
-            this.collection.push(el);
-            this.fireEvent('elementAdded', [el, this])
+            return this.addElementStrict(el);
         },
 
         addElements : function(elems){
@@ -96,6 +105,10 @@ define(function(){
                 }
             })
             return dump;
+        },
+
+        each : function(){
+            this.collection.each.apply(this.collection, arguments)
         }
     })
 })

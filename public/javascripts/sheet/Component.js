@@ -2,7 +2,7 @@
  * Визуальный контрол,
  * содержащий определенный набор разных DOM - элементов листа
  */
-define(function(){
+define(['sheet/Definition'], function(Definition){
 
     /**
      * События:
@@ -14,7 +14,7 @@ define(function(){
 
     var Component = new Class({
 
-        Implements : [Options, Events],
+        Implements : [Options, Events, Definition],
 
         options : {
             elementTag : 'div',
@@ -28,11 +28,26 @@ define(function(){
         initialize       : function(options){
 
            this.setOptions(options || {});
+
+            if (this.options.elementTemplate){
+                this.options.elementTemplate = this.compileTemplate(this.options.elementTemplate);
+            }
+
+            if (this.options.elementTemplate){
+                this.view = this.options.elementTemplate.render();
+            } else {
+                this.view = new Element(this.options.elementTag, this.options.elementProperties)
+            }
+
+            //теперь Cell можно получить через data
+            this.view.store('component', this);
         },
 
         parentView : function(){
 
-            return $(this.view).parent();
+            if(!this.phantom){
+                return this.view.getParent();
+            }
         },
 
         compileTemplate : function(template){
@@ -46,34 +61,11 @@ define(function(){
          */
         inject : function(parent){
 
-            //материализация не разрешается для уже матеарилизованных компонент
-            if (!this.phantom) return;
-
-            if (!this.view) {
-                if (this.options.elementTemplate){
-                    this.options.elementTemplate = this.compileTemplate(this.options.elementTemplate);
-                    this.view = this.options.elementTemplate.render();
-                } else {
-                    this.view = new Element(this.options.elementTag, this.options.elementProperties)
-                }
-            }
-
-            this.view.inject(parent)
+            this.view.inject(parent);
 
             this.phantom = false;
-
-            //теперь Cell можно получить через data
-            this.view.store('component', this);
             this.fireEvent('injected');
-        },
-
-        definition : null,
-
-        applyDefinition : function(def){
-
-            this.definition = def;
         }
-
     })
 
     return Component;

@@ -29,12 +29,12 @@ define([
             this.parent(options)
         },
 
-        applyDefinition : function(def){
+        applyDefinition : function(sheet_def){
 
             var me = this;
-            this.parent(def);
+            this.parent(sheet_def);
 
-            def.each(function(column){
+           sheet_def.columns().each(function(column){
                 //создаем заголовки на основании Definition
                 var col = new ColumnHeader()
                 col.applyDefinition(column);

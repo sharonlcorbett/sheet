@@ -6,17 +6,7 @@
  * @param settings
  */
 define([
-    'sheet/WidgetComponent'
-    ], function(
-        WidgetComponent){
-
-    /**
-     * events
-     *  edit_finished
-     *  edit_cancelled
-     *  widget_ready
-     *  click
-     */
+    'sheet/WidgetComponent'], function(WidgetComponent){
 
     var Cell = new Class({
 
@@ -27,9 +17,48 @@ define([
             elementTag: 'td'
         },
 
-        initialize       : function(options){
+        column : null,
 
-            this.parent(options)
+        row : null,
+
+        initialize       : function(definition, options){
+
+            this.addFields([
+                {
+                    name : 'editable',
+                    emptyGetter : function(){
+                        return this.column.editable();
+                    }.bind(this)
+                },
+                {
+                    name : 'format'
+                },
+                {
+                    name: 'value',
+                    emptyGetter : function(){
+                        return this.column.defaultValue();
+                    }.bind(this)
+                },
+                {
+                    name : 'widget',
+                    emptyGetter : function(){
+                        return this.column.defaultWidget();
+                    }.bind(this)
+                }
+            ]);
+
+            this.parent(options);
+            this.setup(definition);
+        },
+
+        rowIdx : function(){
+
+            return this.row.idx;
+        },
+
+        colIdx : function(){
+
+            return this.column.idx;
         },
 
         render : function(){
@@ -40,9 +69,8 @@ define([
         applyDefinition: function(def){
 
             this.parent(def);
-            this.widget.value = this.definition.value();
 
-            this.definition.watchFields({
+            this.watchFields({
                 value : {
                     changed: function(field, value){
                         this.widget.value = value;

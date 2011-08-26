@@ -20,22 +20,41 @@ define([
         },
 
         cells : [],
+        idx : null,
 
-        initialize : function(options){
+        initialize : function(definition, options){
 
             var me = this;
+
+            this.addFields([
+                {
+                    name : 'height',
+                    defaultValue : 20
+                },
+                {
+                    name : 'format',
+                    defaultValue : null
+                },
+                {
+                    name : 'cells',
+                    type : 'collection',
+                    property: true,
+                    elementConstructor : function(def){
+                        var cell = new Cell(def);
+                        cell.row = this;
+                        return cell;
+                    }
+                }
+            ]);
+
             this.parent(options);
+            this.setup(definition);
         },
 
-        applyDefinition : function(def){
+        applyColumns : function(columns){
 
-            var me = this;
-            this.parent(def);
-            def.cells().each(function(cell){
-                //создаем строки на основании Definition
-                var c = new Cell();
-                c.applyDefinition(cell);
-                me.cells.push(c);
+            this.cells.each(function(cell, index){
+                cell.column = columns[index];
             })
         },
 

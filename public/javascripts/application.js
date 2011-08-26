@@ -88,6 +88,15 @@ c = function(a){
     console.log(a)
 }
 
+createOrReturn = function(def, klass){
+
+    if(instanceOf(def, klass)){
+        return def;
+    } else {
+        return new klass(def);
+    }
+}
+
 SheetMixins = {
 
     setup_mixin : {

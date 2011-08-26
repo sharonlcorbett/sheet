@@ -1,22 +1,23 @@
 
 define([
-    'sheet/definitions/SheetDefinition',
     'sheet/Component',
-    'sheet/HeaderPanel',
-    'sheet/CellGrid',
-    'sheet/OperationManager'
+    'sheet/Column',
+    'sheet/Row',
+
+    'sheet/widgets/Header',
+    'sheet/widgets/Text'
     ], function(
-        SheetDefinition,
         Component,
+        Column,
+        Row,
         HeaderPanel,
-        CellGrid,
-        OperationManager){
+        CellGrid){
 
     var Sheet = new Class({
 
         Extends : Component,
 
-        Binds : ['injectComponents'],
+        Binds : ['injectComponents', 'createColumns', 'createRows'],
 
         options : {
             elementTag : 'div',
@@ -31,31 +32,36 @@ define([
             //'sheet/functions/Resize'
         ],
 
-        operationManager : null,
+        initialize : function(definition, options){
 
-        initialize : function(options){
+            this.addFields([
+                {
+                    name : 'resizeMode',
+                    defaultValue : 'screen'
+                },
+                {
+                    name : 'columns',
+                    type : 'collection',
+                    property: true,
+                    collectionConstructor : this.createColumns
+                },
+                {
+                    name : 'rows',
+                    type : 'collection',
+                    property: true,
+                    collectionConstructor : this.createRows
+                }
+            ]);
 
-            this.parent(options)
-
-            this.headersPanel = new HeaderPanel();
-            this.grid         = new CellGrid();
+            this.parent(options);
+            this.setup(definition);
 
             this.functionsLoading = this.loadFunctions();
-            this.operationManager = new OperationManager(this);
         },
 
         inject : function(element){
 
             this.parent(element);
-            this.headersPanel.inject(this.view);
-            this.grid.inject(this.view);
-        },
-
-        applyDefinition : function(def){
-
-            this.parent(def);
-            this.headersPanel.applyDefinition(def.columns());
-            this.grid.applyDefinition(def.rows());
         },
 
         /**
@@ -65,10 +71,6 @@ define([
         render : function(){
 
             var me = this;
-
-            me.headersPanel.render();
-            me.grid.render();
-
             me.fireEvent('rendered');
         },
 
@@ -85,6 +87,91 @@ define([
 
                 me.fireEvent('ready');
             });
+        },
+
+        /**
+         * Возвращает ячейку с координатами (row, col)
+         * @param row индекс строки
+         * @param col индекс столбца
+         */
+        cellAt : function(row, col){
+
+            return this.rows.getAt(row).cells.getAt(col);
+        },
+
+        columnAt : function(col_idx){
+
+            return this.columns.getAt(col_idx);
+        },
+
+        rowAt : function(row_idx){
+
+            return this.rows.getAt(row_idx);
+        },
+
+        /**
+         * LOADING MECHANICS
+         */
+
+        createColumns : function(columns){
+
+            var me = this;
+            var collection = []
+            columns.each(function(column, index){
+
+                var ccol = createOrReturn(column, Column)
+                ccol.idx = index;
+                collection.push(ccol);
+            });
+
+            return collection;
+        },
+
+        createRows : function(rows){
+
+            var me = this;
+            var collection = []
+
+            rows.each(function(row, index){
+
+                var crow = createOrReturn(row, Row);
+                collection.push(crow);
+                crow.idx = index;
+                crow.applyColumns(me.columns.getAll());
+            });
+
+            return collection;
+        },
+
+        addRow : function(row){
+
+            var me = this;
+
+            if(row){
+                row = createOrReturn(row, Row);
+                row.applyColumns(this.columns.getAll());
+            } else {
+                row = new Row();
+                me.columns.each(function(column){
+                    var cell = row.cells.addElement({});
+                    cell.row = row;
+                    cell.column = column;
+                });
+            }
+
+            this.rows.addElementStrict(row);
+        },
+
+        removeRow : function(row){
+
+            this.rows.removeElement(row);
+        },
+
+        removeRowAt : function(idx){
+
+            this.rows.field.removeElement(
+                this.rowAt(idx)
+            );
         }
     });
 

@@ -1,5 +1,5 @@
 define([
-    'sheet/definitions/Definition',
+    'sheet/Definition',
     'sheet/helpers/Field',
     'sheet/helpers/CollectionField'], function(Definition,
                                                Field,
@@ -522,6 +522,27 @@ define([
         equal(j.items[0], 2)
         equal(j.items[1], 4)
         equal(j.items[2], 6)
+
+    });
+
+    test("def element each test", function(){
+
+        var def = new Definition()
+        def.addField({
+            name : "items",
+            type : "collection",
+            property : true
+        });
+
+        def.setup({
+            items : [0,1,2]
+        });
+
+        expect(3)
+
+        def.items.each(function(value, index){
+            equals(value, index);
+        })
 
     });
 

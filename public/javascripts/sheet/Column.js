@@ -1,23 +1,18 @@
-/**
- * Класс заголовков таблицы
- * @param settings
- */
 define([
-    'sheet/definitions/Definition',
-    'sheet/definitions/HeaderDefinition',
-    'sheet/definitions/WidgetDefinition'
-    ], function(
-        Definition,
-        HeaderDefinition,
-        WidgetDefinition){
+    'sheet/WidgetComponent'], function(WidgetComponent){
 
-    var ColumnDefinition = new Class({
+    var Column = new Class({
 
-        Extends : Definition,
+        Extends : WidgetComponent,
+
+        options : {
+
+            elementTag: 'th'
+        },
 
         idx : null,
 
-        initialize       : function(def){
+        initialize : function(definition, options){
 
             this.addFields([
                 {
@@ -49,23 +44,42 @@ define([
                     defaultValue : ''
                 },
                 {
-                    name : 'header',
-                    valueConstructor: HeaderDefinition
-                },
-                {
                     name : 'defaultWidget',
-                    valueConstructor: WidgetDefinition,
+                    //valueConstructor: WidgetDefinition,
                     defaultValue : {
                         type : 'Text'
+                    }
+                },
+                {
+                    name : 'value',
+                    defaultValue : 'Header'
+                },
+                {
+                    name : 'widget',
+                    //valueConstructor : WidgetDefinition,
+                    defaultValue : {
+                        type : 'Header'
                     }
                 }
             ]);
 
-            this.parent(def)
+            this.parent(options);
+            this.setup(definition);
+
+        },
+
+        applyDefinition: function(def){
+
+            this.initializeWidget();
+        },
+
+        render : function(){
+
+            this.widget.render();
         }
 
     });
 
-    return ColumnDefinition;
+    return Column;
 
 });

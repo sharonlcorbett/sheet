@@ -12,14 +12,17 @@ define(function(){
 
         initialize : function(stx){
 
+            //unique id of field
             this.uid  = String.uniqueID();
+
+            //name of the field
             this.name = stx.name;
+
             this.valueConstructor = stx.valueConstructor || null;
             this.changer = stx.changer || null;
             this.emptyGetter = stx.emptyGetter || null;
             this.defaultValue = stx.defaultValue;
 
-            this.value = undefined;
             this.fixed = stx.fixed || false;
 
             this.applied = false;
@@ -27,8 +30,15 @@ define(function(){
 
             this.serialize = stx.serialize;
             if (typeof this.serialize == 'undefined') this.serialize = true;
+
+            if(typeof this.defaultValue != "undefined"){
+                this.constructedDefault = this.constructValue(this.defaultValue)
+            }
         },
 
+        /**
+         * Set field value to undefined if defaultValue is presented
+         */
         setToDefault : function(){
 
             if (typeof this.defaultValue != 'undefined'){
@@ -36,31 +46,47 @@ define(function(){
             }
         },
 
+        /**
+         * Set field value to undefined
+         */
         removeValue : function(){
 
             this.setValueStrict(undefined);
         },
 
+        /**
+         * Get field value property. Do not process emptyGetter and defaultValue
+         */
         getValueStrict : function(){
 
             return this.value
         },
 
+        value : undefined,
+
+        /**
+         * defaultValue processed by constructValue and stored in constructedDefault
+         */
         constructedDefault : null,
 
+        /**
+         * Get field current value.
+         * If value property is undefined:
+         *  1. If emptyGetter provided — empryGetter() returns
+         *  2. If defaultValue provided — constructedDefault returns
+         */
         getValue : function(){
 
-            if (typeof this.value == 'undefined' && typeOf(this.emptyGetter) == 'function'){
-                return this.emptyGetter();
-            }
+            if(typeof this.value == 'undefined'){
 
-            if (typeof this.value == 'undefined' && typeOf(this.defaultValue) != 'null'){
-                if(!this.constructedDefault){
-                    this.constructedDefault = this.constructValue(this.defaultValue)
+                if (typeOf(this.emptyGetter) == 'function'){
+                    return this.emptyGetter();
                 }
-                return this.constructedDefault;
-            }
 
+                if (typeOf(this.defaultValue) != 'null'){
+                    return this.constructedDefault;
+                }
+            }
             return this.value;
         },
 
@@ -74,6 +100,11 @@ define(function(){
             this.freezed = false;
         },
 
+        /**
+         * Process valueConstructor depends of it type.
+         * valueConstructor can be: function, class or null/other
+         * @param val Processing value
+         */
         constructValue : function(val){
 
             var value;
@@ -93,6 +124,13 @@ define(function(){
             return value;
         },
 
+        /**
+         * Set value if not fixed or frozen.
+         * If value is undefined, removeValue is called.
+         *
+         * Notice, that setValue call constructValue on val
+         * @param val
+         */
         setValue : function(val){
 
             if (this.fixed && this.applied || this.freezed) return;
@@ -121,6 +159,10 @@ define(function(){
             return this.getValue.apply(this, arguments)
         },
 
+        /**
+         * Set value property without constructValue.
+         * @param val
+         */
         setValueStrict : function(val){
 
             if (this.fixed && this.applied || this.freezed) return;
@@ -130,11 +172,16 @@ define(function(){
             this.applied = true;
         },
 
+        /**
+         * Refurn field value in JSON interpetation.
+         *
+         * Calls value.asJSON if exists.
+         */
         asJSON: function(){
 
-            if (typeof this.value == 'undefined' || !this.serialize) return;
+            if (!this.serialize) return;
 
-            if (typeOf(this.value.asJSON) == 'function'){
+            if (this.value && typeof this.value.asJSON == 'function'){
                 return this.value.asJSON()
             } else {
                 return this.value;

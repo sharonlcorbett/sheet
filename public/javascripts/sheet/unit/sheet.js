@@ -1,15 +1,14 @@
 define([
-    'sheet/definitions/SheetDefinition',
-    'sheet/definitions/CellDefinition',
-    'sheet/definitions/ColumnDefinition',
-    'sheet/definitions/HeaderDefinition',
-    'sheet/definitions/RowDefinition',
-    'sheet/definitions/WidgetDefinition'], function(SheetDefinition,
-                                                    CellDefinition,
-                                                    ColumnDefinition,
-                                                    HeaderDefinition,
-                                                    RowDefinition,
-                                                    WidgetDefinition){
+    'sheet/Sheet',
+    'sheet/Cell',
+    'sheet/Column',
+    'sheet/Row',
+    'sheet/Widget'
+], function(Sheet,
+            Cell,
+            Column,
+            Row,
+            Widget){
 
     var sheet_definition = {
 
@@ -20,18 +19,14 @@ define([
                 editable : true,
                 flex : 1,
                 width: 200,
-                header : {
-                    value : 'Title'
-                },
+                value : 'Description',
                 defaultValue : "default value 1"
             },
             {
                 editable : true,
                 flex  : 2,
                 width : 1500,
-                header : {
-                    value : 'Description'
-                },
+                value : 'Description',
                 defaultValue : "default value 2"
             }
         ],
@@ -59,53 +54,46 @@ define([
 
     test("parse_test cell", function(){
 
-       var cell = new CellDefinition(sheet_definition.rows[0].cells[0]);
-       ok(instanceOf(cell, CellDefinition), 1);
+       var cell = new Cell(sheet_definition.rows[0].cells[0]);
+       ok(instanceOf(cell, Cell), 1);
        equal(cell.value(), 'test1', 2);
     })
 
     test("parse_test row", function(){
 
-       var row = new RowDefinition(sheet_definition.rows[0]);
-       ok(instanceOf(row, RowDefinition), 1);
-       equal(row.cells.field.count(), 2, 2);
-       ok(instanceOf(row.cells.field.getAt(0), CellDefinition), 3);
+       var row = new Row(sheet_definition.rows[0]);
+       ok(instanceOf(row, Row), 1);
+       equal(row.cells.count(), 2, 2);
+       ok(instanceOf(row.cells.getAt(0), Cell), 3);
     })
 
-    test("parse_test header", function(){
-
-       var header = new HeaderDefinition(sheet_definition.columns[0].header);
-       ok(instanceOf(header, HeaderDefinition), 1);
-       equals(header.value(), 'Title', 2);
-    })
 
     test("parse_test column", function(){
 
-       var column = new ColumnDefinition(sheet_definition.columns[0]);
-       ok(instanceOf(column, ColumnDefinition), 1);
+       var column = new Column(sheet_definition.columns[0]);
+       ok(instanceOf(column, Column), 1);
        equals(column.width(), 200, 2);
-
-       ok(instanceOf(column.header(), HeaderDefinition), 3);
     })
 
+    /*
     test("parse_test column widget", function(){
 
        var column = new ColumnDefinition(sheet_definition.columns[0]);
 
        ok(instanceOf(column.defaultWidget(), WidgetDefinition), 1);
-    })
+    })*/
 
     test("parse_test whole sheet", function(){
 
-       sd = new SheetDefinition(sheet_definition);
+       sd = new Sheet(sheet_definition);
        ok(sd, 1);
-       ok(instanceOf(sd, SheetDefinition), 2)
+       ok(instanceOf(sd, Sheet), 2)
     })
 
     test("count test", function(){
 
-        equals(sd.rows.field.count(), 2, 1);
-        equals(sd.columns.field.count(), 2, 2);
+        equals(sd.rows.count(), 2, 1);
+        equals(sd.columns.count(), 2, 2);
     })
 
     test("cell columns test", function(){
@@ -114,6 +102,7 @@ define([
         equals(sd.cellAt(0,1).column, sd.columnAt(1), 2);
     })
 
+    /*
     test("cell default inheritense test", function(){
 
         equals(sd.cellAt(1,0).value(), sd.columnAt(0).defaultValue(), 1);
@@ -122,6 +111,7 @@ define([
         equals(sd.cellAt(1,0).widget(), sd.columnAt(0).defaultWidget(), 3);
         equals(sd.cellAt(1,1).widget(), sd.columnAt(1).defaultWidget(), 4);
     })
+    */
 
     test("idx", function(){
 

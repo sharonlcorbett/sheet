@@ -8,6 +8,8 @@ define([
 
         Extends : Component,
 
+        Binds : ['addRow'],
+
         options : {
 
             elementTemplate: function(){
@@ -19,31 +21,58 @@ define([
 
         rows : [],
 
+        table_view : null,
+
+        row_def_hash : {},
+
         initialize       : function(options){
 
             var me = this;
             this.parent(options);
         },
 
-        applyDefinition : function(def){
+        applyDefinition : function(sheet_def){
 
-            this.parent(def)
+            this.parent(sheet_def)
             var me = this;
-            def.each(function(row){
-                //создаем строки на основании Definition
-                var crow = new Row();
-                crow.applyDefinition(row);
-                me.rows.push(crow);
-            });
+
+            sheet_def.rows().each(this.addRow);
+
+            sheet_def.watchFields({
+                rows : {
+
+                    elementAdded : function(row_def){
+                        var crow = me.addRow(row_def);
+                        crow.inject(me.table_view);
+                        crow.render();
+                    },
+                    elementRemoved : function(row_def){
+                        var crow = me.row_def_hash[row_def.uniqueId];
+                        crow.view.destroy();
+                        me.rows.erase(crow);
+                        delete me.row_def_hash[row_def.uniqueId];
+                    }
+                }
+            })
+        },
+
+        addRow : function(row_def){
+
+            var crow = new Row();
+            crow.applyDefinition(row_def);
+            this.rows.push(crow);
+            this.row_def_hash[row_def.uniqueId] = crow;
+            return crow;
         },
 
         inject : function(element){
 
+            var me = this;
             this.parent(element);
-            var view = this.view.getElement('table');
+            this.table_view = this.view.getElement('table');
 
             this.rows.each(function(row){
-                row.inject(view);
+                row.inject(me.table_view);
             });
         },
 

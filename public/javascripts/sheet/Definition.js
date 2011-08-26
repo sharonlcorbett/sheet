@@ -10,9 +10,12 @@ define(['sheet/helpers/Field',
 
         fields : {},
 
+        uniqueId : null,
+
         initialize       : function(stx){
 
             this.setup(stx);
+            this.uniqueId = String.uniqueID();
         },
 
         setup      : function(settings){
@@ -42,7 +45,7 @@ define(['sheet/helpers/Field',
                 }
 
                 if (!(check_if_null * (typeof me[key].field.value != 'undefined'))){
-                    me[key](value);
+                    me[key].field.defaultSetMethod(value)
                 }
             });
         },
@@ -76,14 +79,17 @@ define(['sheet/helpers/Field',
             }
 
             //создаем стандартный геттер-сеттер
-            this[stx.name] = function(){
-                if(arguments.length > 0){
-                    return me.fields[stx.name].defaultSetMethod.apply(me.fields[stx.name], arguments);
+            if(stx.property != true){
+                this[stx.name] = function(){
+                    if(arguments.length > 0){
+                        return me.fields[stx.name].defaultSetMethod.apply(me.fields[stx.name], arguments);
+                    }
+                    return me.fields[stx.name].defaultGetMethod();
                 }
-                return me.fields[stx.name].defaultGetMethod();
+                this[stx.name].field = this.fields[stx.name];
+            } else {
+                this[stx.name] = this.fields[stx.name];
             }
-
-            this[stx.name].field = this.fields[stx.name];
         },
 
         /**
