@@ -205,6 +205,28 @@ define([
 
     })
 
+    test("field bind test", function(){
+
+        var def1 = new Definition()
+        def1.addField({
+            name : "value"
+        })
+
+        var def2 = new Definition()
+        def2.addField({
+            name : "value"
+        })
+
+        def1.value.field.connect(def2.value.field);
+
+        def1.value("test")
+        equals(def2.value(), "test")
+
+        def2.value("test2")
+        equals(def1.value(), "test2")
+
+    })
+
     test("field freeze test", function(){
 
         var def = new Definition()

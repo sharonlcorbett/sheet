@@ -2,13 +2,13 @@
  * Визуальный контрол,
  * содержащий определенный набор разных DOM - элементов листа
  */
-define(['sheet/Component'], function(Component){
+define(['sheet/Component', 'sheet/WidgetManager', 'sheet/Widget'], function(Component,
+                                                                            WidgetManager,
+                                                                            Widget){
 
     var WidgetComponent = new Class({
 
         Extends : Component,
-
-        widget : null,
 
         initialize : function(options){
 
@@ -16,17 +16,11 @@ define(['sheet/Component'], function(Component){
             this.parent(options);
         },
 
-        applyDefinition : function(def){
-
-            this.parent(def);
-            this.initializeWidget();
-        },
-
         initializeWidget : function(){
 
-            var widget = require('sheet/widgets/' + this.definition.widget().type());
-            this.widget = new widget();
-            this.widget.applyDefinition(this.definition.widget())
+            if (!instanceOf(this.widget(), Widget)){
+                this.widget(WidgetManager.createWidget(this.widget()));
+            }
         },
 
         /**
@@ -43,10 +37,12 @@ define(['sheet/Component'], function(Component){
          */
         inject : function(element){
 
+            this.initializeWidget()
+
             var me = this;
             //матеарилизация компонента
             this.parent(element);
-            this.widget.inject(me.view);
+            this.widget().inject(me.view);
         }
     });
 

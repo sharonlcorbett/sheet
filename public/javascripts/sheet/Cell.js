@@ -63,23 +63,24 @@ define([
 
         render : function(){
 
-            this.widget.render();
+            this.widget().value = this.value();
+            this.widget().render();
         },
 
-        applyDefinition: function(def){
+        inject: function(){
 
-            this.parent(def);
+            this.parent.apply(this, arguments);
 
+            var me = this;
             this.watchFields({
                 value : {
-                    changed: function(field, value){
-                        this.widget.value = value;
-                        this.widget.render();
-                    }.bind(this)
+                    changed : function(value){
+                        me.widget().value = value
+                        me.render();
+                    }
                 }
-            });
+            })
         }
-
     })
 
     return Cell;

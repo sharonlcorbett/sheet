@@ -186,6 +186,26 @@ define(function(){
             } else {
                 return this.value;
             }
+        },
+
+        connect : function(field){
+
+            var me = this;
+
+            var from = function(value){
+                field.removeEvent('changed', from)
+                me.setValue(value);
+                field.addEvent('changed', from)
+            }
+
+            var to = function(value){
+                me.removeEvent('changed', to)
+                field.setValue(value);
+                me.addEvent('changed', to)
+            }
+
+            field.addEvent('changed', from);
+            me.addEvent('changed', to);
         }
     })
 })

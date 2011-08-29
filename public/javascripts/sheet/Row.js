@@ -44,6 +44,9 @@ define([
                         cell.row = this;
                         return cell;
                     }
+                },
+                {
+                    name : 'model'
                 }
             ]);
 
@@ -73,7 +76,19 @@ define([
                 cell.render();
             });
             this.fireEvent('rendered');
+        },
+
+        dataProjection : function(){
+
+            var projection = {}
+            this.cells.each(function(cell){
+
+                projection[cell.column.dataIndex()] = cell.value.field;
+            })
+
+            return projection;
         }
+
     })
 
     return Row;

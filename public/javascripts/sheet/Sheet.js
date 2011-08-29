@@ -4,14 +4,10 @@ define([
     'sheet/Column',
     'sheet/Row',
 
-    'sheet/widgets/Header',
-    'sheet/widgets/Text'
     ], function(
         Component,
         Column,
-        Row,
-        HeaderPanel,
-        CellGrid){
+        Row){
 
     var Sheet = new Class({
 
@@ -30,6 +26,10 @@ define([
 
         functions : [
             //'sheet/functions/Resize'
+        ],
+
+        components : [
+
         ],
 
         initialize : function(definition, options){
@@ -61,7 +61,12 @@ define([
 
         inject : function(element){
 
+            var me = this;
+
             this.parent(element);
+            this.components.each(function(component){
+                component.inject(me.view);
+            })
         },
 
         /**
@@ -70,8 +75,10 @@ define([
          */
         render : function(){
 
-            var me = this;
-            me.fireEvent('rendered');
+            this.components.each(function(component){
+                component.render();
+            });
+            this.fireEvent('rendered');
         },
 
         loadFunctions : function(){
@@ -160,6 +167,7 @@ define([
             }
 
             this.rows.addElementStrict(row);
+            return row;
         },
 
         removeRow : function(row){

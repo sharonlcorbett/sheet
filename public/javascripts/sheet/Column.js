@@ -58,6 +58,12 @@ define([
                     defaultValue : {
                         wtype : 'header'
                     }
+                },
+                {
+                    name : 'dataIndex',
+                    emptyGetter: function(){
+                        throw 'You must set column data index'
+                    }
                 }
             ]);
 
@@ -73,7 +79,8 @@ define([
 
         render : function(){
 
-            this.widget.render();
+            this.widget().value = this.value();
+            this.widget().render();
         }
 
     });

@@ -4,13 +4,13 @@ require([
     'sheet/unit/sheet',
     'sheet/WidgetManager',
     'sheet/widgets/Text',
-    'sheet/perspective/List'], function(a, b, WidgetManager, Text, List){
+    'sheet/perspective/list/List'], function(a, b, WidgetManager, Text, List){
 
     test('widget manager', function(){
 
         ok(WidgetManager)
 
-        expect(4)
+        expect(1)
 
         WidgetManager.preloadWidgets([
             'sheet/widgets/Header',
@@ -29,22 +29,19 @@ require([
 
         });
 
-
-
     })
 
     test('list persp', function(){
 
         ok(List)
 
-        var a = new List();
+        list = new List();
 
         expect(1)
 
-        a.ready.then(function(){
-            alert('asdfsd')
-            a.sheet.inject(document.getElement('body'))
-            a.sheet.render()
+        list.ready.then(function(){
+            list.sheet.inject(document.getElement('body'))
+            list.sheet.render()
         })
 
     })

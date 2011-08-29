@@ -2,10 +2,7 @@
  * Строка заголовков, одна на лист
  */
 define([
-    'sheet/Component',
-    'sheet/ColumnHeader'], function(
-        Component,
-        ColumnHeader){
+    'sheet/Component'], function(Component){
 
     var HeaderPanel = new Class({
 
@@ -23,23 +20,11 @@ define([
 
         headers : [],
 
-        initialize       : function(options){
+        initialize       : function(sheet, options){
 
             var me = this;
             this.parent(options)
-        },
-
-        applyDefinition : function(sheet_def){
-
-            var me = this;
-            this.parent(sheet_def);
-
-           sheet_def.columns().each(function(column){
-                //создаем заголовки на основании Definition
-                var col = new ColumnHeader()
-                col.applyDefinition(column);
-                me.headers.push(col);
-            });
+            this.sheet = sheet;
         },
 
         inject : function(element){
@@ -49,14 +34,14 @@ define([
             var me = this,
                 view = this.view.getElement('tr');
 
-            this.headers.each(function(header){
-                header.inject(view);
+            this.sheet.columns.each(function(column){
+                column.inject(view);
             });
         },
 
         render : function(){
 
-            this.headers.each(function(header){
+            this.sheet.columns.each(function(header){
                 header.render();
             })
             this.fireEvent('rendered')
