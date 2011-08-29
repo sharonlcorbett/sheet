@@ -9,6 +9,7 @@
   = javascript_include_tag 'lib/mooml.js'
   = javascript_include_tag 'application'
   = javascript_include_tag 'qunit.js'
+  = javascript_include_tag 'lib/jquery.js'
 
   :javascript
       require({
@@ -25,6 +26,8 @@
 %body
 
   :javascript
+
+    jQuery.noConflict();
 
     var oldAttach = require.attach;
     require.attach = function (url, contextName, moduleName, callback, type) {

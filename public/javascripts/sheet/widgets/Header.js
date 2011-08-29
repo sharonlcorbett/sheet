@@ -40,6 +40,8 @@ define(['sheet/Widget'], function(Widget){
         }
     })
 
+    HeaderWidget.wtype = 'header';
+
     return HeaderWidget;
 
 })

@@ -1,7 +1,8 @@
 
 define(['sheet/Perspective',
         'sheet/Sheet',
-        'sheet/Definition'], function(Perspective, Sheet, Definition){
+        'sheet/Definition',
+        'sheet/WidgetManager'], function(Perspective, Sheet, Definition, WidgetManager){
 
     var Entry = new Class({
 
@@ -18,11 +19,6 @@ define(['sheet/Perspective',
                 }
             ])
 
-            this.setup(def)
-        },
-
-        applyDefinition: function(def){
-
             this.watchFields({
                 text : {
                     changed : function(text){
@@ -31,6 +27,15 @@ define(['sheet/Perspective',
                     }
                 }
             })
+
+            this.setup(def)
+
+
+        },
+
+        applyDefinition: function(def){
+
+
         }
 
     })
@@ -49,13 +54,13 @@ define(['sheet/Perspective',
                     {
                         value : "",
                         defaultWidget : {
-                            type : 'Text'
+                            wtype : 'text'
                         }
                     },
                     {
                         value : "Title",
                         defaultWidget : {
-                            type : 'Text'
+                            wtype : 'text'
                         }
                     }
                 ],
@@ -65,14 +70,27 @@ define(['sheet/Perspective',
 
         sheet : null,
 
+        ready : null,
+
         initialize : function(options){
 
-            this.parent(options);
-            this.createSheet();
+            var me = this;
+
+            this.ready = jQuery.Deferred();
+
+            WidgetManager.preloadWidgets([
+                'sheet/widgets/Header',
+                'sheet/widgets/Text'
+            ])
+            .then(function(){
+                me.parent(options);
+                me.createSheet();
+                me.ready.resolve();
+                me.fireEvent('ready')
+            })
         },
 
         createSheet : function(){
-
             this.sheet = new Sheet(this.options.sheetDefinition);
         },
 

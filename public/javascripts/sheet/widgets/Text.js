@@ -29,6 +29,8 @@ define(['sheet/Widget'], function(Widget){
         }
     })
 
+    TextWidget.wtype = 'text';
+
     return TextWidget;
 
 })

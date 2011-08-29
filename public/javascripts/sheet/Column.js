@@ -45,9 +45,8 @@ define([
                 },
                 {
                     name : 'defaultWidget',
-                    //valueConstructor: WidgetDefinition,
                     defaultValue : {
-                        type : 'Text'
+                        wtype : 'text'
                     }
                 },
                 {
@@ -56,9 +55,8 @@ define([
                 },
                 {
                     name : 'widget',
-                    //valueConstructor : WidgetDefinition,
                     defaultValue : {
-                        type : 'Header'
+                        wtype : 'header'
                     }
                 }
             ]);

@@ -16,7 +16,7 @@ define(['sheet/OperationManager'], function(OperationManager){
         initialize : function(options){
 
             this.setOptions(options);
-            this.operationManager
+            this.operationManager = new OperationManager();
         },
 
         createSheet : function(){
@@ -24,6 +24,6 @@ define(['sheet/OperationManager'], function(OperationManager){
         }
     });
 
-    return Engine;
+    return Perspective;
 
 });
