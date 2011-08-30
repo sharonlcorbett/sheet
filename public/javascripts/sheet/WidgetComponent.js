@@ -5,12 +5,12 @@
 define(
     [
         'sheet/Component',
-        'sheet/WidgetManager',
+        'sheet/ClassManager',
         'sheet/Widget'
     ],
     function(
         Component,
-        WidgetManager,
+        ClassManager,
         Widget
     ){
 
@@ -27,7 +27,9 @@ define(
         initializeWidget : function(){
 
             if (!instanceOf(this.widget(), Widget)){
-                this.widget(WidgetManager.createWidget(this.widget()));
+                this.widget(ClassManager.create(
+                    this.widget().alias, this.widget()
+                ));
             }
         },
 

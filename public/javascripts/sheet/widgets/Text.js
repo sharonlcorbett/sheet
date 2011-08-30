@@ -35,7 +35,7 @@ define(
         }
     })
 
-    TextWidget.wtype = 'text';
+    TextWidget.alias = 'TextWidget';
 
     return TextWidget;
 

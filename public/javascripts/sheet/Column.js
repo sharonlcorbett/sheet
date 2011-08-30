@@ -51,7 +51,7 @@ define(
                 {
                     name : 'defaultWidget',
                     defaultValue : {
-                        wtype : 'text'
+                        alias : 'TextWidget'
                     }
                 },
                 {
@@ -61,14 +61,11 @@ define(
                 {
                     name : 'widget',
                     defaultValue : {
-                        wtype : 'header'
+                        alias : 'HeaderWidget'
                     }
                 },
                 {
-                    name : 'dataIndex',
-                    emptyGetter: function(){
-                        throw 'You must set column data index'
-                    }
+                    name : 'dataIndex'
                 }
             ]);
 

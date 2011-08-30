@@ -96,12 +96,14 @@ define(
 
     test("count test", function(){
 
+        sd = new Sheet(sheet_definition);
         equals(sd.rows.count(), 2, 1);
         equals(sd.columns.count(), 2, 2);
     })
 
     test("cell columns test", function(){
 
+        sd = new Sheet(sheet_definition);
         equals(sd.cellAt(0,0).column, sd.columnAt(0), 1);
         equals(sd.cellAt(0,1).column, sd.columnAt(1), 2);
     })
@@ -119,6 +121,7 @@ define(
 
     test("idx", function(){
 
+        sd = new Sheet(sheet_definition);
         equals(sd.columnAt(0).idx, 0, 1);
         equals(sd.columnAt(1).idx, 1, 2);
 

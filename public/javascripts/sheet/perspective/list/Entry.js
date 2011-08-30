@@ -1,13 +1,9 @@
 
 define(
     [
-        'sheet/Definition',
-        'sheet/WidgetManager',
         'sheet/Model'
     ],
     function(
-        Definition,
-        WidgetManager,
         Model
     ){
 
@@ -21,13 +17,16 @@ define(
 
             this.addFields([
                 {
-                    name: "text"
+                    name: "text",
+                    defaultValue : 'Новая запись'
                 }
-            ])
+            ]);
 
-            this.setup(def)
+            this.parent(def)
         }
     })
+
+    Entry.alias = "EntryModel"
 
     return Entry;
 

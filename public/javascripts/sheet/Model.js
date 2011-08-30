@@ -13,7 +13,12 @@ define(
 
         initialize: function(def){
 
-            var me = this;
+            this.addFields([
+                {
+                    name : 'alias'
+                }
+            ])
+
             this.setup(def);
         }
     })

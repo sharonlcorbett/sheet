@@ -7,11 +7,15 @@
 define(
     [
         'sheet/Component',
-        'sheet/Cell'
+        'sheet/Cell',
+        'sheet/Model',
+        'sheet/ClassManager'
     ],
     function(
         Component,
-        Cell
+        Cell,
+        Model,
+        ClassManager
     ){
 
     var Row = new Class({
@@ -50,7 +54,15 @@ define(
                     }
                 },
                 {
-                    name : 'model'
+                    name : 'model',
+                    valueConstructor : function(def){
+
+                        var model = def;
+                        if(!instanceOf(def, Model)){
+                            model = ClassManager.create(def.alias, def);
+                        }
+                        return model;
+                    }
                 }
             ]);
 
@@ -63,6 +75,23 @@ define(
             this.cells.each(function(cell, index){
                 cell.column = columns[index];
             })
+        },
+
+        configure : function(){
+
+            if (this.model()){
+
+                var me = this;
+                this.cells.each(function(cell){
+
+                    var dataIndex = cell.column.dataIndex()
+                    if(dataIndex){
+                        if(me.model().fields[dataIndex]){
+                            cell.fields['value'] = me.model().fields[dataIndex];
+                        }
+                    }
+                })
+            }
         },
 
         inject : function(element){
@@ -80,17 +109,6 @@ define(
                 cell.render();
             });
             this.fireEvent('rendered');
-        },
-
-        dataProjection : function(){
-
-            var projection = {}
-            this.cells.each(function(cell){
-
-                projection[cell.column.dataIndex()] = cell.value.field;
-            })
-
-            return projection;
         }
 
     })

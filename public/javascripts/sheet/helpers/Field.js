@@ -207,5 +207,6 @@ define(function(){
             field.addEvent('changed', from);
             me.addEvent('changed', to);
         }
+
     })
 })

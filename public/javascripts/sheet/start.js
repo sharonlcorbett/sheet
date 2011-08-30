@@ -3,36 +3,36 @@ require(
     [
         'sheet/unit/definitions',
         'sheet/unit/sheet',
-        'sheet/WidgetManager',
+        'sheet/ClassManager',
         'sheet/widgets/Text',
         'sheet/perspective/list/List'
     ],
     function(
         a,
         b,
-        WidgetManager,
+        ClassManager,
         Text,
         List
     ){
 
-    test('widget manager', function(){
+    test('class manager', function(){
 
-        ok(WidgetManager)
+        ok(ClassManager)
 
         expect(1)
 
-        WidgetManager.preloadWidgets([
+        cm = ClassManager
+
+        ClassManager.preload([
             'sheet/widgets/Header',
             'sheet/widgets/Text'
         ]).then(function(){
 
-            var types = WidgetManager.knownTypes();
-            equals(types[0], 'header')
-            equals(types[1], 'text')
+            var types = ClassManager.known();
+            equals(types[0], 'HeaderWidget')
+            equals(types[1], 'TextWidget')
 
-            var text_widget = WidgetManager.createWidget({
-                wtype : 'text'
-            })
+            var text_widget = ClassManager.create('TextWidget')
 
             ok(typeOf(text_widget, Text))
 

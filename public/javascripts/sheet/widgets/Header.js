@@ -46,7 +46,7 @@ define(
         }
     })
 
-    HeaderWidget.wtype = 'header';
+    HeaderWidget.alias = 'HeaderWidget';
 
     return HeaderWidget;
 

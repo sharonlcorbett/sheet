@@ -4,7 +4,7 @@ define(
         'sheet/Perspective',
         'sheet/Sheet',
         'sheet/Definition',
-        'sheet/WidgetManager',
+        'sheet/ClassManager',
         'sheet/components/CellGrid',
         'sheet/components/HeaderPanel',
         'sheet/perspective/list/Entry'
@@ -13,7 +13,7 @@ define(
         Perspective,
         Sheet,
         Definition,
-        WidgetManager,
+        ClassManager,
         CellGrid,
         HeaderPanel,
         Entry
@@ -33,12 +33,20 @@ define(
                     {
                         value : "Title",
                         defaultWidget : {
-                            wtype : 'text'
+                            alias : 'TextWidget'
                         },
                         dataIndex : 'text'
                     }
                 ],
-                rows : []
+
+                rows : [
+                    {
+                        model : {
+                            alias : "EntryModel"
+                        },
+                        cells : [{}]
+                    }
+                ]
             }
         },
 
@@ -53,9 +61,10 @@ define(
 
             this.ready = jQuery.Deferred();
 
-            WidgetManager.preloadWidgets([
+            ClassManager.preload([
                 'sheet/widgets/Header',
-                'sheet/widgets/Text'
+                'sheet/widgets/Text',
+                'sheet/perspective/list/Entry'
             ])
             .then(function(){
 
@@ -77,24 +86,9 @@ define(
             this.sheet.components = cmp;
         },
 
-        createEntry : function(def){
+        createEntry : function(){
 
-            return new Entry(def)
-        },
-
-        addEntry : function(entry){
-
-            var row = this.sheet.addRow();
-            Object.each(row.dataProjection(), function(field, dataIndex){
-
-                entry[dataIndex].field.connect(field);
-            })
-        },
-
-        addTextEntry : function(text){
-
-            var entry = this.createEntry({text : text});
-            this.addEntry(entry);
+            return this.sheet.addRow();
         }
     });
 

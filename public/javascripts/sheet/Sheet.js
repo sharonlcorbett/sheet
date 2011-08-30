@@ -15,7 +15,11 @@ define(
 
         Extends : Component,
 
-        Binds : ['injectComponents', 'createColumns', 'createRows'],
+        Binds : [
+            'injectComponents',
+            'createColumns',
+            'createRows'
+        ],
 
         options : {
             elementTag : 'div',
@@ -144,9 +148,12 @@ define(
             rows.each(function(row, index){
 
                 var crow = createOrReturn(row, Row);
-                collection.push(crow);
+
                 crow.idx = index;
                 crow.applyColumns(me.columns.getAll());
+                crow.configure()
+
+                collection.push(crow);
             });
 
             return collection;
