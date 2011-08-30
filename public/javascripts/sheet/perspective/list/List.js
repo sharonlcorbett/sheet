@@ -36,15 +36,12 @@ define(
                             alias : 'TextWidget'
                         },
                         dataIndex : 'text'
-                    }
-                ],
-
-                rows : [
+                    },
                     {
-                        model : {
-                            alias : "EntryModel"
-                        },
-                        cells : [{}]
+                        value : "Описание",
+                        defaultWidget : {
+                            alias : 'TextWidget'
+                        }
                     }
                 ]
             }
@@ -69,6 +66,7 @@ define(
             .then(function(){
 
                 me.createSheet();
+
                 me.ready.resolve();
                 me.fireEvent('ready')
             });
@@ -86,10 +84,16 @@ define(
             this.sheet.components = cmp;
         },
 
-        createEntry : function(){
+        createEntry : function(text){
 
-            return this.sheet.addRow();
+            return this.sheet.addRow({
+                model : {
+                    alias : 'EntryModel',
+                    text  : text
+                }
+            });
         }
+
     });
 
     return List;

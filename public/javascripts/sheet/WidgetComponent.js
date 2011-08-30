@@ -28,6 +28,7 @@ define(
 
             if (!instanceOf(this.widget(), Widget)){
                 this.widget(ClassManager.create(
+                    //динамическое создание виджета
                     this.widget().alias, this.widget()
                 ));
             }

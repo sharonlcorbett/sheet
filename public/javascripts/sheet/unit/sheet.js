@@ -119,7 +119,7 @@ define(
     })
     */
 
-    test("idx", function(){
+    /*test("idx", function(){
 
         sd = new Sheet(sheet_definition);
         equals(sd.columnAt(0).idx, 0, 1);
@@ -127,6 +127,6 @@ define(
 
         equals(sd.rowAt(0).idx, 0, 3);
         equals(sd.rowAt(1).idx, 1, 4);
-    })
+    })*/
 
 })

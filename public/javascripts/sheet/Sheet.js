@@ -17,8 +17,8 @@ define(
 
         Binds : [
             'injectComponents',
-            'createColumns',
-            'createRows'
+            'createColumn',
+            'createRow'
         ],
 
         options : {
@@ -49,13 +49,13 @@ define(
                     name : 'columns',
                     type : 'collection',
                     property: true,
-                    collectionConstructor : this.createColumns
+                    elementConstructor : this.createColumn
                 },
                 {
                     name : 'rows',
                     type : 'collection',
                     property: true,
-                    collectionConstructor : this.createRows
+                    elementConstructor : this.createRow
                 }
             ]);
 
@@ -126,57 +126,42 @@ define(
          * LOADING MECHANICS
          */
 
-        createColumns : function(columns){
+        createColumn : function(column){
 
-            var me = this;
-            var collection = []
-            columns.each(function(column, index){
-
-                var ccol = createOrReturn(column, Column)
-                ccol.idx = index;
-                collection.push(ccol);
-            });
-
-            return collection;
+            return createOrReturn(column, Column)
         },
 
-        createRows : function(rows){
+        createRow : function(row){
 
-            var me = this;
-            var collection = []
+            row = createOrReturn(row, Row);
 
-            rows.each(function(row, index){
-
-                var crow = createOrReturn(row, Row);
-
-                crow.idx = index;
-                crow.applyColumns(me.columns.getAll());
-                crow.configure()
-
-                collection.push(crow);
-            });
-
-            return collection;
-        },
-
-        addRow : function(row){
-
-            var me = this;
-
-            if(row){
-                row = createOrReturn(row, Row);
-                row.applyColumns(this.columns.getAll());
-            } else {
-                row = new Row();
-                me.columns.each(function(column){
+            if(row.cells.count() == 0){
+                this.columns.each(function(column){
                     var cell = row.cells.addElement({});
                     cell.row = row;
                     cell.column = column;
                 });
+            } else {
+                row.applyColumns(this.columns.getAll());
             }
 
-            this.rows.addElementStrict(row);
-            return row;
+            row.configure();
+            return row
+        },
+
+        addRow : function(row){
+
+            this.rows.addElement(row);
+        },
+
+        addColumn : function(col){
+
+            this.columns.addElement(col);
+        },
+
+        removeColumn : function(col){
+
+            this.columns.removeElement(col);
         },
 
         removeRow : function(row){
@@ -188,6 +173,13 @@ define(
 
             this.rows.field.removeElement(
                 this.rowAt(idx)
+            );
+        },
+
+        removeColumnAt : function(idx){
+
+            this.columns.field.removeElement(
+                this.columnAt(idx)
             );
         }
     });
