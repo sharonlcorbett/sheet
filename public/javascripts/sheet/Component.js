@@ -2,7 +2,13 @@
  * Визуальный контрол,
  * содержащий определенный набор разных DOM - элементов листа
  */
-define(['sheet/Definition'], function(Definition){
+define(
+    [
+        'sheet/Definition'
+    ],
+    function(
+        Definition
+    ){
 
     /**
      * События:

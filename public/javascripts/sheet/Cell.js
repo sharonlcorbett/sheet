@@ -5,8 +5,13 @@
  *
  * @param settings
  */
-define([
-    'sheet/WidgetComponent'], function(WidgetComponent){
+define(
+    [
+        'sheet/WidgetComponent'
+    ],
+    function(
+        WidgetComponent
+    ){
 
     var Cell = new Class({
 

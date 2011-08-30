@@ -7,7 +7,13 @@
 /**
  * текстовый виджет, just text
  */
-define(['sheet/Widget'], function(Widget){
+define(
+    [
+        'sheet/Widget'
+    ],
+    function(
+        Widget
+    ){
 
     var HeaderWidget = new Class({
 

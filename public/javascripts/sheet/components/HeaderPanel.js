@@ -1,8 +1,13 @@
 /**
  * Строка заголовков, одна на лист
  */
-define([
-    'sheet/Component'], function(Component){
+define(
+    [
+        'sheet/Component'
+    ],
+    function(
+        Component
+    ){
 
     var HeaderPanel = new Class({
 

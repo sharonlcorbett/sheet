@@ -1,14 +1,18 @@
-define([
-    'sheet/Sheet',
-    'sheet/Cell',
-    'sheet/Column',
-    'sheet/Row',
-    'sheet/Widget'
-], function(Sheet,
-            Cell,
-            Column,
-            Row,
-            Widget){
+define(
+    [
+        'sheet/Sheet',
+        'sheet/Cell',
+        'sheet/Column',
+        'sheet/Row',
+        'sheet/Widget'
+    ],
+    function(
+        Sheet,
+        Cell,
+        Column,
+        Row,
+        Widget
+    ){
 
     var sheet_definition = {
 

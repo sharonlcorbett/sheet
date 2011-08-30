@@ -1,13 +1,15 @@
 
-define([
-    'sheet/Component',
-    'sheet/Column',
-    'sheet/Row',
-
-    ], function(
+define(
+    [
+        'sheet/Component',
+        'sheet/Column',
+        'sheet/Row'
+    ],
+    function(
         Component,
         Column,
-        Row){
+        Row
+    ){
 
     var Sheet = new Class({
 

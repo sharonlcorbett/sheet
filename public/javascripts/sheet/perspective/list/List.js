@@ -1,17 +1,23 @@
 
-define(['sheet/Perspective',
+define(
+    [
+        'sheet/Perspective',
         'sheet/Sheet',
         'sheet/Definition',
         'sheet/WidgetManager',
         'sheet/components/CellGrid',
         'sheet/components/HeaderPanel',
-        'sheet/perspective/list/Entry'], function(Perspective,
-                                               Sheet,
-                                               Definition,
-                                               WidgetManager,
-                                               CellGrid,
-                                               HeaderPanel,
-                                               Entry){
+        'sheet/perspective/list/Entry'
+    ],
+    function(
+        Perspective,
+        Sheet,
+        Definition,
+        WidgetManager,
+        CellGrid,
+        HeaderPanel,
+        Entry
+    ){
 
     var List = new Class({
 

@@ -1,5 +1,11 @@
 
-define(['sheet/operations/Operations'], function(Operations){
+define(
+    [
+        'sheet/operations/Operations'
+    ],
+    function(
+        Operations
+    ){
 
     var operation_classes = {};
 

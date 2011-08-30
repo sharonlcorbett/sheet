@@ -1,9 +1,15 @@
 
-define(['sheet/Definition',
+define(
+    [
+        'sheet/Definition',
         'sheet/WidgetManager',
-        'sheet/Model'], function(Definition,
-                                 WidgetManager,
-                                 Model){
+        'sheet/Model'
+    ],
+    function(
+        Definition,
+        WidgetManager,
+        Model
+    ){
 
     var Entry = new Class({
 

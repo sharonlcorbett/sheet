@@ -1,5 +1,10 @@
-define([
-    'sheet/WidgetComponent'], function(WidgetComponent){
+define(
+    [
+        'sheet/WidgetComponent'
+    ],
+    function(
+        WidgetComponent
+    ){
 
     var Column = new Class({
 

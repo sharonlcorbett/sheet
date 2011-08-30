@@ -1,5 +1,11 @@
 
-define(['sheet/OperationManager'], function(OperationManager){
+define(
+    [
+        'sheet/OperationManager'
+    ],
+    function(
+        OperationManager
+    ){
 
     var Perspective = new Class({
 

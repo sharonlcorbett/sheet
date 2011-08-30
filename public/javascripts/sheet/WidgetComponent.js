@@ -2,9 +2,17 @@
  * Визуальный контрол,
  * содержащий определенный набор разных DOM - элементов листа
  */
-define(['sheet/Component', 'sheet/WidgetManager', 'sheet/Widget'], function(Component,
-                                                                            WidgetManager,
-                                                                            Widget){
+define(
+    [
+        'sheet/Component',
+        'sheet/WidgetManager',
+        'sheet/Widget'
+    ],
+    function(
+        Component,
+        WidgetManager,
+        Widget
+    ){
 
     var WidgetComponent = new Class({
 

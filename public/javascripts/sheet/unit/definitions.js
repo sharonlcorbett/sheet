@@ -1,9 +1,14 @@
-define([
-    'sheet/Definition',
-    'sheet/helpers/Field',
-    'sheet/helpers/CollectionField'], function(Definition,
-                                               Field,
-                                               CollectionField){
+define(
+    [
+        'sheet/Definition',
+        'sheet/helpers/Field',
+        'sheet/helpers/CollectionField'
+    ],
+    function(
+        Definition,
+        Field,
+        CollectionField
+    ){
 
     module("Definition and Field")
 

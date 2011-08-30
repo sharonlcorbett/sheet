@@ -1,7 +1,10 @@
-define([
-    'sheet/Operation'
-], function(
-    Operation){
+define(
+    [
+        'sheet/Operation'
+    ],
+    function(
+        Operation
+    ){
 
     return {
 

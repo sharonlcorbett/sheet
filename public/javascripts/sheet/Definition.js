@@ -2,9 +2,15 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(['sheet/helpers/Field',
-        'sheet/helpers/CollectionField'], function(Field,
-                                                   CollectionField){
+define(
+    [
+        'sheet/helpers/Field',
+        'sheet/helpers/CollectionField'
+    ],
+    function(
+        Field,
+        CollectionField
+    ){
 
     var Definition = new Class({
 

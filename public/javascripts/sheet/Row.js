@@ -4,11 +4,15 @@
  * @param settings
  * @param table_row
  */
-define([
-    'sheet/Component',
-    'sheet/Cell'], function(
+define(
+    [
+        'sheet/Component',
+        'sheet/Cell'
+    ],
+    function(
         Component,
-        Cell){
+        Cell
+    ){
 
     var Row = new Class({
 

@@ -1,5 +1,11 @@
 
-define(['sheet/Definition'], function(Definition){
+define(
+    [
+        'sheet/Definition'
+    ],
+    function(
+        Definition
+    ){
 
     var Model = new Class({
 

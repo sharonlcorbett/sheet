@@ -1,10 +1,19 @@
 
-require([
-    'sheet/unit/definitions',
-    'sheet/unit/sheet',
-    'sheet/WidgetManager',
-    'sheet/widgets/Text',
-    'sheet/perspective/list/List'], function(a, b, WidgetManager, Text, List){
+require(
+    [
+        'sheet/unit/definitions',
+        'sheet/unit/sheet',
+        'sheet/WidgetManager',
+        'sheet/widgets/Text',
+        'sheet/perspective/list/List'
+    ],
+    function(
+        a,
+        b,
+        WidgetManager,
+        Text,
+        List
+    ){
 
     test('widget manager', function(){
 
