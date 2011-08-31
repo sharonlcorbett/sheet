@@ -14,7 +14,9 @@
   :javascript
       require({
         paths: {
-            "sheet": "/javascripts/sheet/"
+            "platform" : "/javascripts/platform/",
+            "sheet": "/javascripts/platform/sheet/",
+            "unit" : "/javascripts/platform/unit/"
         },
       });
 
@@ -37,7 +39,7 @@
             callback, type);
     }
 
-    require(["sheet/start"])
+    require(["platform/start"])
 
     //$("#tabs").tabs();
 

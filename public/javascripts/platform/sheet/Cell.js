@@ -77,6 +77,9 @@ define(
             this.parent.apply(this, arguments);
 
             var me = this;
+
+            me.render();
+
             this.watchFields({
                 value : {
                     changed : function(value){

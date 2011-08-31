@@ -19,6 +19,10 @@ define(
                 {
                     name: "text",
                     defaultValue : 'Новая запись'
+                },
+                {
+                    name: "finished",
+                    defaultValue : false
                 }
             ]);
 

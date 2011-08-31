@@ -59,6 +59,11 @@ define(function(){
             return new this.classes[alias](def, settings);
         },
 
+        getClass : function(alias){
+
+            return this.classes[alias];
+        },
+
         /**
          * Возвращает список известных типов классов
          */

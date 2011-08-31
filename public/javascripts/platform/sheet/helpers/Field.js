@@ -131,7 +131,7 @@ define(function(){
          * Notice, that setValue call constructValue on val
          * @param val
          */
-        setValue : function(val){
+        setValue : function(val, fire_event){
 
             if (this.fixed && this.applied || this.freezed) return;
 
@@ -146,7 +146,7 @@ define(function(){
 
             var value = this.constructValue(val);
 
-            return this.setValueStrict(value);
+            return this.setValueStrict(value, fire_event);
         },
 
         defaultSetMethod : function(){
@@ -163,12 +163,20 @@ define(function(){
          * Set value property without constructValue.
          * @param val
          */
-        setValueStrict : function(val){
+        setValueStrict : function(val, fire_event){
+
+            if(typeof fire_event == "undefined"){
+                fire_event = true
+            }
 
             if (this.fixed && this.applied || this.freezed) return;
 
             this.value = val;
-            this.fireEvent('changed', [this.getValue(), this]);
+
+            if (fire_event){
+                this.fireEvent('changed', [this.getValue(), this]);
+            }
+
             this.applied = true;
         },
 

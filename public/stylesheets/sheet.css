@@ -50,7 +50,10 @@
             width: 5px;
             height: 100%;
             cursor: e-resize;
-            background-color: transparent; }
+            background-color: red;
+            position: relative;
+            left: 1px;
+            z-index: 999; }
   .xx-sheet .header_table th {
     -moz-user-select: none;
     -webkit-user-select: none;

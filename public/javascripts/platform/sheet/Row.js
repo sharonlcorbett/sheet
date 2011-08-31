@@ -30,6 +30,8 @@ define(
         cells : [],
         idx : null,
 
+        sheet : null,
+
         initialize : function(definition, options){
 
             var me = this;
@@ -54,15 +56,7 @@ define(
                     }
                 },
                 {
-                    name : 'model',
-                    valueConstructor : function(def){
-
-                        var model = def;
-                        if(!instanceOf(def, Model)){
-                            model = ClassManager.create(def.alias, def);
-                        }
-                        return model;
-                    }
+                    name : 'model'
                 }
             ]);
 
@@ -77,14 +71,33 @@ define(
             })
         },
 
-        configure : function(){
+        configure : function(sheet){
 
-            if (this.model()){
+            var me = this;
 
-                var me = this;
+            this.sheet = sheet;
+
+            if (this.cells.count() == 0){
+
+                me.sheet.columns.each(function(column){
+                    var cell = me.cells.addElement({});
+                    cell.row = me;
+                    cell.column = column;
+                });
+            } else {
+                this.applyColumns(sheet.columns.getAll())
+            }
+
+            if (this.sheet.modelClass()){
+
+                this.model(
+                    createOrReturn(this.model(), this.sheet.modelClass())
+                );
+
                 this.cells.each(function(cell){
 
                     var dataIndex = cell.column.dataIndex()
+
                     if(dataIndex){
                         if(me.model().fields[dataIndex]){
                             cell.fields['value'] = me.model().fields[dataIndex];

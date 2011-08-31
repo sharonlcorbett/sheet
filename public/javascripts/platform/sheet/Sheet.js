@@ -3,12 +3,16 @@ define(
     [
         'sheet/Component',
         'sheet/Column',
-        'sheet/Row'
+        'sheet/Row',
+        'sheet/ClassManager',
+        'sheet/functions/Resize'
     ],
     function(
         Component,
         Column,
-        Row
+        Row,
+        ClassManager,
+        ResizeFunction
     ){
 
     var Sheet = new Class({
@@ -30,20 +34,23 @@ define(
 
         fn : {},
 
-        functions : [
-            //'sheet/functions/Resize'
-        ],
-
-        components : [
-
-        ],
-
         initialize : function(definition, options){
 
             this.addFields([
                 {
                     name : 'resizeMode',
                     defaultValue : 'screen'
+                },
+                {
+                    name : 'modelClass',
+                    valueConstructor : function(def){
+
+                        var model_class;
+                        if(typeOf(def) != "class"){
+                            model_class = ClassManager.getClass(def.alias);
+                        }
+                        return model_class;
+                    }
                 },
                 {
                     name : 'columns',
@@ -59,46 +66,20 @@ define(
                 }
             ]);
 
+
             this.parent(options);
             this.setup(definition);
 
-            this.functionsLoading = this.loadFunctions();
-        },
+            this.loadFunctions(ResizeFunction)
 
-        inject : function(element){
-
-            var me = this;
-
-            this.parent(element);
-            this.components.each(function(component){
-                component.inject(me.view);
-            })
-        },
-
-        /**
-         * Рендер листа целиком. Вызывает перерисовывание всех дочерних компонент.
-         * Может быть крайне медленной операцией при больших размерах листа.
-         */
-        render : function(){
-
-            this.components.each(function(component){
-                component.render();
-            });
-            this.fireEvent('rendered');
         },
 
         loadFunctions : function(){
 
             var me = this;
-            require(this.functions, function(){
-
-                //асинхронная загрузка и инициализация виджета
-                _(arguments).each(function(F){
-                    var fn = new F(me);
-                    me.fn[fn.name] = fn;
-                });
-
-                me.fireEvent('ready');
+            Array.each(arguments, function(F){
+                var fn = new F(me);
+                me.fn[fn.name] = fn;
             });
         },
 
@@ -134,18 +115,8 @@ define(
         createRow : function(row){
 
             row = createOrReturn(row, Row);
+            row.configure(this);
 
-            if(row.cells.count() == 0){
-                this.columns.each(function(column){
-                    var cell = row.cells.addElement({});
-                    cell.row = row;
-                    cell.column = column;
-                });
-            } else {
-                row.applyColumns(this.columns.getAll());
-            }
-
-            row.configure();
             return row
         },
 

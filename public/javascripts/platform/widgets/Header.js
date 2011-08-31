@@ -26,9 +26,6 @@ define(
                     tr(
                         td({class: 'column-title'},
                             params.value
-                        ),
-                        td({class: 'column-resizer-container'},
-                            div({class: 'column-resizer'})
                         )
                     )
                 )

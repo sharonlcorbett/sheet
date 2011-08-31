@@ -10,7 +10,7 @@ define(function(){
         MIN_COLUMN_WIDTH           = 40,
         NOT_RESIZABLE_COLUMN_CLASS = 'not-resizable'
 
-    return Class.extend({
+    return new Class({
 
         /**
          * Плагин ресайзинга
@@ -27,176 +27,83 @@ define(function(){
 
         name : 'resize',
 
-        init : function(sheet){
+        initialize : function(sheet){
 
             var me = this;
             this.sheet = sheet;
 
-            sheet.definition.addFields([
-
-                /**
-                 * Режим работы с шириной:
-                 *
-                 *  screen - таблица полностью умещается в экран и зумится.
-                 *           ресайз колонок происходит из расчета ширины таблицы
-                 *           и flex'a каждой из колонок
-                 *
-                 *  free   - каждая колонка имеет фиксированную ширину в пикселях,
-                 *           таблица может быть шире экрана. Ресайз происходим путем
-                 *           увеличения ширины только одной колонки.
-                 */
-                'resizeMode'
-            ]);
-
-            sheet.definition.setupIf({
-
-                resizeMode: SCREEN_MODE
-            });
-
-            var me = this;
-
             //если ресайзится окно, то в режиме screen нужно ресайзить лист
             //и обновлять значения ширины колонок
-            $(window).resize(function(){
-                if(me.sheet.definition.resizeMode() == SCREEN_MODE) me.screenModeResize();
-            });
+            /*$(window).resize(function(){
+                if(me.sheet.resizeMode() == SCREEN_MODE) me.screenModeResize();
+            });*/
 
-            _(sheet.headersPanel.headers).each(function(header){
+            sheet.watchFields({
 
-                header.column_definition.fieldsListener({
-                    width : function(){
-                        me.transmitColumnSize(header);
-                    },
-                    flex : function(){
-                        me.screenModeResize();
-                    }
-                });
+                resizeMode : {
 
-            });
+                    changed : function(val){
 
-            sheet.definition.fieldsListener({
-
-                'resizeMode' : function(e, val){
-
-                    if (val == FREE_MODE){
-                        me.freeModeResize();
-                    } else {
-                        me.screenModeResize();
+                        me.resizeColumns()
                     }
                 }
             });
 
-            $(this.sheet).bind('rendered', $.proxy(this.enableDrag, this));
+            sheet.columns.each(function(col){
 
-            this.resizeColumns();
+                me.bindColumnEvents(col);
+            })
+
+            sheet.watchFields({
+                columns : {
+                    elementAdded: function(col){
+                        me.bindColumnEvents(col)
+                        me.resizeColumns()
+                    },
+                    elementRemoved: function(){
+                        me.resizeColumns()
+                    }
+                }
+            })
+        },
+
+        bindColumnEvents : function(col){
+
+            var me = this;
+            col.watchFields({
+                width : {
+                    changed : function(){
+                        me.resizeColumns()
+                    }
+                },
+                flex : {
+                    changed : function(){
+                        me.resizeColumns()
+                    }
+                }
+            })
         },
 
         toggleScreenMode : function(){
 
-            this.sheet.definition.resizeMode(SCREEN_MODE);
+            this.sheet.resizeMode(SCREEN_MODE);
         },
 
         toggleFreeMode : function(){
 
-            this.sheet.definition.resizeMode(FREE_MODE);
+            this.sheet.resizeMode(FREE_MODE);
         },
 
-        transmitColumnSize : function(column_header){
 
-            var width = column_header.column_definition.width();
-            column_header.view.width(width);
-            this.sheet.grid.rows[0].cells[column_header.column_definition.idx()].view.width(width);
-        },
-
-        screenModeResize : function(){
-
-            var sheet = this.sheet;
-
-            if (sheet.definition.resizeMode() != SCREEN_MODE) return;
-
-            //ширина листа - 100% доступного пространства
-
-            sheet.view.width('100%');
-
-            //вычисляем ширину листа
-            var sheet_width = sheet.view.innerWidth() - 2;
-
-            //считаем сумму всех flex
-            var total_flex = 0;
-            _.each(sheet.headersPanel.headers, function(header){
-                total_flex += header.column_definition.flex();
-            });
-
-            var total_width = 0
-            $.each(sheet.headersPanel.headers, function(index, header){
-                //для каждого столбца обновляем метаинформацию width и
-                //физическую ширину ячейки
-                var width = Math.round((this.column_definition.flex()/total_flex)*sheet_width);
-
-                this.column_definition.width(width);
-                total_width += width;
-                //триггер события
-                $(this).trigger('after_resize')
-            });
-
-            if (total_width > sheet_width){
-                var width = sheet.definition.columns()[0].width();
-                sheet.definition.columns()[0].width(width - (total_width-sheet_width-20));
-            }
-        },
-
-        freeModeResize : function(){
-
-            var sheet = this.sheet;
-
-            if (sheet.definition.resizeMode() != FREE_MODE) return;
-
-            //ширина листа -- сумма ширины колонок, вычисляем ее
-            var total_width = 0
-            _.each(sheet.headersPanel.headers, function(header){
-                total_width += header.column_definition.width();
-            })
-
-            //ставим размер листа равным ширине колонок
-            sheet.view.width(total_width + 2);
-
-            var me = this;
-            $.each(sheet.headersPanel.headers, function(index, header){
-                me.transmitColumnSize(header);
-            });
-        },
-
-        /**
+          /**
          * Функция, подстраивающая ширину физических колонок таблицы
          * на основании метаданных flex и width соответствующих ячеек
          * и режима ресайзинга.
          */
         resizeColumns: function(){
 
-            //me - Sheet
-            var sheet = this.sheet;
-
-            switch(sheet.definition.resizeMode()){
-
-                case FREE_MODE:
-
-                    this.freeModeResize();
-                    break;
-
-                case SCREEN_MODE:
-
-                    this.screenModeResize();
-                    break;
-            }
+            this.sheet.fireEvent('resizeSheet')
         },
-
-            /*$(sheet).bind('column_moved', function(){
-                me.resize_mode_handler(null, sheet, sheet.resize_mode())
-            })*/
-
-            //первичное выполнение функции resize_mode_handler
-            //для получения ширины колонок и установки ограничений на
-            //движки ресайзинга
 
         enableDrag : function(){
 
@@ -204,7 +111,7 @@ define(function(){
 
             //вертикальная полоска движка для ресайзинга
             var helper = function(){
-                return $('<div class='' + RESIZE_SLIDER_CLASS + ''></div>')
+                return $('<div class="" + RESIZE_SLIDER_CLASS + ""></div>')
                     .height(sheet.headersPanel.view.height())
                     .css($(sheet.view).offset())
             }

@@ -45,4 +45,7 @@
           width: 5px;
           height: 100%;
           cursor: e-resize;
-          background-color: transparent; }
+          background-color: red;
+          position: relative;
+          left: 1px;
+          z-index: 999; }
