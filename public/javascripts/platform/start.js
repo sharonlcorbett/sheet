@@ -29,10 +29,6 @@ require(
 
                 sheet = new Sheet({
 
-                    modelClass : {
-                        alias : 'EntryModel'
-                    },
-
                     resizeMode : "screen",
 
                     columns : [
@@ -43,11 +39,10 @@ require(
                             defaultWidget: {
                                 alias : "CheckBoxWidget"
                             },
-                            dataIndex: "finished"
+                            defaultValue : false
                         },
                         {
                             value : "Текст",
-                            dataIndex: "text",
                             width : 200,
                             flex  : 0.5
                         },
@@ -60,33 +55,17 @@ require(
 
                     rows : [
                         {
-                            model : {
-                                text : "Зыж :-D"
-                            }
-                        },{
-                            model : {
-                                text : "Зыж :-D"
-                            }
-                        },{
-                            model : {
-                                text : "Зыж :-D"
-                            }
-                        },{
-                            model : {
-                                text : "Зыж :-D"
-                            }
-                        },{
-                            model : {
-                                text : "Зыж :-D"
-                            }
-                        },{
-                            model : {
-                                text : "Зыж :-D"
-                            }
-                        },{
-                            model : {
-                                text : "Зыж :-D"
-                            }
+                            cells : [
+                                {
+                                    value : true
+                                },
+                                {
+                                    value : "Выясненеие статуса заявки"
+                                },
+                                {
+                                    value : "Просто выяснить статус, хуле"
+                                }
+                            ]
                         }
                     ]
                 })
