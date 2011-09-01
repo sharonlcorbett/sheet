@@ -1,6 +1,6 @@
 define(
     [
-        'sheet/WidgetComponent'
+        'platform/base/WidgetComponent'
     ],
     function(
         WidgetComponent
@@ -51,7 +51,7 @@ define(
                 {
                     name : 'defaultWidget',
                     defaultValue : {
-                        alias : 'TextWidget'
+                        alias : 'widgets.text'
                     }
                 },
                 {
@@ -61,7 +61,7 @@ define(
                 {
                     name : 'widget',
                     defaultValue : {
-                        alias : 'HeaderWidget'
+                        alias : 'widgets.header'
                     }
                 },
                 {

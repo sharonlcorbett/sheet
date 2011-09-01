@@ -4,13 +4,11 @@
  */
 define(
     [
-        'sheet/Component',
-        'sheet/ClassManager',
-        'sheet/Widget'
+        'platform/base/Component',
+        'platform/base/Widget'
     ],
     function(
         Component,
-        ClassManager,
         Widget
     ){
 

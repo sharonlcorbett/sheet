@@ -1,10 +1,10 @@
 define(
     [
-        'sheet/Sheet',
-        'sheet/Cell',
-        'sheet/Column',
-        'sheet/Row',
-        'sheet/Widget'
+        'platform/sheet/Sheet',
+        'platform/sheet/Cell',
+        'platform/sheet/Column',
+        'platform/sheet/Row',
+        'platform/base/Widget'
     ],
     function(
         Sheet,

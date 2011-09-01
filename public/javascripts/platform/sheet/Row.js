@@ -6,16 +6,14 @@
  */
 define(
     [
-        'sheet/Component',
-        'sheet/Cell',
-        'sheet/Model',
-        'sheet/ClassManager'
+        'platform/base/Component',
+        'platform/sheet/Cell',
+        'platform/sheet/Model'
     ],
     function(
         Component,
         Cell,
-        Model,
-        ClassManager
+        Model
     ){
 
     var Row = new Class({
@@ -47,7 +45,7 @@ define(
                 },
                 {
                     name : 'cells',
-                    type : 'collection',
+                    alias : 'fields.collection',
                     property: true,
                     elementConstructor : function(def){
                         var cell = new Cell(def);

@@ -1,13 +1,13 @@
 
 define(
     [
-        'sheet/Perspective',
-        'sheet/Sheet',
-        'sheet/Definition',
-        'sheet/ClassManager',
-        'sheet/components/CellGrid',
-        'sheet/components/HeaderPanel',
-        'sheet/perspective/list/Entry'
+        'platform/sheet/Perspective',
+        'platform/sheet/Sheet',
+        'platform/base/Definition',
+        'platform/base/ClassManager',
+        'platform/components/CellGrid',
+        'platform/components/HeaderPanel',
+        'platform/perspective/list/Entry'
     ],
     function(
         Perspective,

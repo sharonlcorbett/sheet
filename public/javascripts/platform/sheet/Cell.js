@@ -7,7 +7,7 @@
  */
 define(
     [
-        'sheet/WidgetComponent'
+        'platform/base/WidgetComponent'
     ],
     function(
         WidgetComponent

@@ -2,25 +2,27 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(function(){
+define(['platform/base/List'], function(List){
 
     return new Class({
 
         Implements: Events,
 
+        Alias : 'fields.collection',
+
         Binds : ['defaultGetMethod', 'defaultSetMethod'],
+
+        elementConstructor : null,
+        serialize : true,
+        collectionConstructor : null,
 
         initialize : function(stx){
 
             this.uid  = String.uniqueID();
-            this.name = stx.name;
 
-            this.elementConstructor = stx.elementConstructor || null;
-            this.collectionConstructor = stx.collectionConstructor || null;
-            this.collection = [];
+            Object.append(this, stx);
 
-            this.serialize = stx.serialize;
-
+            this.collection = new List();
             this.field = this;
         },
 
@@ -29,31 +31,60 @@ define(function(){
             return this.collection;
         },
 
-        addElementStrict : function(el){
-
-            this.collection.push(el);
-            this.fireEvent('elementAdded', [el, this]);
-            return el;
-        },
-
-        addElement : function(elem){
-
-            var el = elem;
+        constructElement : function(elem){
 
             switch(typeOf(this.elementConstructor)){
 
                 case 'class':
-                    el = new this.elementConstructor(elem);
+                    return new this.elementConstructor(elem);
                     break;
                 case 'function':
-                    el = this.elementConstructor(elem);
+                    return this.elementConstructor(elem);
                     break;
                 default :
-                    el = elem;
+                    return elem;
+                    break;
+            }
+        },
+
+        addElement : function(element, action, action_element){
+
+            element = this.constructElement(element);
+
+            if((action == 'before' || action == 'after') & !action_element){
+                //action_element must be provided
+                return;
+            }
+
+            switch(action){
+
+                case 'before':
+                    this.collection.insertBefore(element, action_element);
+                    break;
+
+                case 'after':
+                    this.collection.insertAfter(element, action_element);
+                    break;
+
+                case 'first':
+                    this.collection.insertFirst(element);
+                    break;
+
+                default:
+                    //last is default
+                    this.collection.insertLast(element);
                     break;
             }
 
-            return this.addElementStrict(el);
+            this.fireEvent('elementAdded',[
+                element,
+                this.collection.indexOf(element),
+                action || 'last',
+                action_element,
+                this.collection.indexOf(action_element)
+            ]);
+
+            return element;
         },
 
         addElements : function(elems){
@@ -78,10 +109,14 @@ define(function(){
             return this.getAll.apply(this, arguments)
         },
 
-        removeElement : function(el){
+        removeElement : function(element){
 
-            this.collection.erase(el);
-            this.fireEvent('elementRemoved', [el, this])
+            this.collection.remove(element);
+
+            this.fireEvent('elementRemoved', [
+                element,
+                this.collection.indexOf(element)
+            ]);
         },
 
         getAt : function(index){

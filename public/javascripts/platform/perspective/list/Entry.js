@@ -1,7 +1,7 @@
 
 define(
     [
-        'sheet/Model'
+        'platform/sheet/Model'
     ],
     function(
         Model

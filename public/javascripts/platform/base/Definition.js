@@ -4,8 +4,8 @@
  */
 define(
     [
-        'sheet/helpers/Field',
-        'sheet/helpers/CollectionField'
+        'platform/base/Field',
+        'platform/base/CollectionField'
     ],
     function(
         Field,
@@ -74,15 +74,12 @@ define(
 
             if(typeOf(stx.name) == 'null'){throw 'name of the field must be set'}
 
-            switch(stx.type){
-                case 'collection':
-                    this.fields[stx.name] = new CollectionField(stx);
-                break;
-
-                default:
-                    this.fields[stx.name] = new Field(stx);
-                break;
+            if(typeof stx.alias == 'undefined'){
+                stx.alias = 'fields.field'
             }
+
+            var field_class = ClassManager.getClass(stx.alias);
+            this.fields[stx.name] = new field_class(stx);
 
             //создаем стандартный геттер-сеттер
             if(stx.property != true){
@@ -127,7 +124,6 @@ define(
             });
             return dump;
         },
-
 
         watchFields : function(stx){
 

@@ -8,6 +8,8 @@ define(function(){
 
         Implements: Events,
 
+        Alias : 'fields.field',
+
         Binds : ['defaultGetMethod', 'defaultSetMethod'],
 
         initialize : function(stx){

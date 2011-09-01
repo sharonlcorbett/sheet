@@ -9,7 +9,7 @@
  */
 define(
     [
-        'sheet/Widget'
+        'platform/base/Widget'
     ],
     function(
         Widget
@@ -18,6 +18,8 @@ define(
     var CheckBox = new Class({
 
         Extends : Widget,
+
+        Alias : 'widgets.checkbox',
 
         options : {
 
@@ -33,11 +35,9 @@ define(
 
         render : function(){
 
-            this.options.elementTemplate.render({checked : this.value == true}).replaces(this.view);
+            this.view.set('checked', this.value == true ? 'checked' : '');
         }
     })
-
-    CheckBox.alias = 'CheckBoxWidget';
 
     return CheckBox;
 

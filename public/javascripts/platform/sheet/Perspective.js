@@ -1,7 +1,7 @@
 
 define(
     [
-        'sheet/OperationManager'
+        'platform/base/OperationManager'
     ],
     function(
         OperationManager

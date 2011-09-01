@@ -9,7 +9,7 @@
  */
 define(
     [
-        'sheet/Widget'
+        'platform/base/Widget'
     ],
     function(
         Widget
@@ -18,6 +18,8 @@ define(
     var TextWidget = new Class({
 
         Extends : Widget,
+
+        Alias : 'widgets.text',
 
         options : {
 
@@ -34,8 +36,6 @@ define(
             return this.view.set('html', this.value.toString());
         }
     })
-
-    TextWidget.alias = 'TextWidget';
 
     return TextWidget;
 

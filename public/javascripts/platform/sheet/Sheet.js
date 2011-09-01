@@ -1,36 +1,26 @@
 
 define(
     [
-        'sheet/Component',
-        'sheet/Column',
-        'sheet/Row',
-        'sheet/ClassManager',
-        'sheet/functions/Resize'
+        'platform/base/Definition',
+        'platform/sheet/Column',
+        'platform/sheet/Row',
+        'platform/sheet/functions/Resize'
     ],
     function(
-        Component,
+        Definition,
         Column,
         Row,
-        ClassManager,
         ResizeFunction
     ){
 
     var Sheet = new Class({
 
-        Extends : Component,
+        Implements : [Events, Options, Definition],
 
         Binds : [
-            'injectComponents',
             'createColumn',
             'createRow'
         ],
-
-        options : {
-            elementTag : 'div',
-            elementProperties : {
-                class : 'xx-sheet'
-            }
-        },
 
         fn : {},
 
@@ -54,20 +44,20 @@ define(
                 },
                 {
                     name : 'columns',
-                    type : 'collection',
+                    alias : 'fields.collection',
                     property: true,
                     elementConstructor : this.createColumn
                 },
                 {
                     name : 'rows',
-                    type : 'collection',
+                    alias : 'fields.collection',
                     property: true,
                     elementConstructor : this.createRow
                 }
             ]);
 
 
-            this.parent(options);
+            this.setOptions(options || {});
             this.setup(definition);
 
             this.loadFunctions(ResizeFunction)

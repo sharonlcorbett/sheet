@@ -9,7 +9,7 @@
  */
 define(
     [
-        'sheet/Widget'
+        'platform/base/Widget'
     ],
     function(
         Widget
@@ -18,6 +18,8 @@ define(
     var HeaderWidget = new Class({
 
         Extends : Widget,
+
+        Alias : 'widgets.header',
 
         options : {
 
@@ -42,8 +44,6 @@ define(
             this.options.elementTemplate.render({value:this.value}).replaces(this.view);
         }
     })
-
-    HeaderWidget.alias = 'HeaderWidget';
 
     return HeaderWidget;
 

@@ -1,8 +1,8 @@
 define(
     [
-        'sheet/Definition',
-        'sheet/helpers/Field',
-        'sheet/helpers/CollectionField'
+        'platform/base/Definition',
+        'platform/base/Field',
+        'platform/base/CollectionField'
     ],
     function(
         Definition,
@@ -364,7 +364,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection"
+            alias : "fields.collection"
         });
 
         ok(instanceOf(def.items.field, CollectionField))
@@ -376,7 +376,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             collectionConstructor: function(elements){
                 return elements.map(function(item){
                     return item*2
@@ -401,7 +401,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             elementConstructor: function(element){
                 return element*2
             }
@@ -424,7 +424,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             elementConstructor: function(element){
                 return element*2
             }
@@ -443,7 +443,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             elementConstructor: function(element){
                 return element*2
             }
@@ -462,7 +462,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             elementConstructor: function(element){
                 return element*2
             }
@@ -497,7 +497,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             elementConstructor: function(element){
                 return element*2
             }
@@ -522,7 +522,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             elementConstructor: function(element){
                 return {
                     asJSON : function(){
@@ -557,7 +557,7 @@ define(
         var def = new Definition()
         def.addField({
             name : "items",
-            type : "collection",
+            alias : "fields.collection",
             property : true
         });
 

@@ -1,7 +1,7 @@
 
 define(
     [
-        'sheet/Definition'
+        'platform/base/Definition'
     ],
     function(
         Definition

@@ -1,6 +1,6 @@
 define(
     [
-        'sheet/Component'
+        'platform/base/Component'
     ],
     function(
         Component

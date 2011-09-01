@@ -1,7 +1,7 @@
 
 define(
     [
-        'sheet/Component',
+        'platform/base/Component',
         'platform/components/CellGrid',
         'platform/components/HeaderPanel'
     ],
