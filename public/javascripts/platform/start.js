@@ -29,6 +29,10 @@ require(
 
             resizeMode : "screen",
 
+            modelClass : {
+                alias : 'models.entry'
+            },
+
             columns : [
                 {
                     value : "Статус",
@@ -42,7 +46,8 @@ require(
                 {
                     value : "Текст",
                     width : 200,
-                    flex  : 0.5
+                    flex  : 0.5,
+                    dataIndex : 'text'
                 },
                 {
                     value : "Поясненеие",

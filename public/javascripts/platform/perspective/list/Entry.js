@@ -11,6 +11,8 @@ define(
 
         Extends : Model,
 
+        Alias : "models.entry",
+
         initialize: function(def){
 
             var me = this;
@@ -29,8 +31,6 @@ define(
             this.parent(def)
         }
     })
-
-    Entry.alias = "EntryModel"
 
     return Entry;
 

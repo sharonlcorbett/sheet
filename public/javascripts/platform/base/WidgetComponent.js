@@ -51,7 +51,9 @@ define(
             var me = this;
             //матеарилизация компонента
             this.parent(element);
+
             this.widget().inject(me.view);
+
         }
     });
 

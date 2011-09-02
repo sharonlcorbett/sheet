@@ -28,12 +28,29 @@ define(
 
         initialize : function(options){
 
+            var me = this;
+
             this.parent(options);
+
+            this.watchFields({
+                value : {
+                    changed : function(){
+                        me.render()
+                    },
+                    connected : function(){
+                        me.render()
+                    }
+                }
+            })
         },
 
         render : function(){
 
-            return this.view.set('html', this.value.toString());
+            if(this.value()){
+                this.view.set('html', this.value().toString());
+            } else {
+                this.view.set('html', '');
+            }
         }
     })
 

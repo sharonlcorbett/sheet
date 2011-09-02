@@ -4,6 +4,44 @@
  */
 define(function(){
 
+    var PARENT_VALUE = 'PARENT_VALUE',
+        PRIMARY = 'PRIMARY',
+        Connection;
+
+    Connection = new Class({
+
+        Implements : [Events, Options],
+
+        options : {
+
+            /**
+             * parent-value
+             */
+            type : PRIMARY
+        },
+
+        parentField : null,
+        childField : null,
+
+        initialize : function(options, parent, child){
+
+            var me = this;
+
+            this.parentField = parent;
+            this.childField = child;
+
+            this.parentField.addEvent('changed', function(value, field){
+                me.childField.fireEvent('changed', [value, me.childField])
+            });
+
+            this.parentField.addEvent('connected', function(type, field){
+                me.childField.fireEvent('connected', [type, field])
+            });
+
+            this.setOptions(options);
+        }
+    })
+
     return new Class({
 
         Implements: Events,
@@ -12,7 +50,14 @@ define(function(){
 
         Binds : ['defaultGetMethod', 'defaultSetMethod'],
 
+        connections : {
+            primary : null,
+            value : []
+        },
+
         initialize : function(stx){
+
+            var me = this;
 
             //unique id of field
             this.uid  = String.uniqueID();
@@ -35,6 +80,46 @@ define(function(){
 
             if(typeof this.defaultValue != "undefined"){
                 this.constructedDefault = this.constructValue(this.defaultValue)
+            }
+
+            [
+                'setToDefault',
+                'removeValue',
+                'getValueStrict',
+                'getValue',
+                'freeze',
+                'unFreeze',
+                'setValue',
+                'setValueStrict'
+
+            ].each(function(value){
+
+                me[value] = _.wrap(me[value], function(){
+                    var args = Array.prototype.slice.call(arguments);
+                    args.splice(1, 0, value);
+                    return me.connectionCall.apply(me, args);
+                });
+            })
+        },
+
+        connectionCall : function(){
+
+            var methodName, func, args, name
+
+            func = arguments[0];
+            name = arguments[1];
+            args = Array.prototype.slice.call(arguments, 2);
+
+            if (this.connections.primary){
+
+                //вызываем данный метод у праймари
+                return this.connections.primary.parentField[name].apply(
+                    this.connections.primary.parentField,
+                    args
+                );
+
+            } else {
+                return func.apply(this, args)
             }
         },
 
@@ -198,24 +283,21 @@ define(function(){
             }
         },
 
-        connect : function(field){
+        connect : function(options, field) {
 
-            var me = this;
+            var connection = new Connection(options, field, this);
 
-            var from = function(value){
-                field.removeEvent('changed', from)
-                me.setValue(value);
-                field.addEvent('changed', from)
+            switch(connection.options.type){
+
+                case PRIMARY:
+                    if (!this.connections.primary) {
+                        this.connections.primary = connection;
+                    }
+                break;
+
             }
 
-            var to = function(value){
-                me.removeEvent('changed', to)
-                field.setValue(value);
-                me.addEvent('changed', to)
-            }
-
-            field.addEvent('changed', from);
-            me.addEvent('changed', to);
+            this.fireEvent('connected', [options.type, field]);
         }
 
     })

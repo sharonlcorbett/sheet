@@ -74,15 +74,15 @@ define(
 
         },
 
-        applyDefinition: function(def){
-
-            this.initializeWidget();
-        },
-
         render : function(){
 
-            this.widget().value = this.value();
             this.widget().render();
+        },
+
+        initializeWidget: function(){
+
+            this.parent.apply(this, arguments);
+            this.widget().value.field.connect({}, this.value.field)
         }
 
     });

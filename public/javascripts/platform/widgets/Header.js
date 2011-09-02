@@ -41,7 +41,7 @@ define(
 
         render : function(){
 
-            this.options.elementTemplate.render({value:this.value}).replaces(this.view);
+            this.options.elementTemplate.render({value:this.value()}).replaces(this.view);
         }
     })
 

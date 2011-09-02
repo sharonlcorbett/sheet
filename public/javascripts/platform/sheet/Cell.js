@@ -68,26 +68,19 @@ define(
 
         render : function(){
 
-            this.widget().value = this.value();
             this.widget().render();
+        },
+
+        initializeWidget: function(){
+
+            this.parent.apply(this, arguments);
+            this.widget().value.field.connect({}, this.value.field)
         },
 
         inject: function(){
 
             this.parent.apply(this, arguments);
-
-            var me = this;
-
-            me.render();
-
-            this.watchFields({
-                value : {
-                    changed : function(value){
-                        me.widget().value = value
-                        me.render();
-                    }
-                }
-            })
+            this.render();
         }
     })
 

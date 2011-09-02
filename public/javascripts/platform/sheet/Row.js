@@ -98,7 +98,7 @@ define(
 
                     if(dataIndex){
                         if(me.model().fields[dataIndex]){
-                            cell.fields['value'] = me.model().fields[dataIndex];
+                            cell.value.field.connect({}, me.model().fields[dataIndex])
                         }
                     }
                 })

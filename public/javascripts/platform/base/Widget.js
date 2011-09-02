@@ -18,9 +18,13 @@ define(
             }
         },
 
-        value : null,
-
         initialize : function(options){
+
+            this.addFields([
+                {
+                    name : 'value'
+                }
+            ])
 
             this.parent(options);
         },

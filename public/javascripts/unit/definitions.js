@@ -210,9 +210,12 @@ define(
 
     })
 
-    test("field bind test", function(){
+    test("field connection PRIMARY test", function(){
 
         var def1 = new Definition()
+
+        expect(5)
+
         def1.addField({
             name : "value"
         })
@@ -222,13 +225,26 @@ define(
             name : "value"
         })
 
-        def1.value.field.connect(def2.value.field);
+        def1.value.field.connect({type:"PRIMARY"}, def2.value.field);
 
         def1.value("test")
-        equals(def2.value(), "test")
+        equals(def1.value(), "test")
 
         def2.value("test2")
         equals(def1.value(), "test2")
+
+        equals(def2.value.field.value, "test2")
+        equals(def1.value.field.value, undefined)
+
+        def1.watchFields({
+            value : {
+                changed: function(value){
+                    equals(value, "test3")
+                }
+            }
+        })
+
+        def2.value("test3");
 
     })
 

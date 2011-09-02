@@ -30,12 +30,26 @@ define(
 
         initialize : function(options){
 
+            var me = this;
+
             this.parent(options);
+
+            this.watchFields({
+                value : {
+                    changed : function(){
+                        me.render()
+                    },
+                    connected : function(){
+                        me.render()
+                    }
+                }
+            })
+
         },
 
         render : function(){
 
-            this.view.set('checked', this.value == true ? 'checked' : '');
+            this.view.set('checked', this.value() == true ? 'checked' : '');
         }
     })
 
