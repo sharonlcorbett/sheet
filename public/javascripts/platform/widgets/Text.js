@@ -46,7 +46,7 @@ define(
 
         render : function(){
 
-            if(this.value()){
+            if(typeof this.value() != "undefined"){
                 this.view.set('html', this.value().toString());
             } else {
                 this.view.set('html', '');

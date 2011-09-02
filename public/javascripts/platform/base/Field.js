@@ -44,7 +44,7 @@ define(function(){
 
     return new Class({
 
-        Implements: Events,
+        Implements: [Options, Events],
 
         Alias : 'fields.field',
 
@@ -53,6 +53,10 @@ define(function(){
         connections : {
             primary : null,
             value : []
+        },
+
+        options : {
+
         },
 
         initialize : function(stx){
@@ -82,7 +86,9 @@ define(function(){
                 this.constructedDefault = this.constructValue(this.defaultValue)
             }
 
-            [
+            this.setOptions(stx.options);
+
+            ([
                 'setToDefault',
                 'removeValue',
                 'getValueStrict',
@@ -99,7 +105,9 @@ define(function(){
                     args.splice(1, 0, value);
                     return me.connectionCall.apply(me, args);
                 });
-            })
+            }))
+
+
         },
 
         connectionCall : function(){

@@ -27,52 +27,21 @@ require(
 
         sheet = new Sheet({
 
-            resizeMode : "screen",
-
             modelClass : {
                 alias : 'models.entry'
             },
 
             columns : [
                 {
-                    value : "Статус",
-                    width : 50,
-                    flex  : 0.2,
-                    defaultWidget: {
-                        alias : "widgets.checkbox"
-                    },
-                    defaultValue : true,
-                    dataIndex: 'checked'
+                    value : "Привет",
+                    dataIndex: "text"
                 },
                 {
-                    value : "Текст",
-                    width : 200,
-                    flex  : 0.5,
-                    dataIndex : 'text'
-                },
-                {
-                    value : "Поясненеие",
-                    width : 400,
-                    flex  : 2
-                }
-            ],
-
-            rows : [
-                {
-                    cells : [
-                        {
-                            value : true
-                        },
-                        {
-                            value : "Выясненеие статуса заявки"
-                        },
-                        {
-                            value : "Просто выяснить статус, хуле"
-                        }
-                    ]
+                    value : "Пока"
                 }
             ]
-        })
+
+        });
 
         w.loadSheet(sheet)
 

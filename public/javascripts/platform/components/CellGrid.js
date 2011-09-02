@@ -35,12 +35,15 @@ define(
 
         resize : function(){
 
+            if(sheet.rows.count() == 0) return;
+
             var me = this;
             if(this.sheet.resizeMode() == "screen"){
 
                 this.view.setStyle("width", "100%");
 
                 var total_flex = 0;
+
                 this.sheet.rows.getAt(0).cells.each(function(cell){
                     total_flex += cell.column.flex();
                 });

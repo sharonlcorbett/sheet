@@ -24,6 +24,13 @@ define(
 
         fn : {},
 
+        options : {
+            defaultWidgetsFor : {
+                'string'  : 'widgets.text',
+                'boolean' : 'widgets.checkbox'
+            }
+        },
+
         initialize : function(definition, options){
 
             this.addFields([
@@ -57,10 +64,51 @@ define(
             ]);
 
 
-            this.setOptions(options || {});
+            this.setOptions(options);
             this.setup(definition);
 
+            this.ensureModel();
+
             this.loadFunctions(ResizeFunction)
+
+        },
+
+        /**
+         * Проверяет текущую структуру листа на соответствие
+         * требованиям модели (наличие всех необходимых колонок).
+         * Приводит структуру листа к надлежащему виду. Таким образом,
+         * все модели всегда будут правильно заполнены.
+         */
+        ensureModel : function(){
+
+            var me = this,
+                model;
+
+            //работем только, если модель указана
+            if(!this.modelClass()) return;
+
+            //экземпляр
+            model = new (this.modelClass())();
+
+            Object.each(model.fields, function(field, key){
+
+                var hasColumn;
+
+                hasColumn = me.columns.getAll().some(function(column){
+                    return column.dataIndex() == key;
+                });
+
+                if (!hasColumn){
+                    //добавляем на лист колонку
+                    me.addColumn({
+                        value : field.options.humanTitle || field.name,
+                        dataIndex: key,
+                        defaultWidget : {
+                            alias : me.options.defaultWidgetsFor[field.options.valueType] || 'widgets.text'
+                        }
+                    });
+                }
+            });
 
         },
 
