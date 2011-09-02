@@ -41,7 +41,8 @@ require(
                     defaultWidget: {
                         alias : "widgets.checkbox"
                     },
-                    defaultValue : true
+                    defaultValue : true,
+                    dataIndex: 'checked'
                 },
                 {
                     value : "Текст",

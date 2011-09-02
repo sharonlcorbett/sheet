@@ -43,13 +43,25 @@ define(
                         me.render()
                     }
                 }
-            })
-
+            });
         },
 
         render : function(){
 
             this.view.set('checked', this.value() == true ? 'checked' : '');
+        },
+
+        inject : function(){
+
+            var me = this;
+
+            this.parent.apply(this, arguments);
+            this.view.addEvent('change', function(e){
+                me.value(
+                    //update value
+                    me.view.get('checked')
+                );
+            })
         }
     })
 

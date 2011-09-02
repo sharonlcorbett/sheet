@@ -23,7 +23,7 @@ define(
                     defaultValue : 'Новая запись'
                 },
                 {
-                    name: "finished",
+                    name: "checked",
                     defaultValue : false
                 }
             ]);
