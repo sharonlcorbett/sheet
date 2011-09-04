@@ -6,19 +6,17 @@
  */
 define(
     [
-        'platform/base/Component',
-        'platform/sheet/Cell',
-        'platform/sheet/Model'
+        'platform/base/Definition',
+        'platform/sheet/Cell'
     ],
     function(
-        Component,
-        Cell,
-        Model
+        Definition,
+        Cell
     ){
 
     var Row = new Class({
 
-        Extends : Component,
+        Extends : Definition,
 
         options : {
 
@@ -103,9 +101,9 @@ define(
                     }
                 })
             }
-        },
+        }
 
-        inject : function(element){
+        /*inject : function(element){
 
             var me = this;
             this.parent(element);
@@ -120,7 +118,7 @@ define(
                 cell.render();
             });
             this.fireEvent('rendered');
-        }
+        }*/
 
     })
 

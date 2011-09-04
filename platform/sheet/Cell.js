@@ -7,15 +7,15 @@
  */
 define(
     [
-        'platform/base/WidgetComponent'
+        'platform/base/Definition'
     ],
     function(
-        WidgetComponent
+        Definition
     ){
 
     var Cell = new Class({
 
-        Extends : WidgetComponent,
+        Extends : Definition,
 
         options : {
 
@@ -64,9 +64,9 @@ define(
         colIdx : function(){
 
             return this.column.idx;
-        },
+        }
 
-        render : function(){
+        /*render : function(){
 
             this.widget().render();
         },
@@ -81,7 +81,7 @@ define(
 
             this.parent.apply(this, arguments);
             this.render();
-        }
+        }*/
     })
 
     return Cell;

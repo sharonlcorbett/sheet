@@ -3,7 +3,27 @@
  * Module dependencies.
  */
 
-var express = require('express');
+var express = require('express'),
+    requirejs = require('requirejs'),
+    mootools = require('mootools')
+
+requirejs({
+    paths: {
+        "platform" : __dirname + "/platform"
+    }
+});
+
+var sheetClass = requirejs(['platform/sheet/Sheet'])
+
+var sheet = new sheetClass({
+    columns: [
+        {
+            value : "Test"
+        }
+    ]
+})
+
+console.log(sheet)
 
 var app = module.exports = express.createServer();
 

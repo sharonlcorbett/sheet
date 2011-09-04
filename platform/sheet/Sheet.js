@@ -3,17 +3,15 @@ define(
     [
         'platform/base/Definition',
         'platform/sheet/Column',
-        'platform/sheet/Row',
-        'platform/sheet/functions/Resize'
+        'platform/sheet/Row'
     ],
     function(
         Definition,
         Column,
-        Row,
-        ResizeFunction
+        Row
     ){
 
-    var Sheet = new Class({
+    return new Class({
 
         Implements : [Events, Options, Definition],
 
@@ -68,8 +66,6 @@ define(
             this.setup(definition);
 
             this.ensureModel();
-
-            this.loadFunctions(ResizeFunction)
 
         },
 
@@ -192,8 +188,6 @@ define(
             );
         }
     });
-
-    return Sheet;
 
 });
 

@@ -1,14 +1,14 @@
 define(
     [
-        'platform/base/WidgetComponent'
+        'platform/base/Definition'
     ],
     function(
-        WidgetComponent
+        Definition
     ){
 
     var Column = new Class({
 
-        Extends : WidgetComponent,
+        Extends : Definition,
 
         options : {
 
@@ -72,17 +72,6 @@ define(
             this.parent(options);
             this.setup(definition);
 
-        },
-
-        render : function(){
-
-            this.widget().render();
-        },
-
-        initializeWidget: function(){
-
-            this.parent.apply(this, arguments);
-            this.widget().value.field.connect({}, this.value.field)
         }
 
     });
