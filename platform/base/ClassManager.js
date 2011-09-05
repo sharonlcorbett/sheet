@@ -1,11 +1,15 @@
-createOrReturn = function(def, klass){
+
+
+define(function (require, exports, module) {
+
+module.exports.createOrReturn = function(def, klass){
 
     if(instanceOf(def, klass)){
         return def;
     } else {
         return new klass(def);
     }
-}
+};
 
 /**
  * Менеджер классов.
@@ -14,7 +18,7 @@ createOrReturn = function(def, klass){
  * приложения. Позволяет создавать классы "на лету", используя назначенные
  * классами alias'ы.
  */
-var ClassManager = new (new Class({
+module.exports.ClassManager = new (new Class({
 
     Implements : [Events],
 
@@ -57,11 +61,13 @@ var ClassManager = new (new Class({
         return Object.keys(this.classes);
     }
 
-}));
+}))();
 
 Class.Mutators.Alias = function(alias){
 
     if(!alias) return;
     this.alias = alias;
-    ClassManager.registerClass(this)
-}
+    ClassManager.registerClass(this);
+};
+
+});

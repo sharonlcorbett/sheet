@@ -3,9 +3,10 @@
  * Module dependencies.
  */
 
-var express = require('express'),
+var express   = require('express'),
     requirejs = require('requirejs'),
-    mootools = require('mootools')
+    mootools  = require('mootools'),
+    _ = requirejs('underscore');
 
 requirejs({
     paths: {
@@ -13,7 +14,7 @@ requirejs({
     }
 });
 
-var sheetClass = requirejs(['platform/sheet/Sheet'])
+var sheetClass = requirejs(['platform/sheet/Sheet']);
 
 var sheet = new sheetClass({
     columns: [

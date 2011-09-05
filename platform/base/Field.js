@@ -2,45 +2,14 @@
  * Класс заголовков таблицы
  * @param settings
  */
-define(function(){
+define([
+    'platform/base/FieldConnection'],
+    function(
+        FieldConnection){
 
     var PARENT_VALUE = 'PARENT_VALUE',
-        PRIMARY = 'PRIMARY',
-        Connection;
-
-    Connection = new Class({
-
-        Implements : [Events, Options],
-
-        options : {
-
-            /**
-             * parent-value
-             */
-            type : PRIMARY
-        },
-
-        parentField : null,
-        childField : null,
-
-        initialize : function(options, parent, child){
-
-            var me = this;
-
-            this.parentField = parent;
-            this.childField = child;
-
-            this.parentField.addEvent('changed', function(value, field){
-                me.childField.fireEvent('changed', [value, me.childField])
-            });
-
-            this.parentField.addEvent('connected', function(type, field){
-                me.childField.fireEvent('connected', [type, field])
-            });
-
-            this.setOptions(options);
-        }
-    })
+        PRIMARY      = 'PRIMARY',
+        _ = require('underscore');
 
     return new Class({
 
@@ -58,6 +27,13 @@ define(function(){
         options : {
 
         },
+        
+        value : undefined,
+
+        /**
+         * defaultValue processed by constructValue and stored in constructedDefault
+         */
+        constructedDefault : null,
 
         initialize : function(stx){
 
@@ -67,52 +43,56 @@ define(function(){
             this.uid  = String.uniqueID();
 
             //name of the field
-            this.name = stx.name;
+            this.name             = stx.name;
 
             this.valueConstructor = stx.valueConstructor || null;
-            this.changer = stx.changer || null;
-            this.emptyGetter = stx.emptyGetter || null;
-            this.defaultValue = stx.defaultValue;
+            this.changer          = stx.changer || null;
+            this.emptyGetter      = stx.emptyGetter || null;
+            this.defaultValue     = stx.defaultValue;
 
-            this.fixed = stx.fixed || false;
+            this.fixed            = stx.fixed || false;
 
             this.applied = false;
             this.freezed = false;
 
             this.serialize = stx.serialize;
+            
             if (typeof this.serialize == 'undefined') this.serialize = true;
 
             if(typeof this.defaultValue != "undefined"){
-                this.constructedDefault = this.constructValue(this.defaultValue)
+                this.constructedDefault = this.constructValue(this.defaultValue);
             }
 
             this.setOptions(stx.options);
 
-            ([
-                'setToDefault',
-                'removeValue',
-                'getValueStrict',
-                'getValue',
-                'freeze',
-                'unFreeze',
-                'setValue',
-                'setValueStrict'
-
-            ].each(function(value){
-
-                me[value] = _.wrap(me[value], function(){
-                    var args = Array.prototype.slice.call(arguments);
-                    args.splice(1, 0, value);
-                    return me.connectionCall.apply(me, args);
-                });
-            }))
-
+            //анонимная фукнция для оборачивания стандартных функций в 
+            //connectionCall
+            (function(){
+                
+                [
+                    'setToDefault',
+                    'removeValue',
+                    'getValueStrict',
+                    'getValue',
+                    'freeze',
+                    'unFreeze',
+                    'setValue',
+                    'setValueStrict'
+                ].each(function(value){
+                   
+                    me[value] = _.wrap(me[value], function(){
+                        var args = Array.prototype.slice.call(arguments);
+                        args.splice(1, 0, value);
+                        return me.connectionCall.apply(me, args);
+                    });
+                });                
+            })();
 
         },
 
         connectionCall : function(){
 
-            var methodName, func, args, name
+            var methodName, func, args, name;
 
             func = arguments[0];
             name = arguments[1];
@@ -127,7 +107,7 @@ define(function(){
                 );
 
             } else {
-                return func.apply(this, args)
+                return func.apply(this, args);
             }
         },
 
@@ -154,15 +134,8 @@ define(function(){
          */
         getValueStrict : function(){
 
-            return this.value
+            return this.value;
         },
-
-        value : undefined,
-
-        /**
-         * defaultValue processed by constructValue and stored in constructedDefault
-         */
-        constructedDefault : null,
 
         /**
          * Get field current value.
@@ -208,9 +181,11 @@ define(function(){
                 case 'class':
                     value = new this.valueConstructor(val);
                     break;
+                    
                 case 'function':
                     value = this.valueConstructor(val);
                     break;
+                    
                 default :
                     value = val;
                     break;
@@ -226,7 +201,7 @@ define(function(){
          * Notice, that setValue call constructValue on val
          * @param val
          */
-        setValue : function(val, fire_event){
+        setValue : function(val, fireEvent){
 
             if (this.fixed && this.applied || this.freezed) return;
 
@@ -235,40 +210,40 @@ define(function(){
             }
 
             if (typeof val == "undefined"){
-                this.removeValue()
+                this.removeValue();
                 return;
             }
 
             var value = this.constructValue(val);
 
-            return this.setValueStrict(value, fire_event);
+            return this.setValueStrict(value, fireEvent);
         },
 
         defaultSetMethod : function(){
 
-            return this.setValue.apply(this, arguments)
+            return this.setValue.apply(this, arguments);
         },
 
         defaultGetMethod : function(){
 
-            return this.getValue.apply(this, arguments)
+            return this.getValue.apply(this, arguments);
         },
 
         /**
          * Set value property without constructValue.
          * @param val
          */
-        setValueStrict : function(val, fire_event){
+        setValueStrict : function(val, fireEvent){
 
-            if(typeof fire_event == "undefined"){
-                fire_event = true
+            if(typeof fireEvent == "undefined"){
+                fireEvent = true;
             }
 
             if (this.fixed && this.applied || this.freezed) return;
 
             this.value = val;
 
-            if (fire_event){
+            if (fireEvent){
                 this.fireEvent('changed', [this.getValue(), this]);
             }
 
@@ -285,7 +260,7 @@ define(function(){
             if (!this.serialize) return;
 
             if (this.value && typeof this.value.asJSON == 'function'){
-                return this.value.asJSON()
+                return this.value.asJSON();
             } else {
                 return this.value;
             }
@@ -293,7 +268,7 @@ define(function(){
 
         connect : function(options, field) {
 
-            var connection = new Connection(options, field, this);
+            var connection = new FieldConnection(options, field, this);
 
             switch(connection.options.type){
 
@@ -308,5 +283,5 @@ define(function(){
             this.fireEvent('connected', [options.type, field]);
         }
 
-    })
-})
+    });
+});

@@ -37,7 +37,7 @@ define(function(){
 
         insertFirst: function(el){
 
-            this.insertAt(0, el)
+            this.insertAt(0, el);
         },
 
         insertLast: function(el){
@@ -45,6 +45,6 @@ define(function(){
             this.insertAt(this.length, el);
         }
 
-    })
+    });
 
 });
