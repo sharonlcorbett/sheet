@@ -2,15 +2,6 @@
 
 define(function (require, exports, module) {
 
-module.exports.createOrReturn = function(def, klass){
-
-    if(instanceOf(def, klass)){
-        return def;
-    } else {
-        return new klass(def);
-    }
-};
-
 /**
  * Менеджер классов.
  *
@@ -59,6 +50,15 @@ module.exports.ClassManager = new (new Class({
      */
     known : function(){
         return Object.keys(this.classes);
+    },
+    
+    createIf : function(def, klass){
+
+        if(instanceOf(def, klass)){
+            return def;
+        } else {
+            return new klass(def);
+        }
     }
 
 }))();

@@ -12,13 +12,12 @@ define(
     ){
 
     return new Class({
+        
+        Extends : Definition,
 
         Implements : [Events, Options, Definition],
-
-        Binds : [
-            'createColumn',
-            'createRow'
-        ],
+        
+        Alias : 'sheet.main',
 
         fn : {},
 
@@ -30,6 +29,10 @@ define(
         },
 
         initialize : function(definition, options){
+            
+            var me = this;
+            
+            this.parent(options)
 
             this.addFields([
                 {
@@ -40,32 +43,35 @@ define(
                     name : 'modelClass',
                     valueConstructor : function(def){
 
-                        var model_class;
-                        if(typeOf(def) != "class"){
-                            model_class = ClassManager.getClass(def.alias);
+                        if(typeOf(def) == "class"){
+                            return def;
+                        } else {
+                            return ClassManager.getClass(def.alias);                            
                         }
-                        return model_class;
                     }
                 },
                 {
                     name : 'columns',
                     alias : 'fields.collection',
                     property: true,
-                    elementConstructor : this.createColumn
+                    elementConstructor : function(column){
+                        return me.createColumn(column)
+                    }
                 },
                 {
                     name : 'rows',
                     alias : 'fields.collection',
                     property: true,
-                    elementConstructor : this.createRow
+                    elementConstructor : function(row){
+                        return me.createRow(row)   
+                    }
                 }
             ]);
 
-
-            this.setOptions(options);
             this.setup(definition);
-
             this.ensureModel();
+            
+            this.bindColumnActions();           
 
         },
 
@@ -83,7 +89,7 @@ define(
             //работем только, если модель указана
             if(!this.modelClass()) return;
 
-            //экземпляр
+            //экземпляр для анализа
             model = new (this.modelClass())();
 
             Object.each(model.fields, function(field, key){
@@ -122,19 +128,19 @@ define(
          * @param row индекс строки
          * @param col индекс столбца
          */
-        cellAt : function(row, col){
+        cellAt : function(row, column){
 
-            return this.rows.getAt(row).cells.getAt(col);
+            return this.rows.getAt(row).cells.getAt(column);
         },
 
-        columnAt : function(col_idx){
+        columnAt : function(columnIndex){
 
-            return this.columns.getAt(col_idx);
+            return this.columns.getAt(columnIndex);
         },
 
-        rowAt : function(row_idx){
+        rowAt : function(rowIndex){
 
-            return this.rows.getAt(row_idx);
+            return this.rows.getAt(rowIndex);
         },
 
         /**
@@ -143,15 +149,15 @@ define(
 
         createColumn : function(column){
 
-            return createOrReturn(column, Column)
+            return ClassManager.createIf(column, Column);
         },
 
         createRow : function(row){
 
-            row = createOrReturn(row, Row);
+            row = ClassManager.createIf(row, Row);            
             row.configure(this);
 
-            return row
+            return row;
         },
 
         addRow : function(row){
@@ -160,12 +166,12 @@ define(
         },
 
         addColumn : function(col){
-
+            
             this.columns.addElement(col);
         },
 
         removeColumn : function(col){
-
+                
             this.columns.removeElement(col);
         },
 
@@ -174,19 +180,53 @@ define(
             this.rows.removeElement(row);
         },
 
-        removeRowAt : function(idx){
+        removeRowAt : function(rowIndex){
 
             this.rows.field.removeElement(
-                this.rowAt(idx)
+                this.rowAt(rowIndex)
             );
         },
 
-        removeColumnAt : function(idx){
+        removeColumnAt : function(columnIndex){
 
             this.columns.field.removeElement(
-                this.columnAt(idx)
+                this.columnAt(columnIndex)
             );
+        },
+        
+        bindColumnActions : function(){
+
+            var me = this;
+            this.watchFields({
+                
+                columns : {
+                    
+                    //привязываемся к событию добавления строки
+                    elementAdded : function(column, 
+                                            columnIndex,
+                                            action, 
+                                            actionColumn, 
+                                            actionIndex){                        
+
+                        //добавляем к каждой строке ячейку
+                        me.rows.each(function(row){                        
+                            var cell = row.cells.addElement({}, action, null, actionIndex);
+                            cell.column = column;
+                        });                       
+                    },
+                    
+                    elementRemoved : function(column, columnIndex){
+                
+                        //удаляем ячейку из строки
+                        me.rows.each(function(row){
+                            row.cells.removeElementAt(columnIndex);
+                        })
+                    }
+                }
+            })     
         }
+        
+        
     });
 
 });

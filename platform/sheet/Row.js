@@ -14,9 +14,11 @@ define(
         Cell
     ){
 
-    var Row = new Class({
-
+    return new Class({
+        
         Extends : Definition,
+
+        Alias : 'sheet.row',
 
         options : {
 
@@ -24,6 +26,7 @@ define(
         },
 
         cells : [],
+        
         idx : null,
 
         sheet : null,
@@ -31,6 +34,7 @@ define(
         initialize : function(definition, options){
 
             var me = this;
+            this.parent(options);
 
             this.addFields([
                 {
@@ -46,7 +50,7 @@ define(
                     alias : 'fields.collection',
                     property: true,
                     elementConstructor : function(def){
-                        var cell = new Cell(def);
+                        var cell = ClassManager.createIf(def, Cell);
                         cell.row = this;
                         return cell;
                     }
@@ -56,7 +60,6 @@ define(
                 }
             ]);
 
-            this.parent(options);
             this.setup(definition);
         },
 
@@ -64,7 +67,7 @@ define(
 
             this.cells.each(function(cell, index){
                 cell.column = columns[index];
-            })
+            });
         },
 
         configure : function(sheet){
@@ -73,33 +76,34 @@ define(
 
             this.sheet = sheet;
 
-            if (this.cells.count() == 0){
-
+            if (this.cells.count() === 0){
                 me.sheet.columns.each(function(column){
                     var cell = me.cells.addElement({});
                     cell.row = me;
                     cell.column = column;
                 });
             } else {
-                this.applyColumns(sheet.columns.getAll())
+                this.applyColumns(sheet.columns.getAll());
             }
 
             if (this.sheet.modelClass()){
 
                 this.model(
-                    createOrReturn(this.model(), this.sheet.modelClass())
+                    ClassManager.createIf(this.model(), this.sheet.modelClass())
                 );
 
                 this.cells.each(function(cell){
 
-                    var dataIndex = cell.column.dataIndex()
-
+                    var dataIndex = cell.column.dataIndex();
                     if(dataIndex){
                         if(me.model().fields[dataIndex]){
-                            cell.value.field.connect({}, me.model().fields[dataIndex])
+                            cell.value.field.connect(
+                                {}, //stx
+                                me.model().fields[dataIndex]
+                            );
                         }
                     }
-                })
+                });
             }
         }
 
@@ -120,8 +124,6 @@ define(
             this.fireEvent('rendered');
         }*/
 
-    })
-
-    return Row;
+    });
 
 });

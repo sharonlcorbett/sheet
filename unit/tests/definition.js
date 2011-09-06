@@ -2,15 +2,11 @@
 define([
     'platform/base/Definition', 
     'platform/base/Field', 
-    'platform/base/CollectionField',
-    'nodeunit'
+    'platform/base/CollectionField'
 ], function(
     Definition,
     Field,
-    CollectionField,
-    nodeunit){
-                        
-    //testCase = nodeunit.testCase;    
+    CollectionField){
 
     return {
         

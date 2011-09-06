@@ -79,7 +79,7 @@ exports.run = function (modules, options) {
             tracker.remove(name);
 
             if (!assertions.failures()) {
-                console.log('✔ ' + name);
+                console.log('✔ ' + name  + " " + assertions.duration + " ms.");
             }
             else {
                 console.log(error('✖ ' + name) + '\n');
@@ -109,7 +109,7 @@ exports.run = function (modules, options) {
             }
             else {
                 console.log(
-                   '\n' + bold(ok('OK: ')) + assertions.length +
+                   '\n' + bold(ok('Good: ')) + assertions.length +
                    ' assertions (' + assertions.duration + 'ms)'
                 );
             }

@@ -11,16 +11,22 @@ define([
 
     return new Class({
 
+        Implements : [Options],
+        
         fields : null,
 
         uniqueId : null,
+        
+        options : {
+        
+        },        
 
-        initialize       : function(stx){
+        initialize       : function(options){
 
             this.fields = {};
             this.uniqueId = String.uniqueID();
             
-            this.setup(stx);  
+            this.setOptions(options);  
         },
 
         setup      : function(settings){
@@ -54,7 +60,7 @@ define([
                 }
             });
         },
-
+        
         /**
          * Создает новый Field нужного типа с настройками stx и
          * добавляет его в список fields. Дополнительно создается
@@ -82,7 +88,7 @@ define([
             //динамическое создание класса
             fieldClass = ClassManager.getClass(stx.alias);
             this.fields[stx.name] = new fieldClass(stx);
-
+                        
             //создаем стандартный геттер-сеттер
             if(stx.property !== true){
                 

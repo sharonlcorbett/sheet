@@ -1,13 +1,11 @@
 
-define(
-    [
+define([
         'platform/base/Definition'
     ],
     function(
-        Definition
-    ){
+        Definition){
 
-    var Model = new Class({
+    return new Class({
 
         Implements : [Definition],
 
@@ -16,7 +14,5 @@ define(
             this.setup(def);
         }
     })
-
-    return Model;
 
 })

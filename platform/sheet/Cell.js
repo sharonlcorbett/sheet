@@ -13,9 +13,11 @@ define(
         Definition
     ){
 
-    var Cell = new Class({
+    return new Class({
 
         Extends : Definition,
+        
+        Alias : 'sheet.cell',
 
         options : {
 
@@ -27,21 +29,27 @@ define(
         row : null,
 
         initialize       : function(definition, options){
+            
+            this.parent(options);
 
             this.addFields([
                 {
-                    name : 'editable',
-                    emptyGetter : function(){
-                        return this.column.editable();
-                    }.bind(this)
-                },
-                {
                     name : 'format'
                 },
+
+                /**
+                 * Поля с наследуемыми значениями
+                 * */
                 {
                     name: 'value',
                     emptyGetter : function(){
                         return this.column.defaultValue();
+                    }.bind(this)
+                },
+                {
+                    name : 'editable',
+                    emptyGetter : function(){
+                        return this.column.editable();
                     }.bind(this)
                 },
                 {
@@ -51,8 +59,7 @@ define(
                     }.bind(this)
                 }
             ]);
-
-            this.parent(options);
+            
             this.setup(definition);
         },
 
@@ -82,8 +89,6 @@ define(
             this.parent.apply(this, arguments);
             this.render();
         }*/
-    })
+    });
 
-    return Cell;
-
-})
+});

@@ -19,9 +19,14 @@ requirejs({
     }
 });
 
-requirejs(['unit/tests/definition'], function(testCase){
+requirejs([
+    'unit/tests/definition',
+    'unit/tests/sheet'], function(
+        definition,
+        sheet){
 
-    reporter.run([testCase]);  
+    reporter.run([definition]);
+    reporter.run([sheet]);
 });
 
 //testrunner.run(['tests/definition.js']);

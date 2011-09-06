@@ -72,13 +72,22 @@ define([
          *  actionElement - элемент для действий after и before, должен
          *                  присутствовать в коллекции.
          */
-        addElement : function(element, action, actionElement){
+        addElement : function(element, action, actionElement, actionIndex){
 
             //конструируем элемент
             element = this.constructElement(element);
 
-            if((action == 'before' || action == 'after') & !actionElement){
+            if((action == 'before' || action == 'after') & (typeOf(actionElement) == 'null' && 
+            typeof actionIndex == 'undefined')){
                 throw "actionElement must be provided";
+            }
+            
+            if(action == 'before' || action == 'after'){
+                if(!actionElement){
+                    actionElement = this.collection[actionIndex];    
+                } else {
+                    actionIndex = this.collection.indexOf(actionElement);
+                }    
             }
 
             switch(action){
@@ -106,7 +115,7 @@ define([
                 this.collection.indexOf(element),
                 action || 'last',
                 actionElement,
-                this.collection.indexOf(actionElement)
+                actionIndex
             ]);
 
             return element;
@@ -145,12 +154,23 @@ define([
          */
         removeElement : function(element){
 
+            var elementIndex = this.collection.indexOf(element);
             this.collection.remove(element);
 
             this.fireEvent('elementRemoved', [
                 element,
-                this.collection.indexOf(element)
+                elementIndex
             ]);
+        },
+        
+        /**
+         * Удаление элемента из коллекции
+         */
+        removeElementAt : function(elementIndex){
+
+            this.removeElement(
+                this.collection[elementIndex]
+            );      
         },
 
         getAt : function(index){

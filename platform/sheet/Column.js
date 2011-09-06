@@ -9,6 +9,8 @@ define(
     var Column = new Class({
 
         Extends : Definition,
+        
+        Alias : 'sheet.column',
 
         options : {
 
@@ -19,10 +21,16 @@ define(
 
         initialize : function(definition, options){
 
+            this.parent(options);
+            
             this.addFields([
                 {
                     name : 'flex',
                     defaultValue : 1
+                },
+                {
+                    name : 'removable',
+                    defaultValue : true,
                 },
                 {
                     name : 'resizable',
@@ -56,7 +64,8 @@ define(
                 },
                 {
                     name : 'value',
-                    defaultValue : 'Header'
+                    defaultValue : 'Header',
+                    defaultValue : "New column"
                 },
                 {
                     name : 'widget',
@@ -69,7 +78,6 @@ define(
                 }
             ]);
 
-            this.parent(options);
             this.setup(definition);
 
         }
