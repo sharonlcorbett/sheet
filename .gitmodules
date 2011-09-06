@@ -1,0 +1,3 @@
+[submodule "client/lib/mochaui"]
+	path = client/lib/mochaui
+	url = https://github.com/mui/mochaui.git

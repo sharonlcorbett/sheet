@@ -8,24 +8,6 @@ var express   = require('express'),
     mootools  = require('mootools'),
     _ = requirejs('underscore');
 
-requirejs({
-    paths: {
-        "platform" : __dirname + "/platform"
-    }
-});
-
-var sheetClass = requirejs(['platform/sheet/Sheet']);
-
-var sheet = new sheetClass({
-    columns: [
-        {
-            value : "Test"
-        }
-    ]
-})
-
-console.log(sheet)
-
 var app = module.exports = express.createServer();
 
 // Configuration

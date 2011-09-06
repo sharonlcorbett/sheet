@@ -24,11 +24,11 @@ define(
 
             elementTemplate: function(){
 
-                div({class: 'xx-sheet'},
-                    div({class: 'xx-header'}),
-                    div({class: 'xx-toolbar'}),
-                    div({class: 'xx-grid'}),
-                    div({class: 'xx-navibar'})
+                div({"class": 'xx-sheet'},
+                    div({"class": 'xx-header'}),
+                    div({"class": 'xx-toolbar'}),
+                    div({"class": 'xx-grid'}),
+                    div({"class": 'xx-navibar'})
                 )
             }
         },
